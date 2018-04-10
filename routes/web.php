@@ -12,9 +12,12 @@
 */
 Auth::routes();
 
-Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware('only_valid_city')->group(function ($city) {
+Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware('only_valid_city')->group(function () {
 
-	Route::get('/home', 'HomeController@index')->name('home');
+	// Admin area
+	Route::middleware([])->prefix('admin')->group(function () {
+		Route::get('/home', 'HomeController@index')->name('home');
+	});
 
     Route::get('/', function ($city) {
         return view('welcome', compact('city'));
