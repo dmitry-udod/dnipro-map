@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class CityTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CityTableSeeder::class);
+		DB::table('cities')->insert([
+            'name' => 'Днiпро',
+            'slug' => 'dnipro',
+        ]);
     }
 }

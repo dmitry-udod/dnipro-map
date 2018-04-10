@@ -10,11 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware('only_valid_city')->group(function ($city) {
+
+	Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::get('/', function ($city) {
+        return view('welcome', compact('city'));
+    });
+});

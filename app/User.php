@@ -35,5 +35,6 @@ class User extends Authenticatable
     protected $casts = [
         'roles' => 'array',
         'categories' => 'array',
+        'cities' => 'array',
     ];
 }
