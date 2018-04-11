@@ -12,14 +12,14 @@
 */
 Auth::routes();
 
-Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware('only_valid_city')->group(function () {
-
-	// Admin area
-	Route::middleware([])->prefix('admin')->group(function () {
-		Route::get('/home', 'HomeController@index')->name('home');
-	});
+Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->group(function () {
 
     Route::get('/', function ($city) {
         return view('welcome', compact('city'));
     });
+
+    // Admin area
+	Route::middleware(['can_access_to_admin_area'])->prefix('admin')->group(function () {
+		Route::get('/home', 'HomeController@index')->name('home');
+	});
 });

@@ -19,7 +19,7 @@ class AddFirstUser extends Migration
             'password' => bcrypt('admin'),
         ]);
 
-        $user->roles = '["superadmin"]';    
+        $user->roles = ["superadmin"];
         $user->save();
     }
 

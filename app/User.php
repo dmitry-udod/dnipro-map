@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 
+        'name', 'email', 'password',
     ];
 
     /**
@@ -37,4 +37,35 @@ class User extends Authenticatable
         'categories' => 'array',
         'cities' => 'array',
     ];
+
+    /**
+     * Check is current user has super admin rights
+     *
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return $this->hasRole('superadmin');
+    }
+
+    /**
+     * Check is cureant user has admin rights
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    /**
+     * Check is user has role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return !empty($this->roles) && in_array($role, $this->roles);
+    }
 }
