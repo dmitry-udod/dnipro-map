@@ -23,7 +23,7 @@ class CanAccessToAdminArea
             return redirect()->route('login');
         }
 
-        if (! $request->user()->isSuperAdmin()) {
+        if (!$user->isSuperAdmin() && !$user->isAdmin()) {
             return abort(403);
         }
 

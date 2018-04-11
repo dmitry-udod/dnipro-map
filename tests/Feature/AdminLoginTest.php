@@ -19,7 +19,7 @@ class AdminLoginTest extends TestCase
     /** @test */
     public function different_roles_access()
     {
-        $this->actingAs($this->asAdmin())->get($this->route('/admin/home'))->assertStatus(302);
+        $this->actingAs($this->asAdmin())->get($this->route('/admin/home'))->assertStatus(200);
          $this->actingAs($this->asSuperAdmin())->get($this->route('/admin/home'))->assertStatus(200);
 //         $this->actingAs($this->asAdmin())->get('/admin/applications')->assertStatus(302);
     }
