@@ -2,7 +2,7 @@
 
 @section('content')
     @include('admin.common.list', [
-        'title' => 'Users',
+        'title' => 'Адміністратори',
         'fields' => [
             [
                 'name' => 'name',

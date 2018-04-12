@@ -5,8 +5,9 @@
                 <div class="card-header">
                     {{ $title }}
                     <a href="{{ route("admin.$viewName.create", $city->slug) }}" class="btn btn-primary float-right btn-sm">
-                        <i class="glyphicon glyphicon-plus-sign"></i> Додати
+                        Додати
                     </a>
+                    @yield('buttons')
                 </div>
                 <div class="card-body">
 
