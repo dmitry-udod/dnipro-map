@@ -20,7 +20,8 @@ class OnlyValidCity
         if (!empty($arrUrl['host'])) {
             $citySlug = explode('.', $arrUrl['host'])[0];
             if (!empty($citySlug)) {
-                \App\City::where('slug', $citySlug)->firstOrFail();
+                $city = \App\City::where('slug', $citySlug)->firstOrFail();
+                view()->share('city', $city);
                 return $next($request);
             }
         }

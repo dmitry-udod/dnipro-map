@@ -20,11 +20,12 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 
     // Admin area
 	Route::middleware(['can_access_to_admin_area'])
-	->namespace('Admin')
-	->prefix('admin')
-	->group(function () {
-		Route::resource('users', 'UserController');
-	});
+	    ->namespace('Admin')
+	    ->prefix('admin')
+        ->as('admin.')
+	    ->group(function () {
+		    Route::resource('users', 'UserController');
+	    });
 
 	Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'HomeController@index')->name('home');
 });
