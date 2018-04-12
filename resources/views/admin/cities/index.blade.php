@@ -2,16 +2,21 @@
 
 @section('content')
     @include('admin.common.list', [
-        'title' => 'Мiста',
+        'title' => 'Адміністратори',
         'fields' => [
             [
                 'name' => 'name',
                 'title' => 'Name',
             ],
             [
-                'name' => 'email',
-                'title' => 'Em',
+                'name' => 'slug',
+                'title' => 'Slug',
             ],
+            [
+                'name' => 'created_at',
+                'title' => 'Created',
+            ],
+            
         ],
     ])
 @endsection

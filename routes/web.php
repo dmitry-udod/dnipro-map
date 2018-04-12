@@ -25,6 +25,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
         ->as('admin.')
 	    ->group(function () {
 		    Route::resource('users', 'UserController');
+		    Route::resource('cities', 'CityController');
 	    });
 
 	Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'HomeController@index')->name('home');

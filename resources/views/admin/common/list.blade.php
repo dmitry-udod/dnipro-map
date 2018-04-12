@@ -10,7 +10,6 @@
                     @yield('buttons')
                 </div>
                 <div class="card-body">
-
                     <table class="table table-sm">
                         <thead>
                         <tr>
@@ -20,10 +19,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach(\App\User::all() as $user)
+                        @foreach($entities as $entity)
                             <tr>
                             @foreach($fields as $field)
-                                <td>{{ $user->{$field['name']} }}</td>
+                                <td>{{ $entity->{$field['name']} }}</td>
                             @endforeach
                             </tr>
                         @endforeach

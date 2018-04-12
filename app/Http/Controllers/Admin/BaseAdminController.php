@@ -9,6 +9,7 @@ class BaseAdminController extends Controller
 {
     protected $model = null;
     protected $viewName = null;
+    protected $repository = null;
 
     public function __construct()
     {
@@ -24,7 +25,11 @@ class BaseAdminController extends Controller
      */
     public function index()
     {
-        return view("admin.{$this->viewName}.index");
+    	$this->repository->model = $this->model;
+
+    	$entities = $this->repository->all()->paginate();
+
+        return view("admin.{$this->viewName}.index", compact('entities'));
     }
 
     /**
