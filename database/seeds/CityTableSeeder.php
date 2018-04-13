@@ -14,6 +14,7 @@ class CityTableSeeder extends Seeder
 		DB::table('cities')->insert([
             'name' => 'Днiпро',
             'slug' => 'dnipro',
+            'created_by' => \Carbon\Carbon::now(),
         ]);
     }
 }

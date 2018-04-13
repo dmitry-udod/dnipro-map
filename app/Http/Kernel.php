@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'only_valid_city' =>  \App\Http\Middleware\OnlyValidCity::class,
         'can_access_to_admin_area' =>  \App\Http\Middleware\CanAccessToAdminArea::class,
+        'only_super_admin' =>  \App\Http\Middleware\OnlySuperAdmin::class,
     ];
 }
