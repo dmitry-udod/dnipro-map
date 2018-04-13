@@ -39,6 +39,6 @@ class BaseAdminController extends Controller
      */
     public function create()
     {
-        return view("admin.{$this->viewName}.create");
+        return view("admin.{$this->viewName}.form");
     }
 }
