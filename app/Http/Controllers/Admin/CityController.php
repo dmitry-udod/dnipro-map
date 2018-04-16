@@ -25,7 +25,7 @@ class CityController extends BaseAdminController
     {
         $this->repository->save($request->except('_token'));
 
-        return $this->redirectToList();
+        return $this->redirectToListWithFlash();
     }
 
     /**
@@ -37,9 +37,8 @@ class CityController extends BaseAdminController
      */
     public function update(StoreCity $request, $id)
     {
-
         $this->repository->save($request->except('_token'), $id);
 
-        return $this->redirectToList();
+        return $this->redirectToListWithFlash();
     }
 }

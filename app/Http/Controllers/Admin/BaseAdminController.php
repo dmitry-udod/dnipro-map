@@ -64,6 +64,18 @@ class BaseAdminController extends Controller
         return redirect()->route("admin.$this->viewName.index", session('currentCity')->slug);
     }
 
+    /**
+     * Redirect to items list
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectToListWithFlash($type = 'success', $message = 'Запис успiшно збережено')
+    {
+
+        flash($message)->$type();
+
+        return $this->redirectToList();
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -74,6 +86,7 @@ class BaseAdminController extends Controller
     public function destroy($id)
     {
         if ($this->model::destroy($id)) {
+            flash('Запис успiшно видалено')->success();
             logger()->info("User delete {$this->model}; id: $id");
         }
        
