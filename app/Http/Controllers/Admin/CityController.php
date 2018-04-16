@@ -42,15 +42,4 @@ class CityController extends BaseAdminController
 
         return $this->redirectToList();
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(City $city)
-    {
-        //
-    }
 }

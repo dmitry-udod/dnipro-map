@@ -17,6 +17,9 @@ class AdminCityTest extends TestCase
     /** @test */
     public function create_city()
     {
+
+        $this->superadmin()->get($this->route('/admin/cities/create'))->assertStatus(200);
+
         $this->superadmin()->post($this->route('/admin/cities'), ['name' => 'Черкаси'])->assertRedirect();
         $this->superadmin()->get($this->route('/admin/cities'))->assertSee('cherkasi');
 

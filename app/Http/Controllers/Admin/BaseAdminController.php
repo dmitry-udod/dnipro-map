@@ -44,7 +44,7 @@ class BaseAdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\City  $city
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,5 +62,21 @@ class BaseAdminController extends Controller
     protected function redirectToList()
     {
         return redirect()->route("admin.$this->viewName.index", session('currentCity')->slug);
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\City  $city
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        if ($this->model::destroy($id)) {
+            logger()->info("User delete {$this->model}; id: $id");
+        }
+       
+       return $this->redirectToList();
     }
 }

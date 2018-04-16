@@ -23,9 +23,11 @@ class StoreCity extends FormRequest
      */
     public function rules()
     {
+        $checkId = (int) $this->route('city') ? ',slug,' . $this->route('city') : '';
+
         return [
             'name' => 'required|max:255',
-            'slug' => 'unique:cities,slug,' . $this->route('city'),
+            'slug' => 'unique:cities' . $checkId,
         ];
     }
 }

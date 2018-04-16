@@ -7,7 +7,7 @@
                 </div>
                 <div class="card-body">
                     <form method="POST"
-                      action="{{ route(!object_get($entity, 'id') ? "admin.$viewName.create"  : "admin.$viewName.update", [$city->slug, object_get($entity, 'id')]) }}"
+                      action="{{ route(!object_get($entity, 'id') ? "admin.$viewName.store"  : "admin.$viewName.update", [$city->slug, object_get($entity, 'id')]) }}"
                     >
                         @csrf
 
