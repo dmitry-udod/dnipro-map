@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Repositories\UserRepository;
 use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends BaseAdminController
 {
-    public function __construct()
+    public function __construct(UserRepository $repository)
     {
         $this->model = User::class;
+        $this->repository = $repository;
         parent::__construct();
     }
 
@@ -35,16 +37,7 @@ class UserController extends BaseAdminController
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

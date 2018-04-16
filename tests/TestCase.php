@@ -51,4 +51,9 @@ abstract class TestCase extends BaseTestCase
     {
         return new User();
     }
+
+    protected function superadmin()
+    {
+        return $this->actingAs($this->asSuperAdmin());
+    }
 }

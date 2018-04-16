@@ -14,6 +14,6 @@
                 'title' => 'Slug',
             ]
         ],
-        'entity' => '',
+        'entity' => $entity,
     ])
 @endsection

@@ -15,6 +15,7 @@ class BaseAdminController extends Controller
     {
         $this->viewName = str_plural(last(explode('\\', strtolower($this->model))));
         view()->share('viewName', $this->viewName);
+        $this->repository->model = $this->model;
     }
 
 
@@ -25,8 +26,6 @@ class BaseAdminController extends Controller
      */
     public function index()
     {
-    	$this->repository->model = $this->model;
-
     	$entities = $this->repository->all()->paginate();
 
         return view("admin.{$this->viewName}.index", compact('entities'));
@@ -40,5 +39,28 @@ class BaseAdminController extends Controller
     public function create()
     {
         return view("admin.{$this->viewName}.form");
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\City  $city
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $entity = $this->repository->find($id);
+
+        return view("admin.{$this->viewName}.form", compact('entity'));
+    }
+
+    /**
+     * Redirect to items list
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectToList()
+    {
+        return redirect()->route("admin.$this->viewName.index", session('currentCity')->slug);
     }
 }

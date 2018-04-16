@@ -6,9 +6,14 @@
                     {{ $title }}
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route(object_get($entity, 'id') ? "admin.$viewName.create"  : "admin.$viewName.update", [$city->slug, object_get($entity, 'id')]) }}">
+                    <form method="POST"
+                      action="{{ route(!object_get($entity, 'id') ? "admin.$viewName.create"  : "admin.$viewName.update", [$city->slug, object_get($entity, 'id')]) }}"
+                    >
                         @csrf
-                        {{--@method('PUT')--}}
+
+                        @if(object_get($entity, 'id'))
+                            @method('PUT')
+                        @endif
 
                         @foreach($fields as $field)
                             @if (empty($field['type']))
@@ -20,10 +25,10 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-7 offset-md-5">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
+                                    Зберегти
                                 </button>
 
-                                <a href="{{ route("admin.$viewName.index", $city->slug) }}" style="margin-left: 10px">Cancel</a>
+                                <a href="{{ route("admin.$viewName.index", $city->slug) }}" style="margin-left: 10px">Назад</a>
                             </div>
                         </div>
                     </form>

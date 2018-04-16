@@ -21,7 +21,11 @@ class OnlyValidCity
             $citySlug = explode('.', $arrUrl['host'])[0];
             if (!empty($citySlug)) {
                 $city = \App\City::where('slug', $citySlug)->firstOrFail();
+
                 view()->share('city', $city);
+
+                session()->put('currentCity', $city);
+
                 return $next($request);
             }
         }

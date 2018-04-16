@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\City;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreCity;
+use App\Repositories\CityRepository;
 
 class CityController extends BaseAdminController
 {
-    public function __construct(\App\Repositories\BaseRepository $repository)
+    public function __construct(CityRepository $repository)
     {
         $this->model = City::class;
         $this->repository = $repository;
@@ -17,34 +18,14 @@ class CityController extends BaseAdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreCity  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreCity $request)
     {
-        //
-    }
+        $this->repository->save($request->except('_token'));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function show(City $city)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(City $city)
-    {
-        //
+        return $this->redirectToList();
     }
 
     /**
@@ -52,11 +33,14 @@ class CityController extends BaseAdminController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\City  $city
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, City $city)
+    public function update(StoreCity $request, $id)
     {
-        //
+
+        $this->repository->save($request->except('_token'), $id);
+
+        return $this->redirectToList();
     }
 
     /**

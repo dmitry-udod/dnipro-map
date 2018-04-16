@@ -27,7 +27,7 @@
                             @foreach($fields as $field)
                                 <td>{{ $entity->{$field['name']} }}</td>
                             @endforeach
-                                <td>
+                                <td width="150">
                                     @foreach($actions as $action)
                                         @include("admin.common.actions.$action")
                                     @endforeach

@@ -15,4 +15,8 @@ class BaseRepository
         return $this->model::orderBy($this->orderBy, $this->order);
     }
 
+    public function find($id)
+    {
+        return $this->model::findOrFail($id);
+    }
 }
