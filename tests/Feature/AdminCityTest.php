@@ -38,6 +38,6 @@ class AdminCityTest extends TestCase
     public function delete_city()
     {
         $this->superadmin()->delete($this->route('/admin/cities/2'))->assertRedirect();
-        $this->superadmin()->get($this->route('/admin/cities'))->assertDontSee('Черкаси2');
+        $this->superadmin()->get($this->route('/admin/cities'))->assertDontSee('Черкаси');
     }
 }
