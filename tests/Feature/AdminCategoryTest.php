@@ -43,7 +43,9 @@ class AdminCategoryTest extends TestCase
     public function admin_from_other_city_didnt_see_dnipro_categories()
     {
         $this->createCity();
+        $this->createCategory();
         // dd(\App\Category::all()->toArray());
         $this->adminLviv()->get($this->route('/admin/categories'))->assertDontSee('МАФ');
+        $this->adminLviv()->get($this->route('/admin/categories'))->assertSee('New Year Trees');
     }
 }

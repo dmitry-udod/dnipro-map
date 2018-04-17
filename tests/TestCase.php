@@ -22,6 +22,7 @@ abstract class TestCase extends BaseTestCase
             'email' => 'admin@gmail.com',
             'password' => '123456',
             'roles' => ["admin"],
+            'cities' => ["dnipro"],
         ];
 
         if(!is_null($user = User::where('email', $data['email'])->first())) {
@@ -81,6 +82,23 @@ abstract class TestCase extends BaseTestCase
         $city->name = 'Львiв';
         $city->slug = 'lviv';
         $city->save();
+
+        return $city;
+    }
+
+    protected function createCategory()
+    {
+        $entity = \App\Category::where('slug', '')->first();
+        if (!$entity) {
+            $entity = new \App\Category();
+        }
+        $entity->name = 'New Year Trees';
+        $entity->slug = 'new-year-trees';
+        $entity->order = 0;
+        $entity->is_active = true;
+        $entity->city_id = $this->createCity()->id;
+        $entity->logo = '{}';
+        $entity->save();
     }
 
     protected function cityBySlug($slug = 'cherkasi')

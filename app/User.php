@@ -95,7 +95,7 @@ class User extends Authenticatable
         return !empty($this->roles) && in_array($role, $this->roles);
     }
 
-    public function cities()
+    public function citiesForDropDown()
     {
         if (!$this->isAdmin() && !$this->isSuperAdmin()) {
             return [];

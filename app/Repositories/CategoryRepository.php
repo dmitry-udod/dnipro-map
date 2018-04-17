@@ -4,9 +4,23 @@ namespace App\Repositories;
 
 
 use App\City;
+use App\Category;
 
 class CategoryRepository extends BaseRepository
 {
+	public function all()
+	{
+		$user = auth()->user();
+		$q = Category::orderBy('order');
+		
+		if ($user->isAdmin()) {
+			$cities = empty($user->cities) ? [] : City::whereIn('slug', $user->cities)->pluck('id');
+			$q->whereIn('id', $cities);
+		}
+
+		return $q;
+	}
+
     public function save(array $data, $id = null)
     {
         $entity = $this->findOrNew($id);

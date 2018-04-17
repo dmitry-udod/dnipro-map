@@ -13,7 +13,7 @@
                 'name' => 'city_id',
                 'title' => 'Miсто',
                 'type' => 'select',
-                'values' => $user->cities(),
+                'values' => $user->citiesForDropDown(),
             ],
             [
                 'name' => 'is_active',
