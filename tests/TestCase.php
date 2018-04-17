@@ -56,4 +56,14 @@ abstract class TestCase extends BaseTestCase
     {
         return $this->actingAs($this->asSuperAdmin());
     }
+
+    protected function admin()
+    {
+        return $this->actingAs($this->asAdmin());
+    }
+
+    protected function createCity()
+    {
+        $this->superadmin()->post($this->route('/admin/cities'), ['name' => 'Кривий Ріг']);
+    }
 }

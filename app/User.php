@@ -94,4 +94,19 @@ class User extends Authenticatable
     {
         return !empty($this->roles) && in_array($role, $this->roles);
     }
+
+    public function cities()
+    {
+        if (!$this->isAdmin() && !$this->isSuperAdmin()) {
+            return [];
+        }            
+
+        $q = City::orderBy('name');
+        
+        if(!$this->isSuperAdmin()) {
+            $q->whereIn('slug', $this->cities);
+        }
+
+        return $q->pluck('name', 'id');
+    }
 }

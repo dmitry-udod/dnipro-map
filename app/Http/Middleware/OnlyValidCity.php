@@ -23,6 +23,7 @@ class OnlyValidCity
                 $city = \App\City::where('slug', $citySlug)->firstOrFail();
 
                 view()->share('city', $city);
+                view()->share('user', auth()->user());
 
                 session()->put('currentCity', $city);
 

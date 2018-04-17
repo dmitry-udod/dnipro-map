@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\CityRepository;
 
 class BaseAdminController extends Controller
 {
@@ -15,6 +16,7 @@ class BaseAdminController extends Controller
     {
         $this->viewName = str_plural(last(explode('\\', strtolower($this->model))));
         view()->share('viewName', $this->viewName);
+        view()->share('model', $this->model);
         $this->repository->model = $this->model;
     }
 
@@ -71,10 +73,16 @@ class BaseAdminController extends Controller
      */
     protected function redirectToListWithFlash($type = 'success', $message = 'Запис успiшно збережено')
     {
-
         flash($message)->$type();
 
         return $this->redirectToList();
+    }
+
+    protected function loadUserCities() 
+    {
+        $city = new CityRepository();
+        $cities = $city->userCities();
+        view()->share(compact('cities'));
     }
 
     /**
@@ -87,7 +95,8 @@ class BaseAdminController extends Controller
     {
         if ($this->model::destroy($id)) {
             flash('Запис успiшно видалено')->success();
-            logger()->info("User delete {$this->model}; id: $id");
+            $name = request()->user()->name;
+            logger()->info("User $name delete {$this->model}; id: $id");
         }
        
        return $this->redirectToList();

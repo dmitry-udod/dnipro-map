@@ -55,6 +55,10 @@
                                     <a class="dropdown-item" href="{{ route('admin.cities.index', $city->slug) }}">
                                        Мiста
                                     </a>
+
+                                    <a class="dropdown-item" href="{{ route('admin.categories.index', $city->slug) }}">
+                                       Категорії
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
