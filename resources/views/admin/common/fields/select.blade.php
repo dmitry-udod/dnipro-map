@@ -4,7 +4,8 @@
 	<div class="col-md-10">
 		<select id="{{ $field['name'] }}"  name="{{ $field['name'] }}" class="form-control" required>
   			@foreach($field['values'] as $key => $value)
-  				<option value="{{ $key }}">{{ $value }}</option>
+  				<option value="{{ $key }}" 
+  				@if($key == $entity->{$field['name']}) selected @endif>{{ $value }}</option>
   			@endforeach
 		</select>
 	    @if ($errors->has($field['name']))

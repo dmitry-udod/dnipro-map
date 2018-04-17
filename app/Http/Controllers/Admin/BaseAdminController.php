@@ -49,7 +49,7 @@ class BaseAdminController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($city, $id)
     {
         $entity = $this->repository->find($id);
 
@@ -76,13 +76,6 @@ class BaseAdminController extends Controller
         flash($message)->$type();
 
         return $this->redirectToList();
-    }
-
-    protected function loadUserCities() 
-    {
-        $city = new CityRepository();
-        $cities = $city->userCities();
-        view()->share(compact('cities'));
     }
 
     /**

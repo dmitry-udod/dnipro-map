@@ -13,7 +13,7 @@
                 'title' => 'Miсто',
             ],
             [
-                'name' => 'is_active',
+                'name' => 'active',
                 'title' => 'Активна',
                 'type' => 'bool',
             ],

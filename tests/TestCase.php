@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\User;
+use App\City;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -28,6 +29,15 @@ abstract class TestCase extends BaseTestCase
         }
 
         return User::create($data);
+    }
+
+    public function adminLviv()
+    {
+        $u = $this->asAdmin();
+        $u->cities = ['lviv'];    
+        $u->save();
+
+        return $this->actingAs($u);
     }
 
     public function asSuperAdmin()
@@ -64,6 +74,17 @@ abstract class TestCase extends BaseTestCase
 
     protected function createCity()
     {
-        $this->superadmin()->post($this->route('/admin/cities'), ['name' => 'Кривий Ріг']);
+        $city = City::where('slug', 'lviv')->first();
+        if (!$city) {
+            $city = new City();
+        }
+        $city->name = 'Львiв';
+        $city->slug = 'lviv';
+        $city->save();
+    }
+
+    protected function cityBySlug($slug = 'cherkasi')
+    {
+        return City::where('slug', $slug)->firstOrFail();
     }
 }

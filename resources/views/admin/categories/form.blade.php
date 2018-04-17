@@ -10,7 +10,7 @@
                 'required' => true,
             ],
             [
-                'name' => 'city',
+                'name' => 'city_id',
                 'title' => 'Miсто',
                 'type' => 'select',
                 'values' => $user->cities(),
@@ -19,6 +19,10 @@
                 'name' => 'is_active',
                 'title' => 'Активна',
                 'type' => 'checkbox',
+            ],
+                        [
+                'name' => 'order',
+                'title' => 'Порядок',
             ],
 
         ],

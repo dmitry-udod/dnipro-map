@@ -30,14 +30,16 @@ class AdminCityTest extends TestCase
     /** @test */
     public function update_city()
     {
-        $this->superadmin()->put($this->route('/admin/cities/2'), ['name' => 'Черкаси2', 'slug' => 'cherkasi'])->assertRedirect();
+        $city = $this->cityBySlug();
+        $this->superadmin()->put($this->route('/admin/cities/' . $city->id), ['name' => 'Черкаси2', 'slug' => 'cherkasi'])->assertRedirect();
         $this->superadmin()->get($this->route('/admin/cities'))->assertSee('Черкаси2');
     }
 
     /** @test */
     public function delete_city()
     {
-        $this->superadmin()->delete($this->route('/admin/cities/2'))->assertRedirect();
+        $city = $this->cityBySlug();
+        $this->superadmin()->delete($this->route('/admin/cities/' . $city->id))->assertRedirect();
         $this->superadmin()->get($this->route('/admin/cities'))->assertDontSee('Черкаси');
     }
 }

@@ -27,5 +27,23 @@ class AdminCategoryTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Днiпро')
             ;
+
+        $this->superadmin()->post($this->route('/admin/categories'), [
+                'name' => 'МАФ',
+                'city_id' => 1,
+                'is_active' => true,
+                'order' => 0,
+            ])
+            ->assertRedirect()
+            ;            
+            $this->superadmin()->get($this->route('/admin/categories'))->assertSee('МАФ');
+    }
+
+    /** @test */
+    public function admin_from_other_city_didnt_see_dnipro_categories()
+    {
+        $this->createCity();
+        // dd(\App\Category::all()->toArray());
+        $this->adminLviv()->get($this->route('/admin/categories'))->assertDontSee('МАФ');
     }
 }

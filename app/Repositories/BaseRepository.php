@@ -19,4 +19,9 @@ class BaseRepository
     {
         return $this->model::findOrFail($id);
     }
+
+    public function findOrNew($id)
+    {
+        return $this->model::findOrNew($id);
+    }
 }
