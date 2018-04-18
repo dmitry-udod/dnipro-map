@@ -109,4 +109,16 @@ class User extends Authenticatable
 
         return $q->pluck('name', 'id');
     }
+
+    public function rolesForDropDown()
+    {
+        $roles = Role::all();
+        if ($this->isSuperAdmin()) {
+            return $roles;
+        }            
+
+        unset($roles['superadmin']);    
+
+        return $roles;
+    }
 }

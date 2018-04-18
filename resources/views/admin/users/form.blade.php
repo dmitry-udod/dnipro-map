@@ -7,26 +7,29 @@
             [
                 'name' => 'name',
                 'title' => 'Ім\'я',
+                'required' => true,
             ],
             [
                 'name' => 'email',
                 'title' => 'E-mail',
+                'required' => true,
             ],
             [
                 'name' => 'password',
                 'title' => 'Пароль',
+                'required' => true,
             ],
             [
                 'name' => 'roles',
                 'title' => 'Роль',
+                'type'  => 'select',
+                'values' => $user->rolesForDropDown(),
             ],
             [
                 'name' => 'cities',
                 'title' => 'Мiсто',
-            ],
-            [
-                'name' => 'categories',
-                'title' => 'Категорiя',
+                'type'  => 'select',
+                'values' => $user->citiesForDropDown(),
             ],
         ],
         'entity' => empty($entity) ? new $model : $entity,

@@ -18,7 +18,28 @@ class AdminUserTest extends TestCase
     /** @test */
     public function users_create()
     {
-        $this->admin()->get($this->route('/admin/users/create'))->assertStatus(200);
-        $this->superadmin()->get($this->route('/admin/users/create'))->assertStatus(200);
+        $this->createCity();
+
+        $this->adminLviv()->get($this->route('/admin/users/create'))
+            ->assertStatus(200)
+            ->assertDontSee('superadmin')
+            ->assertDontSee('Днiпро')
+            ->assertSee('Львiв')
+        ;
+
+        $this->superadmin()->get($this->route('/admin/users/create'))
+            ->assertStatus(200)
+            ->assertSee('superadmin')
+            ->assertSee('Днiпро')
+            ->assertSee('Львiв')
+        ;
+
+        $this->adminLviv()->post($this->route('/admin/users/create'), [])
+            ->assertStatus(200);
+        
+        // See new admin in list
+        // $this->adminLviv()->post($this->route('/admin/users/create'), [])
+            // ->assertStatus(200);
+
     }
 }
