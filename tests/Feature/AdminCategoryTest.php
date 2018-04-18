@@ -44,7 +44,6 @@ class AdminCategoryTest extends TestCase
     {
         $this->createCity();
         $this->createCategory();
-        // dd(\App\Category::all()->toArray());
         $this->adminLviv()->get($this->route('/admin/categories'))->assertDontSee('МАФ');
         $this->adminLviv()->get($this->route('/admin/categories'))->assertSee('New Year Trees');
     }

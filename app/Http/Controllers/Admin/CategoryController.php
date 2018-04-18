@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Category;
 use App\Repositories\CategoryRepository;
 use App\Http\Requests\StoreCategory;

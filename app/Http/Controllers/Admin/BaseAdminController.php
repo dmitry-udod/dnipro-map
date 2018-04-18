@@ -49,8 +49,12 @@ class BaseAdminController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($city, $id)
+    public function edit($city = null, $id = null)
     {
+        if ((int)$city > 0) {
+            $id = $city;
+        }
+
         $entity = $this->repository->find($id);
 
         return view("admin.{$this->viewName}.form", compact('entity'));

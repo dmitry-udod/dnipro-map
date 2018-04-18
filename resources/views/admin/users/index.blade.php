@@ -6,12 +6,21 @@
         'fields' => [
             [
                 'name' => 'name',
-                'title' => 'Name',
+                'title' => "Iм'я",
             ],
             [
                 'name' => 'email',
-                'title' => 'Em',
+                'title' => 'Email',
             ],
         ],
+        'actions' => [
+            'edit',
+            'delete',
+        ],
     ])
+    {{--[--}}
+    {{--'name' => 'cities',--}}
+    {{--'title' => 'Мiсто',--}}
+    {{--],--}}
+
 @endsection
