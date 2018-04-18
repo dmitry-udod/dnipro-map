@@ -20,7 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('city_id');
             $table->unsignedInteger('order')->default(0);
             $table->boolean('is_active')->default(true);
-            $table->json('logo');
+            $table->json('logo')->nullable();
             $table->timestamps();
         });
     }

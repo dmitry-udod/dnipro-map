@@ -25,7 +25,16 @@
                         @foreach($entities as $entity)
                             <tr>
                             @foreach($fields as $field)
-                                <td>{{ $entity->{$field['name']} }}</td>
+                                <td>
+                                    @if(empty($field['type']))
+                                        {{ $entity->{$field['name']} }}
+                                    @else
+                                        @if (!empty(json_decode($entity->{$field['name']})->path))
+                                            <img width="20" height="20" src="{{ json_decode($entity->{$field['name']})->path }}">
+                                            <br>
+                                        @endif
+                                    @endif
+                                </td>
                             @endforeach
                                 <td width="150">
                                     @foreach($actions as $action)

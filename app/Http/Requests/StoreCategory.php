@@ -27,6 +27,7 @@ class StoreCategory extends FormRequest
             'name' => 'required|max:255',
             'city_id' => 'required|integer',
             'order' => 'required|integer',
+            'logo' => 'sometimes|image',
         ];
     }
 }

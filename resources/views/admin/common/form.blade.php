@@ -6,7 +6,7 @@
                     {{ $title }}
                 </div>
                 <div class="card-body">
-                    <form method="POST"
+                    <form method="POST" enctype="multipart/form-data"
                       action="{{ route(!object_get($entity, 'id') ? "admin.$viewName.store"  : "admin.$viewName.update", [$city->slug, object_get($entity, 'id')]) }}"
                     >
                         @csrf

@@ -21,6 +21,11 @@
                 'name' => 'order',
                 'title' => 'Порядок',
             ],
+            [
+                'name' => 'logo',
+                'title' => 'Iконка',
+                'type' => 'image'
+            ],
         ],
         'actions' => [
             'edit',

@@ -24,6 +24,12 @@
                 'name' => 'order',
                 'title' => 'Порядок',
             ],
+            [
+                'name' => 'logo',
+                'title' => 'Iконка',
+                'type' => 'file',
+                'note' => 'Файл формату SVG',
+            ],
 
         ],
         'entity' => empty($entity) ? new $model : $entity,
