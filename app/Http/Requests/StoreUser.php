@@ -32,8 +32,8 @@ class StoreUser extends FormRequest
             'cities' => 'required',
         ];
 
-        if (empty($id)) {
-            $rules['password'] = 'sometimes|required|min:8|alpha_num';
+        if (empty($id) || request('password')) {
+            $rules['password'] = 'sometimes|required|min:8';
         }
 
         return $rules;

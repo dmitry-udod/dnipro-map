@@ -65,16 +65,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Hack for form generation
-     *
-     * @return string
-     */
-    public function getPasswordAttribute()
-    {
-        return null;
-    }
-
-    /**
      * Check is current user has super admin rights
      *
      * @return bool
@@ -141,4 +131,32 @@ class User extends Authenticatable
 
         return $roles;
     }
+
+    /**
+     * Get role text value
+     *
+     * @return string
+     */
+    public function getRoleAttribute()
+    {
+        if (!empty($this->roles[0])) {
+            return Role::all()[$this->roles[0]];
+        }
+    }
+
+    /**
+     * Get role text value
+     *
+     * @return string
+     */
+    public function getCityAttribute()
+    {
+        if (!empty($this->cities[0])) {
+            $city = City::find($this->cities[0]);
+            if ($city) {
+                return $city->name;
+            }
+        }
+    }
+
 }

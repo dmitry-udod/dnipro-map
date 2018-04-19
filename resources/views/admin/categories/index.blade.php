@@ -15,7 +15,6 @@
             [
                 'name' => 'active',
                 'title' => 'Активна',
-                'type' => 'bool',
             ],
             [
                 'name' => 'order',

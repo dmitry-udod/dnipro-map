@@ -12,6 +12,14 @@
                 'name' => 'email',
                 'title' => 'Email',
             ],
+            [
+                'name' => 'role',
+                'title' => 'Роль',
+            ],
+            [
+                'name' => 'city',
+                'title' => 'Мiсто',
+            ],
         ],
         'actions' => [
             'edit',

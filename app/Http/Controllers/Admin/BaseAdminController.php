@@ -88,8 +88,10 @@ class BaseAdminController extends Controller
      * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($city = null, $id = null)
     {
+        $this->model::findOrFail($id);
+
         if ($this->model::destroy($id)) {
             flash('Запис успiшно видалено')->success();
             $name = request()->user()->name;
