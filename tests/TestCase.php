@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
             'email' => 'admin@gmail.com',
             'password' => '123456',
             'roles' => ["admin"],
-            'cities' => ["dnipro"],
+            'cities' => ["1"],
         ];
 
         if(!is_null($user = User::where('email', $data['email'])->first())) {
@@ -34,8 +34,19 @@ abstract class TestCase extends BaseTestCase
 
     public function adminLviv()
     {
+        $this->createCategory();
         $u = $this->asAdmin();
-        $u->cities = ['lviv'];    
+        $u->cities = ["{$this->createCity()->id}"];
+        $u->save();
+
+        return $this->actingAs($u);
+    }
+
+    public function adminDnipro()
+    {
+        $this->createCategory();
+        $u = $this->asAdmin();
+        $u->cities = ["1"];
         $u->save();
 
         return $this->actingAs($u);

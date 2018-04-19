@@ -14,7 +14,7 @@ class CategoryRepository extends BaseRepository
 		$q = Category::orderBy('order');
 		
 		if ($user->isAdmin()) {
-			$cities = empty($user->cities) ? [] : City::whereIn('slug', $user->cities)->pluck('id');
+			$cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
 			$q->whereIn('id', $cities);
 		}
 

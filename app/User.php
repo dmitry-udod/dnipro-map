@@ -65,6 +65,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Hack for form generation
+     *
+     * @return string
+     */
+    public function getPasswordAttribute()
+    {
+        return null;
+    }
+
+    /**
      * Check is current user has super admin rights
      *
      * @return bool
@@ -95,6 +105,11 @@ class User extends Authenticatable
         return !empty($this->roles) && in_array($role, $this->roles);
     }
 
+    /**
+     * Get cities list for select
+     *
+     * @return array|\Illuminate\Support\Collection
+     */
     public function citiesForDropDown()
     {
         if (!$this->isAdmin() && !$this->isSuperAdmin()) {
@@ -104,12 +119,17 @@ class User extends Authenticatable
         $q = City::orderBy('name');
         
         if(!$this->isSuperAdmin()) {
-            $q->whereIn('slug', $this->cities);
+            $q->whereIn('id', $this->cities);
         }
 
         return $q->pluck('name', 'id');
     }
 
+    /**
+     * Get roles list for select
+     *
+     * @return array
+     */
     public function rolesForDropDown()
     {
         $roles = Role::all();

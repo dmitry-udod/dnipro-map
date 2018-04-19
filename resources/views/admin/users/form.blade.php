@@ -17,7 +17,7 @@
             [
                 'name' => 'password',
                 'title' => 'Пароль',
-                'required' => true,
+                'field_type' => 'password',
             ],
             [
                 'name' => 'roles',

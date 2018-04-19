@@ -7,7 +7,13 @@ use App\City;
 
 class CityRepository extends BaseRepository
 {
-
+    /**
+     * Save entity
+     *
+     * @param array $data
+     * @param null $id
+     * @return bool
+     */
     public function save(array $data, $id = null)
     {
         $city = City::findOrNew($id);

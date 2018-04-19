@@ -18,7 +18,7 @@ class AdminUserTest extends TestCase
     /** @test */
     public function users_create()
     {
-        $this->createCity();
+        $lviv = $this->createCity();
 
         $this->adminLviv()->get($this->route('/admin/users/create'))
             ->assertStatus(200)
@@ -34,9 +34,20 @@ class AdminUserTest extends TestCase
             ->assertSee('Львiв')
         ;
 
-        $this->adminLviv()->post($this->route('/admin/users/create'), [])
-            ->assertStatus(200);
-        
+        $data = [
+            'name' => 'Pavlo Zibrov',
+            'email' => 'pavlo@gmail.com',
+            'password' => '12345678a',
+            'roles' => 'admin',
+            'cities' => (string)$lviv->id,
+        ];
+
+        $this->adminLviv()->post($this->route('/admin/users'), $data)->assertRedirect();
+
+
+        $this->adminLviv()->get($this->route('/admin/users'))->assertSee($data['name']);
+        $this->adminDnipro()->get($this->route('/admin/users'))->assertDontSee($data['name']);
+        $this->superadmin()->get($this->route('/admin/users'))->assertSee($data['name']);
         // See new admin in list
         // $this->adminLviv()->post($this->route('/admin/users/create'), [])
             // ->assertStatus(200);
