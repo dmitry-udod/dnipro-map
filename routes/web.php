@@ -27,6 +27,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('users', 'UserController');
 		    Route::middleware(['only_super_admin'])->resource('cities', 'CityController');
 		    Route::resource('categories', 'CategoryController');
+		    Route::resource('types', 'TypeController');
 	    });
 
 	Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'HomeController@index')->name('home');
