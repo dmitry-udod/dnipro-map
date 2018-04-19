@@ -14,4 +14,10 @@ class AdminTypesTest extends TestCase
         $this->superadmin()->get($this->route('/admin/types'))->assertStatus(200);
     }
 
+    /** @test */
+    public function type_create()
+    {
+        $this->admin()->get($this->route('/admin/types/create'))->assertStatus(200);
+    }
+
 }

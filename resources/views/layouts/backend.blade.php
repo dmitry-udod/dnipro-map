@@ -59,6 +59,9 @@
                                     <a class="dropdown-item" href="{{ route('admin.categories.index', $city->slug) }}">
                                        Категорії
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('admin.types.index', $city->slug) }}">
+                                       Види діяльності
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
