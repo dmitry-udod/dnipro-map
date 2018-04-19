@@ -48,9 +48,5 @@ class AdminUserTest extends TestCase
         $this->adminLviv()->get($this->route('/admin/users'))->assertSee($data['name']);
         $this->adminDnipro()->get($this->route('/admin/users'))->assertDontSee($data['name']);
         $this->superadmin()->get($this->route('/admin/users'))->assertSee($data['name']);
-        // See new admin in list
-        // $this->adminLviv()->post($this->route('/admin/users/create'), [])
-            // ->assertStatus(200);
-
     }
 }
