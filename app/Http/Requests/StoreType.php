@@ -24,7 +24,11 @@ class StoreType extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:255',
+            'category_id' => 'required|integer',
+            'city_id' => 'required|integer',
+            'icon' => 'sometimes|image',
+            'order' => 'required|integer',
         ];
     }
 }

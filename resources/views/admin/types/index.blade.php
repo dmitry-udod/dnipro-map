@@ -27,7 +27,7 @@
             [
                 'name' => 'order',
                 'title' => 'Порядок',
-            ]
+            ],
         ],
         'actions' => [
             'edit',

@@ -115,6 +115,28 @@ class User extends Authenticatable
         return $q->pluck('name', 'id');
     }
 
+
+    /**
+     * Get cities list for select
+     *
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function categoriesForDropDown()
+    {
+        if (!$this->isAdmin() && !$this->isSuperAdmin()) {
+            return [];
+        }
+
+        $q = Category::orderBy('name');
+
+        if(!$this->isSuperAdmin()) {
+            $cityIds = City::where('id', $this->cities)->pluck('id');
+            $q = Category::where('city_id', $cityIds)->orderBy('name');
+        }
+
+        return $q->pluck('name', 'id');
+    }
+
     /**
      * Get roles list for select
      *

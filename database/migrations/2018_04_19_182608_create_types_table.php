@@ -17,7 +17,7 @@ class CreateTypesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->string('color')->default('#fff');
+            $table->string('color')->default('#ffffff');
             $table->json('icon')->nullable();
             $table->unsignedInteger('order')->default(0);
             $table->unsignedInteger('city_id');

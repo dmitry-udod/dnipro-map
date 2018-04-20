@@ -110,6 +110,8 @@ abstract class TestCase extends BaseTestCase
         $entity->city_id = $this->createCity()->id;
         $entity->logo = '{}';
         $entity->save();
+
+        return $entity;
     }
 
     protected function cityBySlug($slug = 'cherkasi')

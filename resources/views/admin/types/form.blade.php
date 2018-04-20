@@ -27,14 +27,19 @@
                 'values' => $user->citiesForDropDown(),
             ],
             [
+                'name' => 'color',
+                'title' => 'Колір об\'єкту',
+                'type' => 'color',
+            ],
+            [
                 'name' => 'order',
                 'title' => 'Порядок',
             ],
             [
-                'name' => 'logo',
+                'name' => 'icon',
                 'title' => 'Iконка',
                 'type' => 'file',
-                'note' => 'Файл формату SVG',
+                'note' => 'Будь яке зображення',
             ],
 
         ],
