@@ -17,8 +17,9 @@
                 'title' => 'Категорія',
             ],
             [
-                'name' => 'color',
+                'name' => 'color_preview',
                 'title' => 'Колір об\'єкту',
+                'raw' => true,
             ],
             [
                 'name' => 'active',
