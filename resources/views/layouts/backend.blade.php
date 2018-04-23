@@ -62,6 +62,9 @@
                                     <a class="dropdown-item" href="{{ route('admin.types.index', $city->slug) }}">
                                        Види діяльності
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('admin.districts.index', $city->slug) }}">
+                                        Райони
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

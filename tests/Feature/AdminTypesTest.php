@@ -50,6 +50,6 @@ class AdminTypesTest extends TestCase
     public function type_delete()
     {
         $this->superadmin()->delete($this->route('/admin/types/1'))->assertRedirect();
-        $this->superadmin()->get($this->route('/admin/cities'))->assertDontSee($this->entity['name']);
+        $this->superadmin()->get($this->route('/admin/types'))->assertDontSee($this->entity['name']);
     }
 }
