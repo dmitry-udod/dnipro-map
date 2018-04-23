@@ -19,8 +19,10 @@ class CreateStructuresTable extends Migration
             $table->string('name')->nullable();
             $table->string('uuid');
             $table->unique('uuid');
+            $table->unsignedInteger('city_id');
+            $table->index('city_id');
             $table->unsignedInteger('category_id');
-            $table->unsignedInteger('type_id');
+            $table->index('category_id');
             $table->unsignedInteger('type_id');
             $table->unsignedInteger('district_id')->default(0);
             $table->string('area')->nullable();
@@ -39,7 +41,6 @@ class CreateStructuresTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('has_problem')->default(false);
             $table->boolean('is_free')->default(false);
-
             $table->timestamps();
         });
     }

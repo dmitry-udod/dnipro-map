@@ -32,6 +32,7 @@
                             </div>
                         </div>
                     </form>
+                    @yield('custom_html')
                 </div>
             </div>
         </div>

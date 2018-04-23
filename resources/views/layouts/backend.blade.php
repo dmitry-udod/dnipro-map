@@ -48,6 +48,10 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('admin.structures.index', $city->slug) }}">
+                                       Об'екти
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('admin.users.index', $city->slug) }}">
                                        Адмiнiстратори
                                     </a>
