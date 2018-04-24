@@ -11,23 +11,63 @@
                                 <input type="checkbox" class="form-check-input" id="is_active" v-model="structure.is_active">
                                 <label class="form-check-label" for="is_active">Відображати на сайті</label>
                             </div>
+                            
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="has_problem" v-model="structure.has_problem">
-                                <label class="form-check-label" for="is_active">Проблемний об'єкт</label>
+                                <label class="form-check-label" for="has_problem">Проблемний об'єкт</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_free" v-model="structure.is_free">
+                                <label class="form-check-label" for="is_free">Вільна локація</label>
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                <label for="author_phone">Контактний номер телефону особи яка додала об'єкт</label>
+                                <input type="text" class="form-control form-control-sm" id="author_phone" v-model="structure.author_phone">
                             </div>
+
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <label for="author_email">Email особи яка додала об'єкт</label>
+                                <input type="email" class="form-control form-control-sm" id="author_email" v-model="structure.author_email" placeholder="some@gmail.com">
                             </div>
+
+                            <div class="form-group" v-if="structure.id > 0">
+                                <label for="uuid">Реєстровий номер</label>
+                                <input type="text" class="form-control form-control-sm" id="uuid" v-model="structure.uuid">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Адреса</label>
+                                <input type="text" class="form-control form-control-sm" id="address" v-model="structure.address">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Назва</label>
+                                <input type="text" class="form-control form-control-sm" id="name" v-model="structure.name">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  <label for="inputState">Категорія</label>
+                                  <select id="inputState" class="form-control form-control-sm">
+                                    <option selected>Choose...</option>
+                                    <option>...</option>
+                                  </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label for="inputState">Вид діяльності</label>
+                                  <select id="inputState" class="form-control form-control-sm">
+                                    <option selected>Choose...</option>
+                                    <option>...</option>
+                                  </select>
+                                </div>
+                            </div>
+
+                            
                             <!--<button type="submit" class="btn btn-primary">Submit</button>-->
                         </form>
 
-                        <input id="address" type="text" class="form-control" v-model="structure.address">
                         <input id="latitude" type="text" class="form-control" v-model="structure.latitude">
                         <input id="longitude" type="text" class="form-control" v-model="structure.longitude">
                         <input id="zoom" type="text" class="form-control">
