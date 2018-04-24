@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Repositories\StrucutreRepository;
+use App\Structure;
 
-class StructureController extends \App\Http\Controllers\Admin\BaseAdminController
+class StructureController extends BaseAdminController
 {
-    public function __construct(\App\Repositories\StrucutreRepository $repository)
+    public function __construct(StrucutreRepository $repository)
     {
-        $this->model = \App\Structure::class;
+        $this->model = Structure::class;
         $this->repository = $repository;
         parent::__construct();
     }
