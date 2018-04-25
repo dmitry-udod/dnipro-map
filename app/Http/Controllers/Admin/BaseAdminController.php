@@ -20,7 +20,6 @@ class BaseAdminController extends Controller
         $this->repository->model = $this->model;
     }
 
-
     /**
      * Display a listing of the resource.
      *

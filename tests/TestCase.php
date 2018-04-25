@@ -99,7 +99,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function createCategory()
     {
-        $entity = \App\Category::where('slug', '')->first();
+        $entity = \App\Category::where('slug', 'new-year-trees')->first();
         if (!$entity) {
             $entity = new \App\Category();
         }
@@ -108,6 +108,23 @@ abstract class TestCase extends BaseTestCase
         $entity->order = 0;
         $entity->is_active = true;
         $entity->city_id = $this->createCity()->id;
+        $entity->logo = '{}';
+        $entity->save();
+
+        return $entity;
+    }
+
+    protected function createCategoryForDnipro()
+    {
+        $entity = \App\Category::where('slug', 'maf')->first();
+        if (!$entity) {
+            $entity = new \App\Category();
+        }
+        $entity->name = 'MAF';
+        $entity->slug = 'maf';
+        $entity->order = 0;
+        $entity->is_active = true;
+        $entity->city_id = 1;
         $entity->logo = '{}';
         $entity->save();
 

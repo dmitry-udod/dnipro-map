@@ -19,7 +19,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
     });
 
     // Admin area
-	Route::middleware(['can_access_to_admin_area'])
+	Route::middleware(['auth', 'can_access_to_admin_area'])
 	    ->namespace('Admin')
 	    ->prefix('admin')
         ->as('admin.')
@@ -30,6 +30,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('types', 'TypeController');
 		    Route::resource('districts', 'DistrictController');
 		    Route::resource('structures', 'StructureController');
+            Route::post('/structures/upload', 'StructureController@upload');
 	    });
 
 	Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'HomeController@index')->name('home');

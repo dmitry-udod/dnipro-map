@@ -68,4 +68,14 @@ class BaseRepository
             ]);
         }
     }
+
+    /**
+     * Get all active entities
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function allActive()
+    {
+        return $this->all()->where('is_active', true)->get();
+    }
 }

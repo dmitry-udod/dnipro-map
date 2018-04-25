@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Repositories\CategoryRepository;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -46,5 +47,23 @@ class AdminCategoryTest extends TestCase
         $this->createCategory();
         $this->adminLviv()->get($this->route('/admin/categories'))->assertDontSee('МАФ');
         $this->adminLviv()->get($this->route('/admin/categories'))->assertSee('New Year Trees');
+    }
+
+    /** @test */
+    public function admin_see_only_his_categories()
+    {
+        $city = $this->createCity();
+        $this->createCategoryForDnipro();
+        $repo = new CategoryRepository();
+
+        $this->adminDnipro();
+        $this->assertCount(1, $repo->allActive()->toArray(), 'Dnipro admin must see only his category');
+
+        $this->adminLviv();
+        $this->assertCount(1, $repo->allActive()->toArray());
+        $this->assertEquals($city->id, $repo->allActive()->toArray()[0]['city_id'], 'Lviv admin should see only his categories');
+
+        $this->superadmin();
+        $this->assertCount(2, $repo->allActive()->toArray(), 'Superadmin sees everything');
     }
 }

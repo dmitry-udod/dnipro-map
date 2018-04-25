@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\City;
 
-class StrucutreRepository extends BaseRepository
+class StructureRepository extends BaseRepository
 {
     /**
      * Get entities list
@@ -24,7 +24,6 @@ class StrucutreRepository extends BaseRepository
         return $q;
     }
 
-
     /**
      * Save entity
      *
@@ -42,5 +41,41 @@ class StrucutreRepository extends BaseRepository
         $entity->city_id = $data['city_id'];
 
         return $entity->save();
+    }
+
+    /**
+     * Get categories list for select
+     *
+     * @return array
+     */
+    public function categoriesForDropDown()
+    {
+        $category = new CategoryRepository();
+
+        return $category->allActive()->pluck('name', 'id');
+    }
+
+    /**
+     * Get categories list for select
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function typesForDropDown()
+    {
+        $types = new TypeRepository();
+
+        return $types->allActive();
+    }
+
+    /**
+     * Get categories list for select
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function districtsForDropDown()
+    {
+        $types = new DistrictRepository();
+
+        return $types->allActive();
     }
 }

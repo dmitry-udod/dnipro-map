@@ -34,6 +34,7 @@ class CreateStructuresTable extends Migration
             $table->string('author_email')->nullable();
             $table->string('url')->nullable();
             $table->string('working_hours')->nullable();
+            $table->string('phone')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('zoom')->nullable();

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\City;
+use App\Type;
 
 class TypeRepository extends BaseRepository
 {
@@ -14,7 +15,7 @@ class TypeRepository extends BaseRepository
     public function all()
     {
         $user = auth()->user();
-        $q = $this->model::orderBy('order');
+        $q = Type::orderBy('order');
 
         if ($user->isAdmin()) {
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
@@ -23,7 +24,6 @@ class TypeRepository extends BaseRepository
 
         return $q;
     }
-
 
     /**
      * Save entity

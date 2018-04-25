@@ -8,19 +8,31 @@ use App\Category;
 
 class CategoryRepository extends BaseRepository
 {
+    /**
+     * Get all categories
+     *
+     * @return  \Illuminate\Database\Query\Builder
+     */
 	public function all()
 	{
 		$user = auth()->user();
 		$q = Category::orderBy('order');
-		
+
 		if ($user->isAdmin()) {
 			$cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
-			$q->whereIn('id', $cities);
+			$q->whereIn('city_id', $cities);
 		}
 
 		return $q;
 	}
 
+    /**
+     * Save Entity
+     *
+     * @param array $data
+     * @param null $id
+     * @return mixed
+     */
     public function save(array $data, $id = null)
     {
         $entity = $this->findOrNew($id);

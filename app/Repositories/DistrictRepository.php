@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 
 use App\City;
+use App\District;
 
 class DistrictRepository extends BaseRepository
 {
@@ -15,7 +16,7 @@ class DistrictRepository extends BaseRepository
     public function all()
     {
         $user = auth()->user();
-        $q = $this->model::orderBy('name');
+        $q = District::orderBy('name');
 
         if ($user->isAdmin()) {
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
@@ -24,7 +25,6 @@ class DistrictRepository extends BaseRepository
 
         return $q;
     }
-
 
     /**
      * Save entity
