@@ -129,12 +129,26 @@
                             <!--<button type="submit" class="btn btn-primary">Submit</button>-->
                         </form>
 
-                        <div class="form-group">
-                            <img style="padding: 5px" width="200" height="125" :src="'/uploads/structures/' + photo.name" v-for="photo in structure.photos">
+                        <div class="form-row">
+                            <div class="form-group col-md-3" v-for="(photo, index) in structure.photos">
+                                <img style="padding: 5px" width="200" height="125" :src="'/uploads/structures/' + photo.name">
+                                <button 
+                                    class="btn btn-danger btn-sm"
+                                    style="position: absolute;left:169px;top:5px;"
+                                    @click="removeFile(index)"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 8 8">
+                                            <path style="fill:white" d="M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.81c0 .11.08.19.19.19h4.63c.11 0 .19-.08.19-.19v-4.81h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"  />
+                                        </svg>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                                    <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" style="fill:white" />
+                                </svg>
                                 Додати фото <input type="file" name="photos" @change="filesChange($event.target.files, 'photos');" style="display: none;">
                             </label>
                         </div>
@@ -223,6 +237,13 @@
                 const url = `/admin/structures/upload`;
                 return axios.post(url, formData)
                     .then(x => x.data);
+            },
+
+            removeFile(index) {
+                if (confirm('Ви впевненi що бажаєте видалити файл?')) {
+                    axios.post(`/admin/structures/upload-remove`, {name: this.structure.photos[index].name});
+                    this.structure.photos.splice(index, 1);
+                }
             },
         }
     }

@@ -31,6 +31,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('districts', 'DistrictController');
 		    Route::resource('structures', 'StructureController');
             Route::post('/structures/upload', 'StructureController@upload');
+            Route::post('/structures/upload-remove', 'StructureController@uploadRemove');
 	    });
 
 	Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'HomeController@index')->name('home');

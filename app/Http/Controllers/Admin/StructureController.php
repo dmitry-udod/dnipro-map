@@ -58,4 +58,19 @@ class StructureController extends BaseAdminController
 
         return $this->jsonData($fileData);
     }
+
+    public function uploadRemove()
+    {
+            if (request()->has('name')) {
+            try {
+                unlink(public_path('uploads/structures/') . "/" . request('name'));
+            } catch (\Exception $e) {
+                logger()->error('Error while file deleting', [$e]);
+                return $this->jsonError('Помилка при видаленнi файла');
+            }
+            return $this->jsonMessage('Файл видалено');
+        }
+
+        return $this->jsonError('Помилка при видаленнi файла');
+    }
 }
