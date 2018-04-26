@@ -81,6 +81,8 @@
                         draggable: true,
                     });
 
+                    that.$emit('markerDragged', that.marker.getPosition());
+
                     this.maps.event.addListener(this.marker, 'drag', function() {
                         that.$emit('markerDragged', that.marker.getPosition());
                     });
@@ -93,7 +95,7 @@
 <style scoped>
     .google-map {
         width: 100%;
-        height: 600px;
+        height: 400px;
         margin: 0 auto;
         background: #ebebeb;
     }

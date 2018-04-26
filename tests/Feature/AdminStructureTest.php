@@ -35,12 +35,14 @@ class AdminStructureTest extends TestCase
         Storage::fake('public');
         $response = $this->actingAs($this->asAdmin())->post($this->route('/admin/structures/upload'), [
             'photo' => UploadedFile::fake()->image('photo.jpg')
-        ]);
-        // dd();
-// dd($files = Storage::files('public'));
-        // dd($response->json())    ;
-        // Storage::disk('photos')->assertExists(public_path('uploads/structures/') . $response->json()['data'][0]['name']);
-        // Storage::disk('public')->assertExists(public_path('uploads/structures/photo.jpg'));
-        // $response->json()['data'][0]['name'])
+        ])->assertStatus(200);
+
+        $this->assertNotEmpty($response->json()['data'][0]['name']);
+
+        $response = $this->actingAs($this->asAdmin())->post($this->route('/admin/structures/upload-remove'), [
+            'name' => $response->json()['data'][0]['name']
+        ])->assertStatus(200);
+
+        $this->assertEquals('Файл видалено', $response->json()['message']);
     }
 }

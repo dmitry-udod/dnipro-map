@@ -25,20 +25,20 @@
                             <hr>
 
                             <div class="form-group">
-                                <label for="address">Адреса</label>
+                                <label for="address">Адреса<span class="require">*</span></label>
                                 <input type="text" class="form-control form-control-sm" id="address" v-model="structure.address" required autofocus>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="category_id">Категорія</label>
+                                    <label for="category_id">Категорія<span class="require">*</span></label>
                                     <select id="category_id" class="form-control form-control-sm" v-model="structure.category_id">
                                         <option value="">Не обрано</option>
                                         <option v-for="(category, index) in categories" :value="index">{{ category }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="type_id">Вид діяльності</label>
+                                    <label for="type_id">Вид діяльності<span class="require">*</span></label>
                                     <select id="type_id" class="form-control form-control-sm" v-model="structure.type_id">
                                         <option value="">Не обрано</option>
                                         <option v-for="type in filteredTypes" :value="type.id">{{ type.name }}</option>
@@ -153,16 +153,29 @@
                             </label>
                         </div>
 
-                        <google-map
-                            name="structure-map"
-                            :city="city"
-                            :address="structure.address"
-                            @markerDragged="updateMarkerPosition"
-                        ></google-map>
+                        <div class="form-group">
+                            <label>Перетягніть маркер, щоб помітити потрібне місце на мапі</label>
+                            <google-map
+                                    name="structure-map"
+                                    :city="city"
+                                    :address="structure.address"
+                                    @markerDragged="updateMarkerPosition"
+                            ></google-map>
+                        </div>
 
                         <input id="latitude" type="hidden" class="form-control" v-model="structure.latitude">
                         <input id="longitude" type="hidden" class="form-control" v-model="structure.longitude">
                         <input id="zoom" type="hidden" class="form-control">
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-7 offset-md-5">
+                                <button type="submit" class="btn btn-primary" @click="saveStructure">
+                                    Зберегти
+                                </button>
+
+                                <a href="/admin/structures" style="margin-left: 10px">Назад</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,6 +184,8 @@
 </template>
 
 <script>
+    import swal from 'sweetalert2'
+
     export default {
         props: [
             'data',
@@ -245,6 +260,44 @@
                     this.structure.photos.splice(index, 1);
                 }
             },
+
+            saveStructure() {
+                if (!this.structure.address) {
+                    swal('Поле Адреса обо\'язкове', '', 'error').then(() => {
+                        document.getElementById('address').focus();
+                    });
+                    return;
+                }
+
+                if (!this.structure.category_id) {
+                    swal('Поле Категорія обо\'язкове', '', 'error').then(() => {
+                        document.getElementById('category_id').focus();
+                    });
+                    return;
+                }
+
+                if (!this.structure.type_id) {
+                    swal('Поле Вид діяльності обо\'язкове', '', 'error').then(() => {
+                        document.getElementById('type_id').focus();
+                    });
+                    return;
+                }
+
+                axios.post('/admin/structures', this.structure).then(response => {
+                    window.location.href = "/admin/structures";
+                }, this.onError);
+            },
+
+            onError(err) {
+                swal('Some error happen', '', 'error')
+            },
         }
     }
 </script>
+
+<style>
+    .require {
+        color: red;
+        font-weight: bolder;
+    }
+</style>

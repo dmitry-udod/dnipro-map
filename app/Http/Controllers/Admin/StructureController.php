@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Traits\JsonHelpers;
+use App\Http\Requests\StoreStructure;
 use App\Repositories\StructureRepository;
 use App\Structure;
 use Carbon\Carbon;
@@ -20,6 +21,33 @@ class StructureController extends BaseAdminController
         parent::__construct();
 
         view()->share('structure', $this->repository);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  StoreStructure  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(StoreStructure $request, $city)
+    {
+        $this->repository->save($request->except('_token'));
+
+        return $this->redirectToListWithFlash();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  StoreStructure  $request
+     * @param  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(StoreStructure $request, $city, $id)
+    {
+        $this->repository->save($request->except('_token'), $id);
+
+        return $this->redirectToListWithFlash();
     }
 
     /**

@@ -33,12 +33,41 @@ class StructureRepository extends BaseRepository
      */
     public function save(array $data, $id = null)
     {
+        $city = session('currentCity');
         $entity = $this->model::findOrNew($id);
 
-        $entity->name = $data['name'];
-        $entity->slug  =str_slug($data['name']);
+//        $table->string('zoom')->nullable();
+//        $table->json('photos')->default('[]');
+//        $table->boolean('is_active')->default(true);
+//        $table->boolean('has_problem')->default(false);
+//        $table->boolean('is_free')->default(false);
+
+        if (!$id) {
+            $entity->uuid = $this->genrateUuid();
+        }
+
+        $entity->address = array_get($data, 'address');
+        $entity->name = array_get($data, 'name');
+        $entity->city_id = $city->id;
+        $entity->category_id = array_get($data, 'category_id');
+        $entity->type_id = array_get($data, 'type_id');
+        $entity->district_id = array_get($data, 'district_id', 0);
+        $entity->area = array_get($data, 'area');
+        $entity->business = array_get($data, 'business');
+        $entity->owner = array_get($data, 'owner');
+        $entity->renter = array_get($data, 'renter');
+        $entity->notes = array_get($data, 'notes');
+        $entity->author_phone = array_get($data, 'author_phone');
+        $entity->author_email = array_get($data, 'author_email');
+        $entity->url = array_get($data, 'url');
+        $entity->working_hours = array_get($data, 'working_hours');
+        $entity->phone = array_get($data, 'phone');
+        $entity->latitude = array_get($data, 'latitude');
+        $entity->longitude = array_get($data, 'longitude');
+        $entity->photos = array_get($data, 'photos', []);
         $entity->is_active = !empty($data['is_active']);
-        $entity->city_id = $data['city_id'];
+        $entity->has_problem = !empty($data['has_problem']);
+        $entity->is_free = !empty($data['is_free']);
 
         return $entity->save();
     }
@@ -77,5 +106,17 @@ class StructureRepository extends BaseRepository
         $types = new DistrictRepository();
 
         return $types->allActive();
+    }
+
+
+    function genrateUuid()
+    {
+        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+            mt_rand( 0, 0xffff ),
+            mt_rand( 0, 0x0fff ) | 0x4000,
+            mt_rand( 0, 0x3fff ) | 0x8000,
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+        );
     }
 }
