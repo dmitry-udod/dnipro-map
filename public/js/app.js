@@ -1645,15 +1645,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'google-map',
-    props: ['name', 'address', 'city'],
+    props: ['name', 'address', 'city', 'structure'],
     data: function data() {
         return {
             mapName: this.name + "-map",
             marker: null,
-            markers: [{
-                latitude: 48.466111,
-                longitude: 35.025278
-            }],
+            markers: [],
             maps: null,
             map: null,
             geocoder: null
@@ -1705,24 +1702,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addDraggableMarker: function addDraggableMarker() {
-            var _this = this;
-
             var map = this.map;
             var that = this;
-            this.markers.forEach(function (coord) {
-                var position = new google.maps.LatLng(coord.latitude, coord.longitude);
-                _this.marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    title: 'Перетягніть маркер, щоб помітити потрібне місце на мапі',
-                    draggable: true
-                });
+            // {
+            //     latitude: 48.466111,
+            //         longitude: 35.025278,
+            // }
 
+            var position = this.map.getCenter();
+            if (this.structure.latitude && this.structure.longitude) {
+                position = new google.maps.LatLng(this.structure.latitude, this.structure.longitude);
+            }
+
+            this.marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: 'Перетягніть маркер, щоб помітити потрібне місце на мапі',
+                draggable: true
+            });
+
+            map.setCenter(that.marker.getPosition());
+
+            that.$emit('markerDragged', that.marker.getPosition());
+
+            this.maps.event.addListener(this.marker, 'drag', function () {
                 that.$emit('markerDragged', that.marker.getPosition());
-
-                _this.maps.event.addListener(_this.marker, 'drag', function () {
-                    that.$emit('markerDragged', that.marker.getPosition());
-                });
             });
         }
     }
@@ -1737,7 +1741,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-//
 //
 //
 //
@@ -1939,6 +1942,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         console.log('Component mounted.');
+
+        if (this.structure.id) {
+            this.filterTypes(this.structure.category_id);
+        }
     },
 
 
@@ -1947,9 +1954,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (newVal === "") {
                 this.filteredTypes = [];
             } else {
-                this.filteredTypes = this.types.filter(function (el) {
-                    return el.category_id == newVal;
-                });
+                this.filterTypes(newVal);
             }
         }
     },
@@ -1988,6 +1993,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         saveStructure: function saveStructure() {
+            var _this = this;
+
             if (!this.structure.address) {
                 __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Поле Адреса обо\'язкове', '', 'error').then(function () {
                     document.getElementById('address').focus();
@@ -2009,9 +2016,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            axios.post('/admin/structures', this.structure).then(function (response) {
-                window.location.href = "/admin/structures";
-            }, this.onError);
+            if (this.structure.id) {
+                axios.put('/admin/structures/' + this.structure.id, this.structure).then(function (response) {
+                    window.location.href = "/admin/structures/" + _this.structure.id + "/edit";
+                }).catch(function (error) {
+                    __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Can\'t save structure data', '', 'error');
+                });
+            } else {
+                axios.post('/admin/structures', this.structure).then(function (response) {
+                    window.location.href = "/admin/structures";
+                }, this.onError);
+            }
+        },
+        filterTypes: function filterTypes(categoryId) {
+            this.filteredTypes = this.types.filter(function (el) {
+                return el.category_id == categoryId;
+            });
         },
         onError: function onError(err) {
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Some error happen', '', 'error');
@@ -38031,6 +38051,29 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-group" },
+                [
+                  _c("label", [
+                    _vm._v(
+                      "Перетягніть маркер, щоб помітити потрібне місце на мапі"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("google-map", {
+                    attrs: {
+                      name: "structure-map",
+                      city: _vm.city,
+                      address: _vm.structure.address,
+                      structure: _vm.structure
+                    },
+                    on: { markerDragged: _vm.updateMarkerPosition }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
               _c("div", { staticClass: "form-row" }, [
                 _c("div", { staticClass: "form-group col-md-6" }, [
                   _vm._m(1),
@@ -38546,7 +38589,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control form-control-sm",
-                      attrs: { type: "text", id: "uuid" },
+                      attrs: { type: "text", id: "uuid", readonly: "" },
                       domProps: { value: _vm.structure.uuid },
                       on: {
                         input: function($event) {
@@ -38648,28 +38691,6 @@ var render = function() {
                 })
               ])
             ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "form-group" },
-              [
-                _c("label", [
-                  _vm._v(
-                    "Перетягніть маркер, щоб помітити потрібне місце на мапі"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("google-map", {
-                  attrs: {
-                    name: "structure-map",
-                    city: _vm.city,
-                    address: _vm.structure.address
-                  },
-                  on: { markerDragged: _vm.updateMarkerPosition }
-                })
-              ],
-              1
-            ),
             _vm._v(" "),
             _c("input", {
               directives: [

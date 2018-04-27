@@ -37,6 +37,7 @@ class Structure extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'is_active' => object_get($this,'is_active', true),
+            'is_free' => object_get($this,'is_free'),
             'has_problem' => $this->has_problem,
         ];
     }

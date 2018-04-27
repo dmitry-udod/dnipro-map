@@ -9,15 +9,13 @@
             'name',
             'address',
             'city',
+            'structure',
         ],
         data() {
             return {
                 mapName: this.name + "-map",
                 marker: null,
-                markers: [{
-                    latitude: 48.466111,
-                    longitude: 35.025278,
-                }],
+                markers: [],
                 maps: null,
                 map: null,
                 geocoder: null,
@@ -72,20 +70,29 @@
             addDraggableMarker() {
                 let map = this.map;
                 let that = this;
-                this.markers.forEach((coord) => {
-                    const position = new google.maps.LatLng(coord.latitude, coord.longitude);
-                    this.marker = new google.maps.Marker({
-                        position: position,
-                        map: map,
-                        title: 'Перетягніть маркер, щоб помітити потрібне місце на мапі',
-                        draggable: true,
-                    });
+                // {
+                //     latitude: 48.466111,
+                //         longitude: 35.025278,
+                // }
 
+                let position = this.map.getCenter();
+                if (this.structure.latitude && this.structure.longitude) {
+                    position = new google.maps.LatLng(this.structure.latitude, this.structure.longitude);
+                }
+
+                this.marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: 'Перетягніть маркер, щоб помітити потрібне місце на мапі',
+                    draggable: true,
+                });
+
+                map.setCenter(that.marker.getPosition());
+
+                that.$emit('markerDragged', that.marker.getPosition());
+
+                this.maps.event.addListener(this.marker, 'drag', function () {
                     that.$emit('markerDragged', that.marker.getPosition());
-
-                    this.maps.event.addListener(this.marker, 'drag', function() {
-                        that.$emit('markerDragged', that.marker.getPosition());
-                    });
                 });
             },
         }

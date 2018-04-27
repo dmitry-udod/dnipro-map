@@ -29,6 +29,17 @@
                                 <input type="text" class="form-control form-control-sm" id="address" v-model="structure.address" required autofocus>
                             </div>
 
+                            <div class="form-group">
+                                <label>Перетягніть маркер, щоб помітити потрібне місце на мапі</label>
+                                <google-map
+                                        name="structure-map"
+                                        :city="city"
+                                        :address="structure.address"
+                                        :structure="structure"
+                                        @markerDragged="updateMarkerPosition"
+                                ></google-map>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="category_id">Категорія<span class="require">*</span></label>
@@ -123,10 +134,8 @@
 
                             <div class="form-group" v-if="structure.id > 0">
                                 <label for="uuid">Реєстровий номер</label>
-                                <input type="text" class="form-control form-control-sm" id="uuid" v-model="structure.uuid">
+                                <input type="text" class="form-control form-control-sm" id="uuid" v-model="structure.uuid" readonly>
                             </div>
-
-                            <!--<button type="submit" class="btn btn-primary">Submit</button>-->
                         </form>
 
                         <div class="form-row">
@@ -151,16 +160,6 @@
                                 </svg>
                                 Додати фото <input type="file" name="photos" @change="filesChange($event.target.files, 'photos');" style="display: none;">
                             </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Перетягніть маркер, щоб помітити потрібне місце на мапі</label>
-                            <google-map
-                                    name="structure-map"
-                                    :city="city"
-                                    :address="structure.address"
-                                    @markerDragged="updateMarkerPosition"
-                            ></google-map>
                         </div>
 
                         <input id="latitude" type="hidden" class="form-control" v-model="structure.latitude">
@@ -207,6 +206,10 @@
 
         mounted() {
             console.log('Component mounted.');
+
+            if (this.structure.id) {
+                this.filterTypes(this.structure.category_id);
+            }
         },
 
         watch: {
@@ -214,9 +217,7 @@
                 if (newVal === "") {
                     this.filteredTypes = [];
                 } else {
-                    this.filteredTypes = this.types.filter((el) => {
-                        return el.category_id == newVal;
-                    }) ;
+                    this.filterTypes(newVal);
                 }
             }
         },
@@ -283,9 +284,24 @@
                     return;
                 }
 
-                axios.post('/admin/structures', this.structure).then(response => {
-                    window.location.href = "/admin/structures";
-                }, this.onError);
+                if (this.structure.id) {
+                    axios.put('/admin/structures/' + this.structure.id, this.structure).then(response => {
+                        window.location.href = "/admin/structures/" + this.structure.id + "/edit";
+                    })
+                    .catch(function (error) {
+                        swal('Can\'t save structure data', '', 'error')
+                    });
+                } else {
+                    axios.post('/admin/structures', this.structure).then(response => {
+                        window.location.href = "/admin/structures";
+                    }, this.onError);
+                }
+            },
+
+            filterTypes(categoryId) {
+                this.filteredTypes = this.types.filter((el) => {
+                    return el.category_id == categoryId;
+                }) ;
             },
 
             onError(err) {

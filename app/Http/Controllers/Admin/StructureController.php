@@ -41,13 +41,17 @@ class StructureController extends BaseAdminController
      *
      * @param  StoreStructure  $request
      * @param  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return array
      */
     public function update(StoreStructure $request, $city, $id)
     {
-        $this->repository->save($request->except('_token'), $id);
+        $isSaved = $this->repository->save($request->except('_token'), $id);
 
-        return $this->redirectToListWithFlash();
+        if($isSaved) {
+            flash('Запис збережено')->success();
+        }
+
+        return ['success' => $isSaved];
     }
 
     /**

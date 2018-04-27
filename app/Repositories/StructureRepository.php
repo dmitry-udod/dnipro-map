@@ -33,14 +33,9 @@ class StructureRepository extends BaseRepository
      */
     public function save(array $data, $id = null)
     {
+        /** @var City $city */
         $city = session('currentCity');
         $entity = $this->model::findOrNew($id);
-
-//        $table->string('zoom')->nullable();
-//        $table->json('photos')->default('[]');
-//        $table->boolean('is_active')->default(true);
-//        $table->boolean('has_problem')->default(false);
-//        $table->boolean('is_free')->default(false);
 
         if (!$id) {
             $entity->uuid = $this->genrateUuid();
