@@ -10394,3 +10394,39 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.blue .modal-header {
+  background: #008cff;
+  color: #fff;
+  border-radius: 0;
+}
+
+.blue .modal-content {
+  min-height: 200px;
+}
+
+.blue .categories-modal li {
+  float: left;
+}
+
+.blue .categories-modal img {
+  float: left;
+  width: 30px;
+  height: 30px;
+}
+
+.blue .categories-modal a {
+  margin-top: 3px;
+}
+
+.city-hash {
+  font-size: 24px;
+  color: #fff;
+  float: left;
+  line-height: 1;
+}
+
+.city-hash div {
+  font-size: 10px;
+  text-align: right;
+}
+

@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Category;
 use App\City;
+use App\Structure;
 
 class StructureRepository extends BaseRepository
 {
@@ -14,7 +16,7 @@ class StructureRepository extends BaseRepository
     public function all()
     {
         $user = auth()->user();
-        $q = $this->model::orderBy('name');
+        $q = Structure::orderBy('created_at', 'DESC');
 
         if ($user->isAdmin()) {
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
@@ -38,7 +40,7 @@ class StructureRepository extends BaseRepository
         $entity = $this->model::findOrNew($id);
 
         if (!$id) {
-            $entity->uuid = $this->genrateUuid();
+            $entity->uuid = $this->generateUuid();
         }
 
         $entity->address = array_get($data, 'address');
@@ -103,8 +105,30 @@ class StructureRepository extends BaseRepository
         return $types->allActive();
     }
 
+    /**
+     * Find structures by city slug and category
+     *
+     * @param string $city
+     * @param string $category
+     * @return \Illuminate\Support\Collection
+     */
+    public function allByCityAndCategory($city, $categorySlug)
+    {
+        $city = (new CityRepository())->findBySlug($city);
+        $categoryQuery = Category::where('is_active', true)->where('city_id', $city->id)->orderBy('order');
 
-    function genrateUuid()
+        if (!$categorySlug) {
+            $category = $categoryQuery->firstOrFail();
+        } else {
+            $category = $categoryQuery->where('slug', $categorySlug)->first();
+        }
+
+        $q = $this->allActiveQuery()->where('city_id', $city->id)->where('category_id', $category->id);
+
+        return $q->get();
+    }
+
+    private function generateUuid()
     {
         return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),

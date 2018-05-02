@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="form-group">
-                                        <label for="business">Основна сфера торгівлі</label>
+                                        <label for="business">Основна сфера</label>
                                         <input type="text" class="form-control form-control-sm" id="business" v-model="structure.business">
                                     </div>
                                 </div>

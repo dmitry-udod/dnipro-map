@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\City;
 use App\Category;
+use Illuminate\Support\Collection;
 
 class CategoryRepository extends BaseRepository
 {
@@ -49,5 +50,26 @@ class CategoryRepository extends BaseRepository
         }
 
         return $entity->save();
+    }
+
+    /**
+     * Get all active categories for specific city
+     *
+     * @param City $city
+     * @return Collection
+     */
+    public function allActiveForCity(City $city)
+    {
+        $q = Category::orderBy('order')
+            ->where('is_active', true)
+            ->where('city_id', $city->id)
+        ;
+
+        return $q->get();
+    }
+
+    public function findBySlug($slug)
+    {
+        return Category::where('is_active', true)->where('slug', $slug)->get();
     }
 }

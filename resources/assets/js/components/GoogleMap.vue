@@ -70,10 +70,6 @@
             addDraggableMarker() {
                 let map = this.map;
                 let that = this;
-                // {
-                //     latitude: 48.466111,
-                //         longitude: 35.025278,
-                // }
 
                 let position = this.map.getCenter();
                 if (this.structure.latitude && this.structure.longitude) {
@@ -101,9 +97,12 @@
 
 <style scoped>
     .google-map {
+        height: 100%;
         width: 100%;
-        height: 400px;
-        margin: 0 auto;
-        background: #ebebeb;
+        margin: 0;
+    }
+
+    .google-map {
+        position: relative;
     }
 </style>

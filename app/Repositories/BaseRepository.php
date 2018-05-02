@@ -76,6 +76,16 @@ class BaseRepository
      */
     public function allActive()
     {
-        return $this->all()->where('is_active', true)->get();
+        return $this->allActiveQuery()->get();
+    }
+
+    /**
+     * Get all active entities (query)
+     *
+     * @return mixed
+     */
+    public function allActiveQuery()
+    {
+        return $this->all()->where('is_active', true);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Repositories\CategoryRepository;
 use Closure;
 
 class OnlyValidCity
@@ -21,7 +22,9 @@ class OnlyValidCity
             $citySlug = explode('.', $arrUrl['host'])[0];
             if (!empty($citySlug)) {
                 $city = \App\City::where('slug', $citySlug)->firstOrFail();
+                $categories = (new CategoryRepository())->allActiveForCity($city);
 
+                view()->share('categories', $categories);
                 view()->share('city', $city);
                 view()->share('user', auth()->user());
 

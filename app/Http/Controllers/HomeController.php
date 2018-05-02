@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Repositories\StructureRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(StructureRepository $repository)
     {
-        $this->middleware('auth');
+        $this->repository = $repository;
     }
 
     /**
-     * Show the application dashboard.
+     * Show the map
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($city, $category = null)
     {
-        return view('home');
+        dd($this->repository->allByCityAndCategory($city, $category));
+
+        return view('welcome');
     }
 }

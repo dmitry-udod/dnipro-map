@@ -1,4 +1,4 @@
-<div class="container">
+<div class="{{ empty($containerClass) ? 'container' : $containerClass }}">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -49,6 +49,8 @@
                         @endforeach
                         </tbody>
                     </table>
+
+                    {{ $entities->links() }}
                 </div>
             </div>
         </div>

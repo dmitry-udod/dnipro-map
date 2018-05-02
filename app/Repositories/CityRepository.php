@@ -23,4 +23,15 @@ class CityRepository extends BaseRepository
 
         return $city->save();
     }
+
+    /**
+     * Find city by slug
+     *
+     * @param $slug
+     * @return City
+     */
+    public function findBySlug($slug)
+    {
+        return City::where('slug', $slug)->firstOrFail();
+    }
 }

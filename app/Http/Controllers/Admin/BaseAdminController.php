@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Repositories\StructureRepository;
 use App\Http\Controllers\Controller;
-use App\Repositories\CityRepository;
 
 class BaseAdminController extends Controller
 {

@@ -1704,10 +1704,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         addDraggableMarker: function addDraggableMarker() {
             var map = this.map;
             var that = this;
-            // {
-            //     latitude: 48.466111,
-            //         longitude: 35.025278,
-            // }
 
             var position = this.map.getCenter();
             if (this.structure.latitude && this.structure.longitude) {
@@ -5996,7 +5992,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.google-map[data-v-e7586288] {\n    width: 100%;\n    height: 400px;\n    margin: 0 auto;\n    background: #ebebeb;\n}\n", ""]);
+exports.push([module.i, "\n.google-map[data-v-e7586288] {\n    height: 100%;\n    width: 100%;\n    margin: 0;\n}\n.google-map[data-v-e7586288] {\n    position: relative;\n}\n", ""]);
 
 // exports
 
@@ -38363,7 +38359,7 @@ var render = function() {
                 _c("div", { staticClass: "form-group col-md-6" }, [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "business" } }, [
-                      _vm._v("Основна сфера торгівлі")
+                      _vm._v("Основна сфера")
                     ]),
                     _vm._v(" "),
                     _c("input", {

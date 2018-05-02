@@ -5,30 +5,55 @@
         'title' => 'Об\'екти',
         'fields' => [
             [
-                'name' => 'name',
-                'title' => 'Назва',
+                'name' => 'photo_previews',
+                'title' => 'Фото',
+                'raw' => true
             ],
             [
                 'name' => 'city',
                 'title' => 'Miсто',
             ],
             [
+                'name' => 'address',
+                'title' => 'Адреса',
+            ],
+            [
+                'name' => 'area',
+                'title' => 'Площа об\'єкта',
+            ],
+            [
+                'name' => 'owner',
+                'title' => 'Власник',
+            ],
+            [
+                'name' => 'category',
+                'title' => 'Категорія',
+            ],
+            [
+                'name' => 'type',
+                'title' => 'Вид діяльності',
+            ],
+            [
+                'name' => 'district',
+                'title' => 'Район',
+            ],
+            [
                 'name' => 'active',
-                'title' => 'Активна',
+                'title' => 'Активний',
             ],
             [
-                'name' => 'order',
-                'title' => 'Порядок',
+                'name' => 'problem',
+                'title' => 'Проблеми',
             ],
             [
-                'name' => 'logo',
-                'title' => 'Iконка',
-                'type' => 'image'
+                'name' => 'created_at_short',
+                'title' => 'Створений',
             ],
         ],
         'actions' => [
             'edit',
             'delete',
-        ]
+        ],
+        'containerClass' => 'container-fluid',
     ])
 @endsection
