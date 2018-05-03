@@ -31,6 +31,7 @@
 
                             <div class="form-group">
                                 <label>Перетягніть маркер, щоб помітити потрібне місце на мапі</label>
+                                <div style="height: 400px;">
                                 <google-map
                                         name="structure-map"
                                         :city="city"
@@ -38,6 +39,7 @@
                                         :structure="structure"
                                         @markerDragged="updateMarkerPosition"
                                 ></google-map>
+                                </div>
                             </div>
 
                             <div class="form-row">

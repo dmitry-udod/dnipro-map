@@ -10,12 +10,14 @@
             'address',
             'city',
             'structure',
+            'markersJson',
         ],
         data() {
             return {
                 mapName: this.name + "-map",
                 marker: null,
                 markers: [],
+                googleMarkers: [],
                 maps: null,
                 map: null,
                 geocoder: null,
@@ -33,8 +35,14 @@
             this.maps = google.maps;
             this.geocoder = new google.maps.Geocoder();
 
-            // this.addMarkers(map);
-            this.addDraggableMarker();
+            if (this.markersJson) {
+                if (this.markersJson) {
+                    this.markers = JSON.parse(atob(this.markersJson));
+                    this.addMarkers();
+                }
+            } else {
+                this.addDraggableMarker();
+            }
         },
 
         watch: {
@@ -58,13 +66,38 @@
         methods: {
             addMarkers() {
                 const map = this.map;
-                this.markers.forEach((coord) => {
-                    const position = new google.maps.LatLng(coord.latitude, coord.longitude);
+                this.markers.forEach((m) => {
+                    const position = new google.maps.LatLng(m.latitude, m.longitude);
+                    const icon = this.generateMarkerIcon(m);
                     const marker = new google.maps.Marker({
-                        position,
-                        map
+                        position: position,
+                        map: map,
+                        icon: icon
                     });
+
+                    this.googleMarkers.push(marker);
                 });
+
+                const gridSize = 20;
+                const mcOptions = {gridSize: gridSize, maxZoom: 15, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'};
+                const markerClusterer = new MarkerClusterer(map, this.googleMarkers, mcOptions);
+
+                this.autoCenter();
+            },
+
+            generateMarkerIcon(m) {
+                // m.color.replace(/#/, '');
+                // ToDo: Add color support
+                const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + 'fff',
+                    new google.maps.Size(21, 34),
+                    new google.maps.Point(0,0),
+                    new google.maps.Point(10, 34));
+                // const pinShadow = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_shadow",
+                //     new google.maps.Size(40, 37),
+                //     new google.maps.Point(0, 0),
+                //     new google.maps.Point(12, 35));
+
+                return pinImage;
             },
 
             addDraggableMarker() {
@@ -90,6 +123,16 @@
                 this.maps.event.addListener(this.marker, 'drag', function () {
                     that.$emit('markerDragged', that.marker.getPosition());
                 });
+            },
+
+            autoCenter() {
+                const bounds = new google.maps.LatLngBounds();
+                if (this.googleMarkers.length > 0) {
+                    this.googleMarkers.forEach((m) => {
+                        bounds.extend(m.getPosition());
+                    });
+                    this.map.fitBounds(bounds);
+                }
             },
         }
     };

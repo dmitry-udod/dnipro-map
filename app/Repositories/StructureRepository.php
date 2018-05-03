@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Category;
 use App\City;
 use App\Structure;
+use Illuminate\Database\Eloquent\Collection;
 
 class StructureRepository extends BaseRepository
 {
@@ -118,7 +119,11 @@ class StructureRepository extends BaseRepository
         $categoryQuery = Category::where('is_active', true)->where('city_id', $city->id)->orderBy('order');
 
         if (!$categorySlug) {
-            $category = $categoryQuery->firstOrFail();
+            $category = $categoryQuery->first();
+
+            if (!$category) {
+                return new Collection();
+            }
         } else {
             $category = $categoryQuery->where('slug', $categorySlug)->first();
         }

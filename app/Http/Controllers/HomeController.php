@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Resources\Structure;
 use App\Repositories\StructureRepository;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,8 @@ class HomeController extends Controller
      */
     public function index($city, $category = null)
     {
-        dd($this->repository->allByCityAndCategory($city, $category));
+        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category));
 
-        return view('welcome');
+        return view('welcome', compact('entities'));
     }
 }

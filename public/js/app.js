@@ -1645,12 +1645,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'google-map',
-    props: ['name', 'address', 'city', 'structure'],
+    props: ['name', 'address', 'city', 'structure', 'markersJson'],
     data: function data() {
         return {
             mapName: this.name + "-map",
             marker: null,
             markers: [],
+            googleMarkers: [],
             maps: null,
             map: null,
             geocoder: null
@@ -1667,8 +1668,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.maps = google.maps;
         this.geocoder = new google.maps.Geocoder();
 
-        // this.addMarkers(map);
-        this.addDraggableMarker();
+        if (this.markersJson) {
+            if (this.markersJson) {
+                this.markers = JSON.parse(atob(this.markersJson));
+                this.addMarkers();
+            }
+        } else {
+            this.addDraggableMarker();
+        }
     },
 
 
@@ -1692,14 +1699,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addMarkers: function addMarkers() {
+            var _this = this;
+
             var map = this.map;
-            this.markers.forEach(function (coord) {
-                var position = new google.maps.LatLng(coord.latitude, coord.longitude);
+            this.markers.forEach(function (m) {
+                var position = new google.maps.LatLng(m.latitude, m.longitude);
+                var icon = _this.generateMarkerIcon(m);
                 var marker = new google.maps.Marker({
                     position: position,
-                    map: map
+                    map: map,
+                    icon: icon
                 });
+
+                _this.googleMarkers.push(marker);
             });
+
+            var gridSize = 20;
+            var mcOptions = { gridSize: gridSize, maxZoom: 15, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' };
+            var markerClusterer = new MarkerClusterer(map, this.googleMarkers, mcOptions);
+
+            this.autoCenter();
+        },
+        generateMarkerIcon: function generateMarkerIcon(m) {
+            // m.color.replace(/#/, '');
+            // ToDo: Add color support
+            var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + 'fff', new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
+            // const pinShadow = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_shadow",
+            //     new google.maps.Size(40, 37),
+            //     new google.maps.Point(0, 0),
+            //     new google.maps.Point(12, 35));
+
+            return pinImage;
         },
         addDraggableMarker: function addDraggableMarker() {
             var map = this.map;
@@ -1724,6 +1754,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.maps.event.addListener(this.marker, 'drag', function () {
                 that.$emit('markerDragged', that.marker.getPosition());
             });
+        },
+        autoCenter: function autoCenter() {
+            var bounds = new google.maps.LatLngBounds();
+            if (this.googleMarkers.length > 0) {
+                this.googleMarkers.forEach(function (m) {
+                    bounds.extend(m.getPosition());
+                });
+                this.map.fitBounds(bounds);
+            }
         }
     }
 });
@@ -1737,6 +1776,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+//
+//
 //
 //
 //
@@ -38047,28 +38088,30 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form-group" },
-                [
-                  _c("label", [
-                    _vm._v(
-                      "Перетягніть маркер, щоб помітити потрібне місце на мапі"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("google-map", {
-                    attrs: {
-                      name: "structure-map",
-                      city: _vm.city,
-                      address: _vm.structure.address,
-                      structure: _vm.structure
-                    },
-                    on: { markerDragged: _vm.updateMarkerPosition }
-                  })
-                ],
-                1
-              ),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [
+                  _vm._v(
+                    "Перетягніть маркер, щоб помітити потрібне місце на мапі"
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticStyle: { height: "400px" } },
+                  [
+                    _c("google-map", {
+                      attrs: {
+                        name: "structure-map",
+                        city: _vm.city,
+                        address: _vm.structure.address,
+                        structure: _vm.structure
+                      },
+                      on: { markerDragged: _vm.updateMarkerPosition }
+                    })
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-row" }, [
                 _c("div", { staticClass: "form-group col-md-6" }, [
