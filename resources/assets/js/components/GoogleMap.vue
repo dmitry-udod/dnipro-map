@@ -11,6 +11,7 @@
             'city',
             'structure',
             'markersJson',
+            'categoriesJson',
         ],
         data() {
             return {
@@ -21,6 +22,9 @@
                 maps: null,
                 map: null,
                 geocoder: null,
+                resultLocation: null,
+                infoWindow: null,
+                categories: null,
             }
         },
 
@@ -35,11 +39,23 @@
             this.maps = google.maps;
             this.geocoder = new google.maps.Geocoder();
 
+            // Default Search read area
+            this.resultLocation = new google.maps.Circle({
+                strokeColor: '#f00',
+                strokeOpacity: 0.8,
+                strokeWeight: 1,
+                fillColor: '#f00',
+                fillOpacity: 0.35,
+                radius: 60
+            });
+
+            // Default Info window for markers
+            this.infowindow = new google.maps.InfoWindow({content: ""});
+
             if (this.markersJson) {
-                if (this.markersJson) {
-                    this.markers = JSON.parse(atob(this.markersJson));
-                    this.addMarkers();
-                }
+                this.markers = JSON.parse(atob(this.markersJson));
+                this.categories = JSON.parse(atob(this.categoriesJson));
+                this.addMarkers();
             } else {
                 this.addDraggableMarker();
             }
@@ -72,17 +88,39 @@
                     const marker = new google.maps.Marker({
                         position: position,
                         map: map,
-                        icon: icon
+                        icon: icon,
+                        title: m.address,
                     });
+
+                    this.attachInfoWindow(m, marker);
 
                     this.googleMarkers.push(marker);
                 });
 
-                const gridSize = 20;
+                const gridSize = 50;
                 const mcOptions = {gridSize: gridSize, maxZoom: 15, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'};
                 const markerClusterer = new MarkerClusterer(map, this.googleMarkers, mcOptions);
 
                 this.autoCenter();
+                this.enableAutocomplete();
+            },
+
+            attachInfoWindow(data, marker) {
+                const that = this;
+                const category = this.categoryName(data.category_id);
+                const type = this.categoryName(data.category_id);
+                let content = "<div style='min-width: 200px; min-height: 100px;'><ul style='list-style:none;padding:0;margin:0'>";
+                content += `<li>Адреса: <b>${data.address}</b></li>`;
+                content += `<li>Категорiя: ${category}</li>`;
+                if (type) {
+                    content += `<li>Вид діяльності: ${category}</li>`;
+                }
+                content += "</ul></div>";
+
+                marker.addListener('click', () => {
+                    that.infowindow.setContent(content);
+                    that.infowindow.open(that.map, marker);
+                });
             },
 
             generateMarkerIcon(m) {
@@ -133,6 +171,46 @@
                     });
                     this.map.fitBounds(bounds);
                 }
+            },
+
+             enableAutocomplete() {
+                const queryInput = document.getElementById('search-input');
+                const autocomplete = new google.maps.places.Autocomplete(queryInput);
+                autocomplete.bindTo('bounds', this.map);
+                autocomplete.addListener('place_changed', () => {
+                    const place = autocomplete.getPlace();
+                    $('#search-input').val(place.name);
+                    this.search();
+                });
+            },
+
+            search() {
+                this.resultLocation.setMap(null);
+                const that = this;
+                let address = document.getElementById('search-input').value.trim();
+                if (address !== '') {
+                    address =  'Україна, '+ this.city + ', ' + address;
+                    this.geocoder.geocode({'address': address}, (results, status) => {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            that.map.setCenter(results[0].geometry.location);
+                            that.map.fitBounds(results[0].geometry.viewport);
+                            that.resultLocation.setCenter(results[0].geometry.location);
+                            that.resultLocation.setMap(that.map);
+                        }
+                    });
+                }
+            },
+
+            categoryName(categoryId) {
+                let name = '';
+                this.categories.forEach((c) => {
+                    if (c.id === categoryId) {
+                        name = c.name;
+                        return;
+                    }
+                });
+
+                return name;
             },
         }
     };

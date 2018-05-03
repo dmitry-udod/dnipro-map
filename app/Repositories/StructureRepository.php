@@ -128,7 +128,7 @@ class StructureRepository extends BaseRepository
             $category = $categoryQuery->where('slug', $categorySlug)->first();
         }
 
-        $q = $this->allActiveQuery()->where('city_id', $city->id)->where('category_id', $category->id);
+        $q = Structure::where('is_active', true)->where('city_id', $city->id)->where('category_id', $category->id);
 
         return $q->get();
     }

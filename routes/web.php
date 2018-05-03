@@ -15,7 +15,7 @@ Auth::routes();
 Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->group(function () {
 
     Route::get('/', 'HomeController@index');
-    Route::get('/categories/{slug}', 'HomeController@index')->name('categories')->where(['slug' => '[a-z]+']);
+    Route::get('/categories/{slug}', 'HomeController@index')->name('categories')->where(['slug' => '[a-zA-Z0-9_-]+']);
 
     // Admin area
 	Route::middleware(['auth', 'can_access_to_admin_area'])

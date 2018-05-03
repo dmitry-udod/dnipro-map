@@ -50,4 +50,17 @@ class TypeRepository extends BaseRepository
 
         return $entity->save();
     }
+
+    /**
+     * Get all active types for category
+     *
+     * @param $categoryId
+     * @return \Illuminate\Support\Collection
+     */
+    public function allActiveForCategory($categoryId)
+    {
+        $data = Type::where('category_id', $categoryId)->where('is_active', true)->orderBy('order')->get();
+
+        return \App\Http\Resources\Type::collection($data);
+    }
 }

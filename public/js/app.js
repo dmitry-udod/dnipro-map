@@ -1645,7 +1645,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'google-map',
-    props: ['name', 'address', 'city', 'structure', 'markersJson'],
+    props: ['name', 'address', 'city', 'structure', 'markersJson', 'categoriesJson'],
     data: function data() {
         return {
             mapName: this.name + "-map",
@@ -1654,7 +1654,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             googleMarkers: [],
             maps: null,
             map: null,
-            geocoder: null
+            geocoder: null,
+            resultLocation: null,
+            infoWindow: null,
+            categories: null
         };
     },
     mounted: function mounted() {
@@ -1668,11 +1671,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.maps = google.maps;
         this.geocoder = new google.maps.Geocoder();
 
+        // Default Search read area
+        this.resultLocation = new google.maps.Circle({
+            strokeColor: '#f00',
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
+            fillColor: '#f00',
+            fillOpacity: 0.35,
+            radius: 60
+        });
+
+        // Default Info window for markers
+        this.infowindow = new google.maps.InfoWindow({ content: "" });
+
         if (this.markersJson) {
-            if (this.markersJson) {
-                this.markers = JSON.parse(atob(this.markersJson));
-                this.addMarkers();
-            }
+            this.markers = JSON.parse(atob(this.markersJson));
+            this.categories = JSON.parse(atob(this.categoriesJson));
+            this.addMarkers();
         } else {
             this.addDraggableMarker();
         }
@@ -1708,17 +1723,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var marker = new google.maps.Marker({
                     position: position,
                     map: map,
-                    icon: icon
+                    icon: icon,
+                    title: m.address
                 });
+
+                _this.attachInfoWindow(m, marker);
 
                 _this.googleMarkers.push(marker);
             });
 
-            var gridSize = 20;
+            var gridSize = 50;
             var mcOptions = { gridSize: gridSize, maxZoom: 15, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' };
             var markerClusterer = new MarkerClusterer(map, this.googleMarkers, mcOptions);
 
             this.autoCenter();
+            this.enableAutocomplete();
+        },
+        attachInfoWindow: function attachInfoWindow(data, marker) {
+            var that = this;
+            var category = this.categoryName(data.category_id);
+            var type = this.categoryName(data.category_id);
+            var content = "<div style='min-width: 200px; min-height: 100px;'><ul style='list-style:none;padding:0;margin:0'>";
+            content += '<li>\u0410\u0434\u0440\u0435\u0441\u0430: <b>' + data.address + '</b></li>';
+            content += '<li>\u041A\u0430\u0442\u0435\u0433\u043E\u0440i\u044F: ' + category + '</li>';
+            if (type) {
+                content += '<li>\u0412\u0438\u0434 \u0434\u0456\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0456: ' + category + '</li>';
+            }
+            content += "</ul></div>";
+
+            marker.addListener('click', function () {
+                that.infowindow.setContent(content);
+                that.infowindow.open(that.map, marker);
+            });
         },
         generateMarkerIcon: function generateMarkerIcon(m) {
             // m.color.replace(/#/, '');
@@ -1763,6 +1799,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 this.map.fitBounds(bounds);
             }
+        },
+        enableAutocomplete: function enableAutocomplete() {
+            var _this2 = this;
+
+            var queryInput = document.getElementById('search-input');
+            var autocomplete = new google.maps.places.Autocomplete(queryInput);
+            autocomplete.bindTo('bounds', this.map);
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                $('#search-input').val(place.name);
+                _this2.search();
+            });
+        },
+        search: function search() {
+            this.resultLocation.setMap(null);
+            var that = this;
+            var address = document.getElementById('search-input').value.trim();
+            if (address !== '') {
+                address = 'Україна, ' + this.city + ', ' + address;
+                this.geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        that.map.setCenter(results[0].geometry.location);
+                        that.map.fitBounds(results[0].geometry.viewport);
+                        that.resultLocation.setCenter(results[0].geometry.location);
+                        that.resultLocation.setMap(that.map);
+                    }
+                });
+            }
+        },
+        categoryName: function categoryName(categoryId) {
+            var name = '';
+            this.categories.forEach(function (c) {
+                if (c.id === categoryId) {
+                    name = c.name;
+                    return;
+                }
+            });
+
+            return name;
         }
     }
 });
