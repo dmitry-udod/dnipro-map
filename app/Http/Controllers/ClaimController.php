@@ -9,7 +9,7 @@ use App\Repositories\TypeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class HomeController extends Controller
+class ClaimController extends Controller
 {
     public function __construct(StructureRepository $repository)
     {
@@ -21,10 +21,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($city, $category = null)
+    public function create($city)
     {
-        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category));
-        $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
+        dd(request()->all());
+//        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category));
+//        $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
 
         return view('welcome', compact('entities', 'types'));
     }

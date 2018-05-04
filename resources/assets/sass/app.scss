@@ -41,6 +41,20 @@
   }
 }
 
+.brown {
+  .modal-header {
+    background: #703c30;
+    color: #fff;
+    border-radius: 0;
+  }
+}
+
+.upload-link {
+  cursor: pointer;
+  color: green;
+  text-decoration: underline;
+}
+
 .city-hash {
   font-size: 24px;
   color: #fff;

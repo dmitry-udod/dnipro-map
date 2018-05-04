@@ -20,6 +20,11 @@
                 'title' => 'Активна',
                 'type' => 'checkbox',
             ],
+            [
+                'name' => 'user_can_create_claims',
+                'title' => 'Користувач може створювати скарги',
+                'type' => 'checkbox',
+            ],
                         [
                 'name' => 'order',
                 'title' => 'Порядок',

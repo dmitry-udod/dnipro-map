@@ -12,6 +12,7 @@
             'structure',
             'markersJson',
             'categoriesJson',
+            'typesJson',
         ],
         data() {
             return {
@@ -25,6 +26,7 @@
                 resultLocation: null,
                 infoWindow: null,
                 categories: null,
+                imgPath: '/uploads/structures/',
             }
         },
 
@@ -55,6 +57,7 @@
             if (this.markersJson) {
                 this.markers = JSON.parse(atob(this.markersJson));
                 this.categories = JSON.parse(atob(this.categoriesJson));
+                this.types = JSON.parse(atob(this.typesJson));
                 this.addMarkers();
             } else {
                 this.addDraggableMarker();
@@ -107,14 +110,29 @@
 
             attachInfoWindow(data, marker) {
                 const that = this;
-                const category = this.categoryName(data.category_id);
-                const type = this.categoryName(data.category_id);
-                let content = "<div style='min-width: 200px; min-height: 100px;'><ul style='list-style:none;padding:0;margin:0'>";
-                content += `<li>Адреса: <b>${data.address}</b></li>`;
-                content += `<li>Категорiя: ${category}</li>`;
-                if (type) {
-                    content += `<li>Вид діяльності: ${category}</li>`;
+                const category = this.category(data.category_id);
+                const type = this.type(data.type_id).name;
+                let content = "<div style='min-width: 200px; min-height: 100px;max-width:400px'><ul>";
+
+                if (data.photos.length > 0) {
+                    content += `<li style='list-style:none'><img width="300" height="200" style="margin-bottom: 10px" src="${this.imgPath}${data.photos[0].name}"></li>`;
                 }
+                content += `<li>Адреса: <b>${data.address}</b></li>`;
+                content += `<li>Номер: <b>${data.uuid}</b></li>`;
+                content += data.name ? `<li>Назва: ${data.name}</li>` : '';
+                content += `<li>Категорiя: ${category.name}</li>`;
+                content += type ? `<li>Вид діяльності: ${type}</li>` : '';
+                content += data.area ? `<li>Площа об'єкта: ${data.area}</li>` : '';
+                content += data.business ? `<li>Основна сфера: ${data.business}</li>` : '';
+                content += data.owner ? `<li>Власник: ${data.owner}</li>` : '';
+                content += data.phone ? `<li>Телефон: ${data.phone}</li>` : '';
+                content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours}</li>` : '';
+                content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
+
+                if (category.user_can_create_claims) {
+                    content += `<button onclick="$('#claim-modal').modal('show');return false;" style="margin-top: 10px" class="btn btn-danger">Подати скаргу</button>`;
+                }
+
                 content += "</ul></div>";
 
                 marker.addListener('click', () => {
@@ -124,17 +142,11 @@
             },
 
             generateMarkerIcon(m) {
-                // m.color.replace(/#/, '');
-                // ToDo: Add color support
-                const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + 'fff',
+                const type = this.type(m.type_id);
+                const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + type.color.replace(/#/, ''),
                     new google.maps.Size(21, 34),
                     new google.maps.Point(0,0),
                     new google.maps.Point(10, 34));
-                // const pinShadow = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_shadow",
-                //     new google.maps.Size(40, 37),
-                //     new google.maps.Point(0, 0),
-                //     new google.maps.Point(12, 35));
-
                 return pinImage;
             },
 
@@ -201,16 +213,28 @@
                 }
             },
 
-            categoryName(categoryId) {
-                let name = '';
+            category(categoryId) {
+                let category = {};
                 this.categories.forEach((c) => {
                     if (c.id === categoryId) {
-                        name = c.name;
+                        category = c;
                         return;
                     }
                 });
 
-                return name;
+                return category;
+            },
+
+            type(typeId) {
+                let type = {};
+                this.types.forEach((v) => {
+                    if (v.id === typeId) {
+                        type = v;
+                        return;
+                    }
+                });
+
+                return type;
             },
         }
     };

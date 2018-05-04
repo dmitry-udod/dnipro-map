@@ -1633,6 +1633,160 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ClaimForm.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: [],
+
+    data: function data() {
+        return {
+            claim: {
+                name: "",
+                phone: "",
+                email: "",
+                category: "",
+                description: "",
+                photos: [],
+                thumbs: []
+            }
+        };
+    },
+    mounted: function mounted() {},
+
+
+    methods: {
+        filesChange: function filesChange(fileList, field) {
+            var that = this;
+
+            // this.save(formData, field);
+
+            var reader = new FileReader();
+            // read the image file as a data URL.
+            reader.readAsDataURL(fileList[0]);
+
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                that.claim.thumbs.push(e.target.result);
+            };
+            that.claim.photos.push(fileList[0]);
+        },
+        createClaim: function createClaim() {
+            var _this = this;
+
+            var formData = new FormData();
+            var i = 0;
+            formData.append('name', this.claim.name);
+            Array.from(Array(this.claim.photos.length).keys()).map(function (x) {
+                i++;
+                formData.append('files' + i, _this.claim.photos[x], _this.claim.photos[x].name);
+            });
+
+            axios.post('/claims/create', formData);
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/GoogleMap.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1645,7 +1799,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'google-map',
-    props: ['name', 'address', 'city', 'structure', 'markersJson', 'categoriesJson'],
+    props: ['name', 'address', 'city', 'structure', 'markersJson', 'categoriesJson', 'typesJson'],
     data: function data() {
         return {
             mapName: this.name + "-map",
@@ -1657,7 +1811,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             geocoder: null,
             resultLocation: null,
             infoWindow: null,
-            categories: null
+            categories: null,
+            imgPath: '/uploads/structures/'
         };
     },
     mounted: function mounted() {
@@ -1687,6 +1842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.markersJson) {
             this.markers = JSON.parse(atob(this.markersJson));
             this.categories = JSON.parse(atob(this.categoriesJson));
+            this.types = JSON.parse(atob(this.typesJson));
             this.addMarkers();
         } else {
             this.addDraggableMarker();
@@ -1741,14 +1897,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         attachInfoWindow: function attachInfoWindow(data, marker) {
             var that = this;
-            var category = this.categoryName(data.category_id);
-            var type = this.categoryName(data.category_id);
-            var content = "<div style='min-width: 200px; min-height: 100px;'><ul style='list-style:none;padding:0;margin:0'>";
-            content += '<li>\u0410\u0434\u0440\u0435\u0441\u0430: <b>' + data.address + '</b></li>';
-            content += '<li>\u041A\u0430\u0442\u0435\u0433\u043E\u0440i\u044F: ' + category + '</li>';
-            if (type) {
-                content += '<li>\u0412\u0438\u0434 \u0434\u0456\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0456: ' + category + '</li>';
+            var category = this.category(data.category_id);
+            var type = this.type(data.type_id).name;
+            var content = "<div style='min-width: 200px; min-height: 100px;max-width:400px'><ul>";
+
+            if (data.photos.length > 0) {
+                content += '<li style=\'list-style:none\'><img width="300" height="200" style="margin-bottom: 10px" src="' + this.imgPath + data.photos[0].name + '"></li>';
             }
+            content += '<li>\u0410\u0434\u0440\u0435\u0441\u0430: <b>' + data.address + '</b></li>';
+            content += '<li>\u041D\u043E\u043C\u0435\u0440: <b>' + data.uuid + '</b></li>';
+            content += data.name ? '<li>\u041D\u0430\u0437\u0432\u0430: ' + data.name + '</li>' : '';
+            content += '<li>\u041A\u0430\u0442\u0435\u0433\u043E\u0440i\u044F: ' + category.name + '</li>';
+            content += type ? '<li>\u0412\u0438\u0434 \u0434\u0456\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0456: ' + type + '</li>' : '';
+            content += data.area ? '<li>\u041F\u043B\u043E\u0449\u0430 \u043E\u0431\'\u0454\u043A\u0442\u0430: ' + data.area + '</li>' : '';
+            content += data.business ? '<li>\u041E\u0441\u043D\u043E\u0432\u043D\u0430 \u0441\u0444\u0435\u0440\u0430: ' + data.business + '</li>' : '';
+            content += data.owner ? '<li>\u0412\u043B\u0430\u0441\u043D\u0438\u043A: ' + data.owner + '</li>' : '';
+            content += data.phone ? '<li>\u0422\u0435\u043B\u0435\u0444\u043E\u043D: ' + data.phone + '</li>' : '';
+            content += data.working_hours ? '<li>\u0413\u0440\u0430\u0444i\u043A \u0440\u043E\u0431\u043E\u0442\u0438: ' + data.working_hours + '</li>' : '';
+            content += data.url ? '<li>\u041F\u043E\u0441\u0438\u043B\u0430\u043D\u043D\u044F: ' + data.url + '</li>' : '';
+
+            if (category.user_can_create_claims) {
+                content += '<button onclick="$(\'#claim-modal\').modal(\'show\');return false;" style="margin-top: 10px" class="btn btn-danger">\u041F\u043E\u0434\u0430\u0442\u0438 \u0441\u043A\u0430\u0440\u0433\u0443</button>';
+            }
+
             content += "</ul></div>";
 
             marker.addListener('click', function () {
@@ -1757,14 +1928,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         generateMarkerIcon: function generateMarkerIcon(m) {
-            // m.color.replace(/#/, '');
-            // ToDo: Add color support
-            var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + 'fff', new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
-            // const pinShadow = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_shadow",
-            //     new google.maps.Size(40, 37),
-            //     new google.maps.Point(0, 0),
-            //     new google.maps.Point(12, 35));
-
+            var type = this.type(m.type_id);
+            var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + type.color.replace(/#/, ''), new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
             return pinImage;
         },
         addDraggableMarker: function addDraggableMarker() {
@@ -1828,16 +1993,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
-        categoryName: function categoryName(categoryId) {
-            var name = '';
+        category: function category(categoryId) {
+            var category = {};
             this.categories.forEach(function (c) {
                 if (c.id === categoryId) {
-                    name = c.name;
+                    category = c;
                     return;
                 }
             });
 
-            return name;
+            return category;
+        },
+        type: function type(typeId) {
+            var type = {};
+            this.types.forEach(function (v) {
+                if (v.id === typeId) {
+                    type = v;
+                    return;
+                }
+            });
+
+            return type;
         }
     }
 });
@@ -6081,6 +6257,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/ClaimForm.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.require {\n    color: red;\n    font-weight: bolder;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
@@ -37942,6 +38133,319 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-baa04a0e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ClaimForm.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("form", [
+              _c("div", { staticClass: "form-row" }, [
+                _c("div", { staticClass: "form-group col-md-6" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.claim.name,
+                        expression: "claim.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { id: "name" },
+                    domProps: { value: _vm.claim.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.claim, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group col-md-6" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.claim.phone,
+                          expression: "claim.phone"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "phone" },
+                      domProps: { value: _vm.claim.phone },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.claim, "phone", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-row" }, [
+                _c("div", { staticClass: "form-group col-md-6" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.claim.email,
+                        expression: "claim.email"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "email",
+                      id: "email",
+                      placeholder: "some@mail.com"
+                    },
+                    domProps: { value: _vm.claim.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.claim, "email", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group col-md-6" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.claim.category,
+                          expression: "claim.category"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "category" },
+                      domProps: { value: _vm.claim.category },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.claim, "category", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _vm._m(4),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.claim.description,
+                      expression: "claim.description"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  attrs: { type: "text", id: "description" },
+                  domProps: { value: _vm.claim.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.claim, "description", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group" },
+              [
+                _vm._l(_vm.claim.thumbs, function(thumb, index) {
+                  return _c(
+                    "div",
+                    {
+                      staticClass: "form-group col-md-3",
+                      staticStyle: { float: "left" }
+                    },
+                    [
+                      _c("img", {
+                        staticStyle: { padding: "5px" },
+                        attrs: { width: "100", height: "75", src: thumb }
+                      }),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-danger btn-sm" }, [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              width: "12",
+                              height: "12",
+                              viewBox: "0 0 8 8"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              staticStyle: { fill: "white" },
+                              attrs: {
+                                d:
+                                  "M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.81c0 .11.08.19.19.19h4.63c.11 0 .19-.08.19-.19v-4.81h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"
+                              }
+                            })
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "clearfix" }),
+                _vm._v(" "),
+                _vm.claim.thumbs.length < 4
+                  ? _c("div", [
+                      _vm._m(5),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticStyle: { display: "none" },
+                        attrs: {
+                          id: "photos",
+                          type: "file",
+                          name: "photos",
+                          accept: "image/jpg, image/jpeg, image/png, image/gif"
+                        },
+                        on: {
+                          change: function($event) {
+                            _vm.filesChange($event.target.files, "photos")
+                          }
+                        }
+                      })
+                    ])
+                  : _vm._e()
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row mb-0" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.createClaim }
+                  },
+                  [_vm._v("Надіслати данні")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "name" } }, [
+      _vm._v("ПІБ:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "phone" } }, [
+      _vm._v("Контактний телефон:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "name" } }, [
+      _vm._v("Адреса електронної пошти:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "category" } }, [
+      _vm._v("Категорія проблеми:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "description" } }, [
+      _vm._v("Опис проблеми:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "photos" } }, [
+      _vm._v("Додати фото (не більше 4-х):\n                                "),
+      _c("br"),
+      _vm._v(" "),
+      _c("span", { staticClass: "upload-link" }, [_vm._v("завантажити")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-baa04a0e", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-cf689ea0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/StructureForm.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38944,6 +39448,33 @@ if (false) {
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-e7586288", module.exports)
   }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/ClaimForm.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/ClaimForm.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4f89b7e7", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ClaimForm.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ClaimForm.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ }),
@@ -50311,6 +50842,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 Vue.component('structure', __webpack_require__("./resources/assets/js/components/StructureForm.vue"));
 Vue.component('google-map', __webpack_require__("./resources/assets/js/components/GoogleMap.vue"));
+Vue.component('create-claim', __webpack_require__("./resources/assets/js/components/ClaimForm.vue"));
 
 var app = new Vue({
   el: '#app'
@@ -50377,6 +50909,58 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ClaimForm.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-baa04a0e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/ClaimForm.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ClaimForm.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-baa04a0e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ClaimForm.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ClaimForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-baa04a0e", Component.options)
+  } else {
+    hotAPI.reload("data-v-baa04a0e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 

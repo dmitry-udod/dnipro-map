@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 Vue.component('structure', require('./components/StructureForm.vue'));
 Vue.component('google-map', require('./components/GoogleMap.vue'));
+Vue.component('create-claim', require('./components/ClaimForm.vue'));
 
 const app = new Vue({
     el: '#app'

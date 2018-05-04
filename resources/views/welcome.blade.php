@@ -6,6 +6,7 @@
 
 @section('content')
     @include('categories._modal')
+    @include('claims._modal')
     <div style="height:calc(100vh - 60px);">
         <google-map
             city="{{ $city->name }}"
@@ -24,8 +25,10 @@
     <script src="//maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&language=uk&libraries=places"></script>
 
     <script>
+        @empty(session('hide_category_modal'))
         document.addEventListener('DOMContentLoaded', function(){
             $('#categories').modal('show');
         }, false);
+        @endempty
     </script>
 @endsection

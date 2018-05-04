@@ -17,6 +17,7 @@ class Category extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'user_can_create_claims' => $this->user_can_create_claims,
         ];
     }
 }

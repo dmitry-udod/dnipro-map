@@ -43,6 +43,7 @@ class CategoryRepository extends BaseRepository
         $entity->city_id  = (int) $data['city_id'];
         $entity->is_active = !empty($data['is_active']);
         $entity->order = $data['order'];
+        $entity->user_can_create_claims = !empty($data['user_can_create_claims']);
 
         $file = $this->uploadFile('logo', 'categories');
         if (!empty($file)) {

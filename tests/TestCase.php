@@ -10,9 +10,9 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function route($url)
+    public function route($url, $city = 'dnipro')
     {
-    	return "http://dnipro.localhost{$url}";
+    	return "http://$city.localhost{$url}";
     }
 
     public function asAdmin()
@@ -108,7 +108,7 @@ abstract class TestCase extends BaseTestCase
         $entity->order = 0;
         $entity->is_active = true;
         $entity->city_id = $this->createCity()->id;
-        $entity->logo = '{}';
+        $entity->logo = '{"path": "/photo.jpg"}';
         $entity->save();
 
         return $entity;
@@ -125,7 +125,7 @@ abstract class TestCase extends BaseTestCase
         $entity->order = 0;
         $entity->is_active = true;
         $entity->city_id = 1;
-        $entity->logo = '{}';
+        $entity->logo = '{"path": "/dnipro_photo.jpg"}';
         $entity->save();
 
         return $entity;
