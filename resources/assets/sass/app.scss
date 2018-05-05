@@ -49,6 +49,21 @@
   }
 }
 
+.filter {
+  right: 0;
+  position: absolute;
+  width: 290px;
+
+  form {
+    background-color: #fff;
+    position: relative;
+    z-index: 6;
+    .scroll-box {
+      padding: 20px;
+    }
+  }
+}
+
 .upload-link {
   cursor: pointer;
   color: green;

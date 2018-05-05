@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BaseRepository
 {
@@ -45,7 +46,7 @@ class BaseRepository
     }
 
     /**
-     * Upload file for specific context     *
+     * Upload file for specific context
      *
      * @param $field
      * @param $context
@@ -55,18 +56,26 @@ class BaseRepository
     {
         if (request()->hasFile($field)) {
             $file = request()->file($field);
-
-            $ext = last(explode('.', $file->getClientOriginalName()));
-            $uniqFileName = md5(uniqid("uploads/$context", true)) . '.' . $ext;
-            $path = public_path("uploads/$context");
-            $file->move($path, $uniqFileName);
-            return json_encode([
-                'path' => "/uploads/$context/$uniqFileName",
-                'original_name' => $file->getClientOriginalName(),
-                'name' => $uniqFileName,
-                'created_at' => Carbon::now()->toDateTimeString(),
-            ]);
+            $this->processFile($file, $context);
         }
+    }
+
+    /**
+     * Upload files for specific context
+     *
+     * @param array $files
+     * @param $context
+     * @return array
+     */
+    public function uploadFiles($files, $context)
+    {
+        $data = [];
+
+        foreach ($files as $file) {
+            $data[] = $this->processFile($file, $context);
+        }
+
+        return $data;
     }
 
     /**
@@ -87,5 +96,40 @@ class BaseRepository
     public function allActiveQuery()
     {
         return $this->all()->where('is_active', true);
+    }
+
+    /**
+     * Generate UUID
+     *
+     * @return string
+     */
+    protected function generateUuid()
+    {
+        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+            mt_rand( 0, 0xffff ),
+            mt_rand( 0, 0x0fff ) | 0x4000,
+            mt_rand( 0, 0x3fff ) | 0x8000,
+            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+        );
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @param $context
+     * @return string
+     */
+    private function processFile($file, $context)
+    {
+        $ext = last(explode('.', $file->getClientOriginalName()));
+        $uniqFileName = md5(uniqid("uploads/$context", true)) . '.' . $ext;
+        $path = public_path("uploads/$context");
+        $file->move($path, $uniqFileName);
+        return json_encode([
+            'path' => "/uploads/$context/$uniqFileName",
+            'original_name' => $file->getClientOriginalName(),
+            'name' => $uniqFileName,
+            'created_at' => Carbon::now()->toDateTimeString(),
+        ]);
     }
 }

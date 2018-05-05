@@ -130,7 +130,7 @@
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
 
                 if (category.user_can_create_claims) {
-                    content += `<button onclick="$('#claim-modal').modal('show');return false;" style="margin-top: 10px" class="btn btn-danger">Подати скаргу</button>`;
+                    content += `<button onclick="$('#structure_id').val('${data.uuid}');$('#claim-modal').modal('show');return false;" style="margin-top: 10px" class="btn btn-danger">Подати скаргу</button>`;
                 }
 
                 content += "</ul></div>";

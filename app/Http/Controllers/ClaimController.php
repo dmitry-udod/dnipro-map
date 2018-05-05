@@ -2,31 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Resources\Structure;
+use App\Http\Controllers\Traits\JsonHelpers;
+use App\Http\Requests\StoreUserClaim;
+use App\Repositories\ClaimRepository;
 use App\Repositories\StructureRepository;
-use App\Repositories\TypeRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
+
+/**
+ * @property ClaimRepository repository
+ */
 class ClaimController extends Controller
 {
-    public function __construct(StructureRepository $repository)
+    use JsonHelpers;
+
+    public function __construct(ClaimRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * Show the map
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($city)
+    public function create(StoreUserClaim $request, $city)
     {
-        dd(request()->all());
-//        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category));
-//        $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
+        if ($this->repository->createFromUser(request()->except('_token'), $city)) {
+            return $this->jsonMessage('Ваша скарга прийнята і буде розглянута найближчим часом.');
+        }
 
-        return view('welcome', compact('entities', 'types'));
+        return $this->jsonError("Помилка при створеннi скарги");
     }
 }

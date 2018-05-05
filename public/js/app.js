@@ -1638,24 +1638,7 @@ module.exports = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins__ = __webpack_require__("./resources/assets/js/mixins.js");
 //
 //
 //
@@ -1735,34 +1718,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: [],
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins__["a" /* default */]],
+
+    props: ['categoriesJson'],
 
     data: function data() {
         return {
-            claim: {
-                name: "",
-                phone: "",
-                email: "",
-                category: "",
-                description: "",
-                photos: [],
-                thumbs: []
-            }
+            claim: this.newClaim(),
+            categories: JSON.parse(atob(this.categoriesJson))
         };
     },
     mounted: function mounted() {},
 
 
     methods: {
-        filesChange: function filesChange(fileList, field) {
+        newClaim: function newClaim() {
+            return {
+                name: "",
+                phone: "",
+                email: "",
+                category: 10,
+                description: "",
+                photos: [],
+                thumbs: []
+            };
+        },
+        filesChange: function filesChange(fileList) {
             var that = this;
-
-            // this.save(formData, field);
-
             var reader = new FileReader();
             // read the image file as a data URL.
             reader.readAsDataURL(fileList[0]);
-
             reader.onload = function (e) {
                 // get loaded data and render thumbnail.
                 that.claim.thumbs.push(e.target.result);
@@ -1774,13 +1759,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var formData = new FormData();
             var i = 0;
+
+            formData.append('structure_id', document.getElementById('structure_id').value);
             formData.append('name', this.claim.name);
+            formData.append('name', this.claim.name);
+            formData.append('phone', this.claim.phone);
+            formData.append('email', this.claim.email);
+            formData.append('category', this.claim.category);
+            formData.append('description', this.claim.description);
+
             Array.from(Array(this.claim.photos.length).keys()).map(function (x) {
                 i++;
-                formData.append('files' + i, _this.claim.photos[x], _this.claim.photos[x].name);
+                formData.append('photos[]', _this.claim.photos[x], _this.claim.photos[x].name);
             });
 
-            axios.post('/claims/create', formData);
+            axios.post('/claims/create', formData).then(function (response) {
+                _this.claim = _this.newClaim();
+                $('#claim-modal').modal('hide');
+                _this.onSuccess(response.data.message);
+            }, this.onError);
+        },
+        removeFile: function removeFile(index) {
+            this.claim.photos.splice(index, 1);
+            this.claim.thumbs.splice(index, 1);
         }
     }
 });
@@ -1917,7 +1918,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             content += data.url ? '<li>\u041F\u043E\u0441\u0438\u043B\u0430\u043D\u043D\u044F: ' + data.url + '</li>' : '';
 
             if (category.user_can_create_claims) {
-                content += '<button onclick="$(\'#claim-modal\').modal(\'show\');return false;" style="margin-top: 10px" class="btn btn-danger">\u041F\u043E\u0434\u0430\u0442\u0438 \u0441\u043A\u0430\u0440\u0433\u0443</button>';
+                content += '<button onclick="$(\'#structure_id\').val(\'' + data.uuid + '\');$(\'#claim-modal\').modal(\'show\');return false;" style="margin-top: 10px" class="btn btn-danger">\u041F\u043E\u0434\u0430\u0442\u0438 \u0441\u043A\u0430\u0440\u0433\u0443</button>';
             }
 
             content += "</ul></div>";
@@ -38145,99 +38146,102 @@ var render = function() {
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card card-default" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("form", [
-              _c("div", { staticClass: "form-row" }, [
-                _c("div", { staticClass: "form-group col-md-6" }, [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.claim.name,
-                        expression: "claim.name"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { id: "name" },
-                    domProps: { value: _vm.claim.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.claim, "name", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
+            _c("input", { attrs: { type: "hidden", id: "structure_id" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _vm._m(0),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.claim.phone,
-                          expression: "claim.phone"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", id: "phone" },
-                      domProps: { value: _vm.claim.phone },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.claim, "phone", $event.target.value)
-                        }
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.claim.name,
+                      expression: "claim.name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "name" },
+                  domProps: { value: _vm.claim.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
                       }
-                    })
-                  ])
-                ])
+                      _vm.$set(_vm.claim, "name", $event.target.value)
+                    }
+                  }
+                })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-row" }, [
-                _c("div", { staticClass: "form-group col-md-6" }, [
-                  _vm._m(2),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.claim.email,
-                        expression: "claim.email"
+                        value: _vm.claim.phone,
+                        expression: "claim.phone"
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: {
-                      type: "email",
-                      id: "email",
-                      placeholder: "some@mail.com"
-                    },
-                    domProps: { value: _vm.claim.email },
+                    attrs: { type: "text", id: "phone" },
+                    domProps: { value: _vm.claim.phone },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.claim, "email", $event.target.value)
+                        _vm.$set(_vm.claim, "phone", $event.target.value)
                       }
                     }
                   })
-                ]),
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _vm._m(2),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group col-md-6" }, [
-                  _c("div", { staticClass: "form-group" }, [
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _c("input", {
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.claim.email,
+                      expression: "claim.email"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "email",
+                    id: "email",
+                    placeholder: "some@mail.com"
+                  },
+                  domProps: { value: _vm.claim.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.claim, "email", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
                       directives: [
                         {
                           name: "model",
@@ -38247,46 +38251,61 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text", id: "category" },
-                      domProps: { value: _vm.claim.category },
+                      attrs: { id: "category" },
                       on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.claim, "category", $event.target.value)
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.claim,
+                            "category",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
                         }
                       }
+                    },
+                    _vm._l(_vm.categories, function(category, index) {
+                      return _c("option", { domProps: { value: index } }, [
+                        _vm._v(_vm._s(category))
+                      ])
                     })
-                  ])
+                  )
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _vm._m(4),
-                _vm._v(" "),
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.claim.description,
-                      expression: "claim.description"
-                    }
-                  ],
-                  staticClass: "form-control form-control-sm",
-                  attrs: { type: "text", id: "description" },
-                  domProps: { value: _vm.claim.description },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.claim, "description", $event.target.value)
-                    }
-                  }
-                })
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.claim.description,
+                    expression: "claim.description"
+                  }
+                ],
+                staticClass: "form-control form-control-sm",
+                attrs: { rows: "4", type: "text", id: "description" },
+                domProps: { value: _vm.claim.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.claim, "description", $event.target.value)
+                  }
+                }
+              })
             ]),
             _vm._v(" "),
             _c(
@@ -38306,28 +38325,39 @@ var render = function() {
                         attrs: { width: "100", height: "75", src: thumb }
                       }),
                       _vm._v(" "),
-                      _c("button", { staticClass: "btn btn-danger btn-sm" }, [
-                        _c(
-                          "svg",
-                          {
-                            attrs: {
-                              xmlns: "http://www.w3.org/2000/svg",
-                              width: "12",
-                              height: "12",
-                              viewBox: "0 0 8 8"
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          on: {
+                            click: function($event) {
+                              _vm.removeFile(index)
                             }
-                          },
-                          [
-                            _c("path", {
-                              staticStyle: { fill: "white" },
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
                               attrs: {
-                                d:
-                                  "M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.81c0 .11.08.19.19.19h4.63c.11 0 .19-.08.19-.19v-4.81h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "12",
+                                height: "12",
+                                viewBox: "0 0 8 8"
                               }
-                            })
-                          ]
-                        )
-                      ])
+                            },
+                            [
+                              _c("path", {
+                                staticStyle: { fill: "white" },
+                                attrs: {
+                                  d:
+                                    "M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.81c0 .11.08.19.19.19h4.63c.11 0 .19-.08.19-.19v-4.81h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
                     ]
                   )
                 }),
@@ -51065,6 +51095,65 @@ if (false) {(function () {
 
 module.exports = Component.exports
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/mixins.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert2__);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    data: function data() {
+        return {
+            loading: false,
+            response: { data: {} }
+        };
+    },
+
+
+    filters: {
+        capitalize: function capitalize(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    },
+
+    methods: {
+        onError: function onError(err) {
+            var _this = this;
+
+            if (err.response.data && err.response.data.error) {
+                this.loading = false;
+                if (err.response.data.error === 'Unauthenticated.') {
+                    document.location.href = '/';
+                }
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()(err.response.data.error, '', 'error').then(function () {
+                    if (_this.afterError) {
+                        _this.afterError();
+                    }
+                });
+            } else {
+                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Some error happened', '', 'error').then(function () {
+                    if (_this.afterError) {
+                        _this.afterError();
+                    }
+                });
+            }
+        },
+        onSuccess: function onSuccess(msg, route) {
+            __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()(msg, '', 'success').then(function () {
+                if (route) {
+                    document.location.href = route;
+                }
+            });
+        }
+    }
+});
 
 /***/ }),
 

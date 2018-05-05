@@ -10424,6 +10424,22 @@ a.text-dark:focus {
   border-radius: 0;
 }
 
+.filter {
+  right: 0;
+  position: absolute;
+  width: 290px;
+}
+
+.filter form {
+  background-color: #fff;
+  position: relative;
+  z-index: 6;
+}
+
+.filter form .scroll-box {
+  padding: 20px;
+}
+
 .upload-link {
   cursor: pointer;
   color: green;
