@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Structure;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -68,5 +69,6 @@ class AdminStructureTest extends TestCase
     {
         $this->superadmin()->post($this->route('/admin/structures'), $this->entity)->assertStatus(302);
         $this->superadmin()->get($this->route('/admin/structures'))->assertSeeText($this->entity['address']);
+        $this->assertCount(1, Structure::all());
     }
 }

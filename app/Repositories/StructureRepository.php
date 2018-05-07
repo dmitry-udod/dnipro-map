@@ -38,7 +38,7 @@ class StructureRepository extends BaseRepository
     {
         /** @var City $city */
         $city = session('currentCity');
-        $entity = $this->model::findOrNew($id);
+        $entity = Structure::findOrNew($id);
 
         if (!$id) {
             $entity->uuid = $this->generateUuid();

@@ -1762,7 +1762,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             formData.append('structure_id', document.getElementById('structure_id').value);
             formData.append('name', this.claim.name);
-            formData.append('name', this.claim.name);
             formData.append('phone', this.claim.phone);
             formData.append('email', this.claim.email);
             formData.append('category', this.claim.category);

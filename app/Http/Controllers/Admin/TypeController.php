@@ -19,7 +19,7 @@ class TypeController extends BaseAdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreUser  $request
+     * @param  StoreType  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreType $request)
@@ -32,7 +32,7 @@ class TypeController extends BaseAdminController
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreUser  $request
+     * @param  StoreType  $request
      * @param  $id
      * @return \Illuminate\Http\RedirectResponse
      */

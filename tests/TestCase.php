@@ -2,9 +2,12 @@
 
 namespace Tests;
 
+use App\Repositories\StructureRepository;
+use App\Structure;
 use App\User;
 use App\City;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Tests\Feature\AdminStructureTest;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -134,5 +137,27 @@ abstract class TestCase extends BaseTestCase
     protected function cityBySlug($slug = 'cherkasi')
     {
         return City::where('slug', $slug)->firstOrFail();
+    }
+
+    protected function createStructure()
+    {
+        $category = $this->createCategory();
+
+        $data = [
+            'address' => "бульвар Шевченка 368",
+            'category_id' => $category->id,
+            'type_id' => 1,
+            'is_active' => true,
+            'is_free'  => false,
+            'latitude' => "48.4697571",
+            'longitude' => "34.9357767",
+        ];
+
+        $structureRepository = new StructureRepository();
+        session()->put('currentCity', $this->createCity());
+        $structureRepository->save($data);
+
+
+        return Structure::first();
     }
 }
