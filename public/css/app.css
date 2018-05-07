@@ -10427,10 +10427,13 @@ a.text-dark:focus {
 .filter {
   right: 0;
   position: absolute;
-  width: 290px;
+  width: 255px;
+  font-size: 12px;
+  height: calc(100vh - 60px);
 }
 
 .filter form {
+  min-width: 255px;
   background-color: #fff;
   position: relative;
   z-index: 6;
@@ -10438,6 +10441,27 @@ a.text-dark:focus {
 
 .filter form .scroll-box {
   padding: 20px;
+}
+
+.filter form .form-check label {
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+  .filter-wrapper {
+    display: none;
+  }
+
+  .filter {
+    width: auto;
+  }
+
+  .mobile-filter {
+    z-index: 6;
+    margin-right: 5px;
+    visibility: visible;
+  }
 }
 
 .upload-link {

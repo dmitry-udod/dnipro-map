@@ -5,15 +5,39 @@
 @endsection
 
 @section('content')
-    <div class="filter container d-flex h-100">
+    <div class="filter container d-flex">
         <div class="row justify-content-center align-self-center">
-            <button aria-controls="bs-navbar" aria-expanded="false" class="navbar-toggle collapsed mobile-filter" data-target="#bs-navbar" data-toggle="collapse" type="button" onclick="hideFilter();">
-                <em class="ico ico-search"></em>
+            <button aria-controls="bs-navbar" aria-expanded="false" class="btn btn-success mobile-filter"
+                    data-target="#bs-navbar" data-toggle="collapse" type="button" onclick="hideFilter();">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             </button>
 
+            @if(! $entities->isEmpty())
             <div class="filter-wrapper">
-                <form action="/?category_id=10" class="filter-form" id="StructureIndexForm" method="get" accept-charset="utf-8"><div class="scroll-box"><div class="form-group region"><h4 class="opened">Район міста <em></em></h4><div class="slide-block opened"><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="1" id="StructureDistrictId[]"> Новокодацький</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="2" id="StructureDistrictId[]"> Центральний</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="3" id="StructureDistrictId[]"> Чечелівський</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="4" id="StructureDistrictId[]"> Соборний</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="5" id="StructureDistrictId[]"> Шевченківський</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="6" id="StructureDistrictId[]"> Амур-Нижньодніпровський</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="7" id="StructureDistrictId[]"> Індустріальний</label></div><div class="checkbox"><label><input type="checkbox" name="district_id[]" value="8" id="StructureDistrictId[]"> Самарський</label></div></div></div><div class="form-group"><button class="btn btn-primary btn-block" type="submit">Показати</button></div></div><input type="hidden" name="category_id" value="10" id="StructureCategoryId"></form>
+                <form action="" class="filter-form">
+                    <div class="scroll-box">
+                        <div class="form-group region">
+                            <h5>Вид діяльності <em></em></h5>
+                            <div class="slide-block">
+                                @foreach($types as $type)
+                                <div class="form-check">
+                                    <input name="types[]" type="checkbox" class="form-check-input"
+                                           id="type{{ $type->id }}"
+                                           value="{{ $type->id }}"
+                                           {{ in_array($type->id, array_get(request(), 'types', [])) ? 'checked' : '' }}
+                                    >
+                                    <label class="form-check-label" for="type{{ $type->id }}">{{ $type->name }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit">Показати</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+            @endif
         </div>
     </div>
 
@@ -21,11 +45,11 @@
     @include('claims._modal')
     <div style="height:calc(100vh - 60px);">
         <google-map
-            city="{{ $city->name }}"
-            name="structures"
-            markers-json="{{ base64_encode($entities->toJson()) }}"
-            categories-json="{{ base64_encode(\App\Http\Resources\Category::collection($categories)->toJson()) }}"
-            types-json="{{ base64_encode($types->toJson()) }}"
+                city="{{ $city->name }}"
+                name="structures"
+                markers-json="{{ base64_encode($entities->toJson()) }}"
+                categories-json="{{ base64_encode(\App\Http\Resources\Category::collection($categories)->toJson()) }}"
+                types-json="{{ base64_encode($types->toJson()) }}"
         ></google-map>
     </div>
 @endsection
@@ -36,9 +60,15 @@
 
     <script>
         @empty(session('hide_category_modal'))
-        document.addEventListener('DOMContentLoaded', function(){
+        document.addEventListener('DOMContentLoaded', function () {
             $('#categories').modal('show');
         }, false);
         @endempty
+
+        function hideFilter() {
+            $('.mobile-filter').toggle();
+            $('.filter-wrapper').toggle();
+            $('.filter').css('top', '0');
+        }
     </script>
 @endsection

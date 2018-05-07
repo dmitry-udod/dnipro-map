@@ -9,6 +9,9 @@ use App\Repositories\TypeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
+/**
+ * @property StructureRepository repository
+ */
 class HomeController extends Controller
 {
     public function __construct(StructureRepository $repository)
@@ -23,7 +26,8 @@ class HomeController extends Controller
      */
     public function index($city, $category = null)
     {
-        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category));
+        $filters = ['type_ids' => request('types')];
+        $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category, $filters));
         $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
 
         return view('welcome', compact('entities', 'types'));

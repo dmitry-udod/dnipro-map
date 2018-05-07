@@ -27,6 +27,8 @@ class StoreStructure extends FormRequest
             'address' => 'required|max:255',
             'category_id' => 'required|integer',
             'type_id' => 'required|integer',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ];
     }
 }

@@ -33,7 +33,7 @@ class AdminTypesTest extends TestCase
     /** @test */
     public function type_create_update()
     {
-        $this->admin()->get($this->route('/admin/types/create'))->assertStatus(200);
+        $this->adminLviv()->get($this->route('/admin/types/create'))->assertStatus(200);
         $this->entity['city_id'] = $this->createCity()->id;
         $this->entity['category_id'] = $this->createCategory()->id;
         $this->adminLviv()->post($this->route('/admin/types'), $this->entity)->assertStatus(302);

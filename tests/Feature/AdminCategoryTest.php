@@ -19,9 +19,9 @@ class AdminCategoryTest extends TestCase
     public function create_category()
     {
 
-        $this->admin()->get($this->route('/admin/categories/create'))
+        $this->adminLviv()->get($this->route('/admin/categories/create'))
             ->assertStatus(200)
-            ->assertDontSee('Днiпро')
+            ->assertDontSeeText('Днiпро')
         ;
 
         $this->superadmin()->get($this->route('/admin/categories/create'))
@@ -37,7 +37,7 @@ class AdminCategoryTest extends TestCase
             ])
             ->assertRedirect()
             ;            
-            $this->superadmin()->get($this->route('/admin/categories'))->assertSee('МАФ');
+        $this->superadmin()->get($this->route('/admin/categories'))->assertSee('МАФ');
     }
 
     /** @test */
