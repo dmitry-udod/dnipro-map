@@ -1,15 +1,10 @@
 @extends('layouts.app')
 
-@section('css')
-
-@endsection
-
 @section('content')
     <div class="filter container d-flex">
         <div class="row justify-content-center align-self-center">
-            <button aria-controls="bs-navbar" aria-expanded="false" class="btn btn-success mobile-filter"
-                    data-target="#bs-navbar" data-toggle="collapse" type="button" onclick="hideFilter();">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            <button class="btn btn-success mobile-filter" type="button" onclick="hideFilter();">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             </button>
 
             @if(! $entities->isEmpty())
@@ -21,6 +16,7 @@
                             <div class="slide-block">
                                 @foreach($types as $type)
                                 <div class="form-check">
+                                    <div class="color-box" style="background:{{ $type->color }};"></div>
                                     <input name="types[]" type="checkbox" class="form-check-input"
                                            id="type{{ $type->id }}"
                                            value="{{ $type->id }}"
@@ -68,7 +64,6 @@
         function hideFilter() {
             $('.mobile-filter').toggle();
             $('.filter-wrapper').toggle();
-            $('.filter').css('top', '0');
         }
     </script>
 @endsection

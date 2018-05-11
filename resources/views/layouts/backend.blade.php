@@ -43,7 +43,9 @@
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.claims.index', $city->slug) }}">Скарги <span class="badge badge-info">2</span></a>
+                                <a class="nav-link" href="{{ route('admin.claims.index', $city->slug) }}">Скарги
+                                    <span class="badge badge-info">{{ \App\Claim::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
+                                </a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
