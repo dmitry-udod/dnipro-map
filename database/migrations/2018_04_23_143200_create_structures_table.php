@@ -29,11 +29,11 @@ class CreateStructuresTable extends Migration
             $table->string('business')->nullable();
             $table->string('owner')->nullable();
             $table->string('renter')->nullable();
-            $table->string('notes')->nullable();
+            $table->text('notes')->nullable();
             $table->string('author_phone')->nullable();
             $table->string('author_email')->nullable();
             $table->string('url')->nullable();
-            $table->string('working_hours')->nullable();
+            $table->text('working_hours')->nullable();
             $table->string('phone')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Category;
 use App\City;
 use App\Type;
 
@@ -48,7 +49,9 @@ class TypeRepository extends BaseRepository
             $entity->icon = $file;
         }
 
-        return $entity->save();
+        $entity->save();
+
+        return $entity;
     }
 
     /**
@@ -62,5 +65,22 @@ class TypeRepository extends BaseRepository
         $data = Type::where('category_id', $categoryId)->where('is_active', true)->orderBy('order')->get();
 
         return \App\Http\Resources\Type::collection($data);
+    }
+
+    public function findByCityCategoryAndSlugOrCreate(City $city, Category $category, array $data)
+    {
+        $slug = $data['slug'];
+
+        $entity = Type::orderBy('order')
+            ->where('city_id', $city->id)
+            ->where('category_id', $category->id)
+            ->where('slug', $slug)
+            ->first();
+
+        if (! $entity) {
+            return $this->save($data);
+        }
+
+        return $entity;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\City;
 use App\Category;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 class CategoryRepository extends BaseRepository
@@ -51,7 +52,9 @@ class CategoryRepository extends BaseRepository
             $entity->logo = $file;
         }
 
-        return $entity->save();
+        $entity->save();
+
+        return $entity;
     }
 
     /**
@@ -73,5 +76,29 @@ class CategoryRepository extends BaseRepository
     public function findBySlug($slug)
     {
         return Category::where('is_active', true)->where('slug', $slug)->get();
+    }
+
+    public function findByCityAndSlugOrCreate(City $city, array $data)
+    {
+        $slug = $data['slug'];
+
+        $category = $this->active()
+            ->where('city_id', $city->id)
+            ->where('slug', $slug)
+            ->first();
+
+        if (! $category) {
+            return $this->save($data);
+        }
+
+        return $category;
+    }
+
+    /**
+     * @return Builder
+     */
+    private function active()
+    {
+        return Category::where('is_active', true);
     }
 }

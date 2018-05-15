@@ -1913,7 +1913,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             content += data.business ? '<li>\u041E\u0441\u043D\u043E\u0432\u043D\u0430 \u0441\u0444\u0435\u0440\u0430: ' + data.business + '</li>' : '';
             content += data.owner ? '<li>\u0412\u043B\u0430\u0441\u043D\u0438\u043A: ' + data.owner + '</li>' : '';
             content += data.phone ? '<li>\u0422\u0435\u043B\u0435\u0444\u043E\u043D: ' + data.phone + '</li>' : '';
-            content += data.working_hours ? '<li>\u0413\u0440\u0430\u0444i\u043A \u0440\u043E\u0431\u043E\u0442\u0438: ' + data.working_hours + '</li>' : '';
+            content += data.working_hours ? '<li>\u0413\u0440\u0430\u0444i\u043A \u0440\u043E\u0431\u043E\u0442\u0438: ' + data.working_hours.replace(/\|/g, '<br>') + '</li>' : '';
             content += data.url ? '<li>\u041F\u043E\u0441\u0438\u043B\u0430\u043D\u043D\u044F: ' + data.url + '</li>' : '';
 
             if (category.user_can_create_claims) {
@@ -1929,7 +1929,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         generateMarkerIcon: function generateMarkerIcon(m) {
             var type = this.type(m.type_id);
-            var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + type.color.replace(/#/, ''), new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
+            var color = type ? type.color.replace(/#/, '') : 'ffffff';
+            var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + color, new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
             return pinImage;
         },
         addDraggableMarker: function addDraggableMarker() {

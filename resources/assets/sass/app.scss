@@ -74,14 +74,15 @@
   }
 
   .color-box {
-    display: inline-block;
     width: 12px;
     height: 13px;
     border: 1px solid #000;
-    margin-right: 20px;
-    vertical-align: middle;
+    /* margin-right: 20px; */
+    /* vertical-align: middle; */
     border-radius: 8px;
-    margin-left: -24px;
+    margin-left: -35px;
+    position: absolute;
+    top: 4px;
   }
 }
 

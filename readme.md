@@ -15,7 +15,7 @@
 ## About Laravel
 
 - composer install
--
+- php artisan db:seed --class=MarganetsClinicsTableSeeder
 - npm install
 - npm run production
 

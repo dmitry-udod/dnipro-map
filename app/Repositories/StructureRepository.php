@@ -42,11 +42,11 @@ class StructureRepository extends BaseRepository
 
         if (!$id) {
             $entity->uuid = $this->generateUuid();
+            $entity->city_id = $city->id;
         }
 
         $entity->address = array_get($data, 'address');
         $entity->name = array_get($data, 'name');
-        $entity->city_id = $city->id;
         $entity->category_id = array_get($data, 'category_id');
         $entity->type_id = array_get($data, 'type_id');
         $entity->district_id = array_get($data, 'district_id', 0);

@@ -103,7 +103,7 @@ class BaseRepository
      *
      * @return string
      */
-    protected function generateUuid()
+    public function generateUuid()
     {
         return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),

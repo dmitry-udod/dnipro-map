@@ -126,7 +126,7 @@
                 content += data.business ? `<li>Основна сфера: ${data.business}</li>` : '';
                 content += data.owner ? `<li>Власник: ${data.owner}</li>` : '';
                 content += data.phone ? `<li>Телефон: ${data.phone}</li>` : '';
-                content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours}</li>` : '';
+                content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours.replace(/\|/g, '<br>')}</li>` : '';
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
 
                 if (category.user_can_create_claims) {
@@ -143,7 +143,8 @@
 
             generateMarkerIcon(m) {
                 const type = this.type(m.type_id);
-                const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + type.color.replace(/#/, ''),
+                let color = type ? type.color.replace(/#/, '') : 'ffffff';
+                const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + color,
                     new google.maps.Size(21, 34),
                     new google.maps.Point(0,0),
                     new google.maps.Point(10, 34));
