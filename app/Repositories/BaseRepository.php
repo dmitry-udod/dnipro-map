@@ -56,7 +56,7 @@ class BaseRepository
     {
         if (request()->hasFile($field)) {
             $file = request()->file($field);
-            $this->processFile($file, $context);
+            return $this->processFile($file, $context);
         }
     }
 
@@ -124,7 +124,12 @@ class BaseRepository
         $ext = last(explode('.', $file->getClientOriginalName()));
         $uniqFileName = md5(uniqid("uploads/$context", true)) . '.' . $ext;
         $path = public_path("uploads/$context");
-        $file->move($path, $uniqFileName);
+        try {
+            $file->move($path, $uniqFileName);
+        } catch (\Exception $e) {
+            logger()->error('Cant save category file', [$e]);
+        }
+
         return json_encode([
             'path' => "/uploads/$context/$uniqFileName",
             'original_name' => $file->getClientOriginalName(),

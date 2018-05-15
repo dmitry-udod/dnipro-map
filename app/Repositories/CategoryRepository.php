@@ -46,6 +46,7 @@ class CategoryRepository extends BaseRepository
         $entity->user_can_create_claims = !empty($data['user_can_create_claims']);
 
         $file = $this->uploadFile('logo', 'categories');
+
         if (!empty($file)) {
             $entity->logo = $file;
         }
