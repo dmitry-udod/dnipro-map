@@ -1633,6 +1633,60 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AdditionalFields.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['fieldsJson'],
+
+    data: function data() {
+        return {
+            additionalFields: JSON.parse(atob(this.fieldsJson))
+        };
+    },
+
+
+    methods: {
+        addField: function addField() {
+            this.additionalFields.push(this.newField());
+        },
+        newField: function newField() {
+            return {
+                'name': '',
+                'id': '',
+                'value': ''
+            };
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/ClaimForm.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1896,6 +1950,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.enableAutocomplete();
         },
         attachInfoWindow: function attachInfoWindow(data, marker) {
+            var _this2 = this;
+
             var that = this;
             var category = this.category(data.category_id);
             var type = this.type(data.type_id).name;
@@ -1916,6 +1972,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             content += data.working_hours ? '<li>\u0413\u0440\u0430\u0444i\u043A \u0440\u043E\u0431\u043E\u0442\u0438: ' + data.working_hours.replace(/\|/g, '<br>') + '</li>' : '';
             content += data.url ? '<li>\u041F\u043E\u0441\u0438\u043B\u0430\u043D\u043D\u044F: ' + data.url + '</li>' : '';
 
+            if (data.additional_fields) {
+                data.additional_fields.forEach(function (field) {
+                    content += '<li>' + _this2.fieldTitle(category, field.id) + ': ' + field.value + '</li>';
+                });
+            }
+
             if (category.user_can_create_claims) {
                 content += '<button onclick="$(\'#structure_id\').val(\'' + data.uuid + '\');$(\'#claim-modal\').modal(\'show\');return false;" style="margin-top: 10px" class="btn btn-danger">\u041F\u043E\u0434\u0430\u0442\u0438 \u0441\u043A\u0430\u0440\u0433\u0443</button>';
             }
@@ -1927,8 +1989,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 that.infowindow.open(that.map, marker);
             });
         },
+        fieldTitle: function fieldTitle(category, fieldId) {
+            var field = category.additional_fields.find(function (el) {
+                return el.id === fieldId;
+            });
+
+            if (field) {
+                return field.name;
+            }
+        },
         generateMarkerIcon: function generateMarkerIcon(m) {
-            var type = this.type(m.type_id);
+            var type = m.type_id ? this.type(m.type_id) : '';
+
+            if (type.icon) {
+                return JSON.parse(type.icon).path;
+            }
+
             var color = type ? type.color.replace(/#/, '') : 'ffffff';
             var pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + color, new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
             return pinImage;
@@ -1967,7 +2043,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         enableAutocomplete: function enableAutocomplete() {
-            var _this2 = this;
+            var _this3 = this;
 
             var queryInput = document.getElementById('search-input');
             var autocomplete = new google.maps.places.Autocomplete(queryInput);
@@ -1975,7 +2051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
                 $('#search-input').val(place.name);
-                _this2.search();
+                _this3.search();
             });
         },
         search: function search() {
@@ -2214,14 +2290,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['data', 'city', 'categoriesJson', 'typesJson', 'districtsJson'],
+    props: ['data', 'cityJson', 'categoriesJson', 'typesJson', 'districtsJson'],
 
     data: function data() {
         return {
+            city: JSON.parse(atob(this.cityJson)),
             structure: JSON.parse(atob(this.data)),
             categories: JSON.parse(atob(this.categoriesJson)),
             types: JSON.parse(atob(this.typesJson)),
@@ -2233,18 +2321,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log('Component mounted.');
 
         if (this.structure.id) {
-            this.filterTypes(this.structure.category_id);
+            this.filterTypes(this.structure.category_id, this.city.id);
         }
     },
 
+
+    computed: {
+        'selectedCategory': function selectedCategory() {
+            return this.findCategoryById(this.structure.category_id);
+        }
+    },
 
     watch: {
         'structure.category_id': function structureCategory_id(newVal, oldVal) {
             if (newVal === "") {
                 this.filteredTypes = [];
             } else {
-                this.filterTypes(newVal);
+                this.filterTypes(newVal, this.city.id);
             }
+            this.structure.additional_fields = this.selectedCategory.additional_fields;
         }
     },
     methods: {
@@ -2298,13 +2393,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
 
-            if (!this.structure.type_id) {
-                __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Поле Вид діяльності обо\'язкове', '', 'error').then(function () {
-                    document.getElementById('type_id').focus();
-                });
-                return;
-            }
-
             if (this.structure.id) {
                 axios.put('/admin/structures/' + this.structure.id, this.structure).then(function (response) {
                     window.location.href = "/admin/structures/" + _this.structure.id + "/edit";
@@ -2317,10 +2405,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }, this.onError);
             }
         },
-        filterTypes: function filterTypes(categoryId) {
+        filterTypes: function filterTypes(categoryId, cityId) {
             this.filteredTypes = this.types.filter(function (el) {
-                return el.category_id == categoryId;
+                return el.category_id === categoryId && el.city_id === cityId;
             });
+        },
+        findCategoryById: function findCategoryById(categoryId) {
+            return this.categories.find(function (el) {
+                return el.id === categoryId;
+            });
+        },
+        fieldTitle: function fieldTitle(fieldId) {
+            var field = this.selectedCategory.additional_fields.find(function (el) {
+                return el.id === fieldId;
+            });
+
+            if (field) {
+                return field.name;
+            }
         },
         onError: function onError(err) {
             __WEBPACK_IMPORTED_MODULE_0_sweetalert2___default()('Some error happen', '', 'error');
@@ -38134,6 +38236,129 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5400f3f7\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AdditionalFields.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { type: "button" },
+          on: { click: _vm.addField }
+        },
+        [_vm._v("\n        Додати поле\n    ")]
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _vm._l(_vm.additionalFields, function(field, index) {
+        return _c("div", { staticClass: "form-row" }, [
+          _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("label", [_vm._v("Назва")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: field.name,
+                  expression: "field.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { name: "additional_fields[" + index + "][name]" },
+              domProps: { value: field.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(field, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("ID")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: field.id,
+                    expression: "field.id"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "additional_fields[" + index + "][id]",
+                  type: "text"
+                },
+                domProps: { value: field.id },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(field, "id", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: field.value,
+                    expression: "field.value"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  name: "additional_fields[" + index + "][value]",
+                  type: "hidden"
+                },
+                domProps: { value: field.value },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(field, "value", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ])
+        ])
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5400f3f7", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-baa04a0e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/ClaimForm.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38711,7 +38936,7 @@ var render = function() {
                     _c("google-map", {
                       attrs: {
                         name: "structure-map",
-                        city: _vm.city,
+                        city: _vm.city.name,
                         address: _vm.structure.address,
                         structure: _vm.structure
                       },
@@ -38765,9 +38990,11 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _vm._l(_vm.categories, function(category, index) {
-                        return _c("option", { domProps: { value: index } }, [
-                          _vm._v(_vm._s(category))
-                        ])
+                        return _c(
+                          "option",
+                          { domProps: { value: category.id } },
+                          [_vm._v(_vm._s(category.name))]
+                        )
                       })
                     ],
                     2
@@ -39339,6 +39566,45 @@ var render = function() {
                 })
               ])
             ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm.structure.category_id
+              ? _c(
+                  "div",
+                  _vm._l(_vm.structure.additional_fields, function(
+                    field,
+                    index
+                  ) {
+                    return _c("div", { staticClass: "form-row" }, [
+                      _c("div", { staticClass: "form-group col-md-12" }, [
+                        _c("label", [_vm._v(_vm._s(_vm.fieldTitle(field.id)))]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: field.value,
+                              expression: "field.value"
+                            }
+                          ],
+                          staticClass: "form-control form-control-sm",
+                          domProps: { value: field.value },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(field, "value", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  })
+                )
+              : _vm._e(),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -50873,6 +51139,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 Vue.component('structure', __webpack_require__("./resources/assets/js/components/StructureForm.vue"));
 Vue.component('google-map', __webpack_require__("./resources/assets/js/components/GoogleMap.vue"));
 Vue.component('create-claim', __webpack_require__("./resources/assets/js/components/ClaimForm.vue"));
+Vue.component('additional-fields', __webpack_require__("./resources/assets/js/components/AdditionalFields.vue"));
 
 var app = new Vue({
   el: '#app'
@@ -50939,6 +51206,54 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/AdditionalFields.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/AdditionalFields.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5400f3f7\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AdditionalFields.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AdditionalFields.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5400f3f7", Component.options)
+  } else {
+    hotAPI.reload("data-v-5400f3f7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 

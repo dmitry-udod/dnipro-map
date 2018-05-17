@@ -129,6 +129,12 @@
                 content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours.replace(/\|/g, '<br>')}</li>` : '';
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
 
+                if (data.additional_fields) {
+                    data.additional_fields.forEach((field) => {
+                        content += `<li>${this.fieldTitle(category, field.id)}: ${field.value}</li>`;
+                    });
+                }
+
                 if (category.user_can_create_claims) {
                     content += `<button onclick="$('#structure_id').val('${data.uuid}');$('#claim-modal').modal('show');return false;" style="margin-top: 10px" class="btn btn-danger">Подати скаргу</button>`;
                 }
@@ -141,8 +147,23 @@
                 });
             },
 
+            fieldTitle(category, fieldId) {
+                const field = category.additional_fields.find((el) => {
+                    return el.id === fieldId;
+                });
+
+                if (field) {
+                    return field.name;
+                }
+            },
+
             generateMarkerIcon(m) {
-                const type = this.type(m.type_id);
+                const type = m.type_id ? this.type(m.type_id) : '';
+
+                if (type.icon) {
+                    return JSON.parse(type.icon).path;
+                }
+
                 let color = type ? type.color.replace(/#/, '') : 'ffffff';
                 const pinImage = new google.maps.MarkerImage("//chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|" + color,
                     new google.maps.Size(21, 34),

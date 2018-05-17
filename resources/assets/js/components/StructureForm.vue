@@ -34,7 +34,7 @@
                                 <div style="height: 400px;">
                                 <google-map
                                         name="structure-map"
-                                        :city="city"
+                                        :city="city.name"
                                         :address="structure.address"
                                         :structure="structure"
                                         @markerDragged="updateMarkerPosition"
@@ -47,7 +47,7 @@
                                     <label for="category_id">Категорія<span class="require">*</span></label>
                                     <select id="category_id" class="form-control form-control-sm" v-model="structure.category_id">
                                         <option value="">Не обрано</option>
-                                        <option v-for="(category, index) in categories" :value="index">{{ category }}</option>
+                                        <option v-for="(category, index) in categories" :value="category.id">{{ category.name }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -164,6 +164,17 @@
                             </label>
                         </div>
 
+                        <hr>
+
+                        <div v-if="structure.category_id">
+                            <div class="form-row" v-for="(field, index) in structure.additional_fields">
+                                <div class="form-group col-md-12">
+                                    <label>{{ fieldTitle(field.id) }}</label>
+                                    <input class="form-control form-control-sm" v-model="field.value">
+                                </div>
+                            </div>
+                        </div>
+
                         <input id="latitude" type="hidden" class="form-control" v-model="structure.latitude">
                         <input id="longitude" type="hidden" class="form-control" v-model="structure.longitude">
                         <input id="zoom" type="hidden" class="form-control">
@@ -190,7 +201,7 @@
     export default {
         props: [
             'data',
-            'city',
+            'cityJson',
             'categoriesJson',
             'typesJson',
             'districtsJson',
@@ -198,6 +209,7 @@
 
         data() {
             return {
+                city:  JSON.parse(atob(this.cityJson)),
                 structure:  JSON.parse(atob(this.data)),
                 categories:  JSON.parse(atob(this.categoriesJson)),
                 types:  JSON.parse(atob(this.typesJson)),
@@ -210,7 +222,13 @@
             console.log('Component mounted.');
 
             if (this.structure.id) {
-                this.filterTypes(this.structure.category_id);
+                this.filterTypes(this.structure.category_id, this.city.id);
+            }
+        },
+
+        computed: {
+            'selectedCategory' () {
+                return this.findCategoryById(this.structure.category_id);
             }
         },
 
@@ -219,8 +237,9 @@
                 if (newVal === "") {
                     this.filteredTypes = [];
                 } else {
-                    this.filterTypes(newVal);
+                    this.filterTypes(newVal, this.city.id);
                 }
+                this.structure.additional_fields = this.selectedCategory.additional_fields;
             }
         },
         methods: {
@@ -279,13 +298,6 @@
                     return;
                 }
 
-                if (!this.structure.type_id) {
-                    swal('Поле Вид діяльності обо\'язкове', '', 'error').then(() => {
-                        document.getElementById('type_id').focus();
-                    });
-                    return;
-                }
-
                 if (this.structure.id) {
                     axios.put('/admin/structures/' + this.structure.id, this.structure).then(response => {
                         window.location.href = "/admin/structures/" + this.structure.id + "/edit";
@@ -300,10 +312,26 @@
                 }
             },
 
-            filterTypes(categoryId) {
+            filterTypes(categoryId, cityId) {
                 this.filteredTypes = this.types.filter((el) => {
-                    return el.category_id == categoryId;
+                    return el.category_id === categoryId && el.city_id === cityId;
                 }) ;
+            },
+
+            findCategoryById(categoryId) {
+                return this.categories.find((el) => {
+                    return el.id === categoryId;
+                }) ;
+            },
+
+            fieldTitle(fieldId) {
+                const field = this.selectedCategory.additional_fields.find((el) => {
+                    return el.id === fieldId;
+                });
+
+                if (field) {
+                    return field.name;
+                }
             },
 
             onError(err) {

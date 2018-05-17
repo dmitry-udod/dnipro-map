@@ -10406,6 +10406,7 @@ a.text-dark:focus {
 
 .blue .categories-modal li {
   float: left;
+  margin-bottom: 10px;
 }
 
 .blue .categories-modal img {

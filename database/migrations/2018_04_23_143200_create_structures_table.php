@@ -23,7 +23,7 @@ class CreateStructuresTable extends Migration
             $table->index('city_id');
             $table->unsignedInteger('category_id');
             $table->index('category_id');
-            $table->unsignedInteger('type_id');
+            $table->unsignedInteger('type_id')->nullable();
             $table->unsignedInteger('district_id')->nullable();
             $table->string('area')->nullable();
             $table->string('business')->nullable();

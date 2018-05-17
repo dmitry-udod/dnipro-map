@@ -16,6 +16,7 @@ class Structure extends Model
      */
     protected $casts = [
         'photos' => 'array',
+        'additional_fields' => 'array',
     ];
 
     public function getPhotoPreviewsAttribute()
@@ -37,6 +38,6 @@ class Structure extends Model
 
     public function getCreatedAtShortAttribute()
     {
-        return Carbon::parse($this->created_at)->format('d.m.Y');
+        return Carbon::parse($this->created_at)->format('d.m.Y H:i');
     }
 }

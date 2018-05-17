@@ -32,13 +32,14 @@ class Structure extends JsonResource
             'notes' => $this->notes,
             'phone' => $this->phone,
             'url' => $this->url,
-            'working_hours' => $this->working_hours,
+            'working_hours' =>  object_get($this,'working_hours', ''),
             'photos' => object_get($this,'photos', []),
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'is_active' => object_get($this,'is_active', true),
             'is_free' => object_get($this,'is_free'),
             'has_problem' => $this->has_problem,
+            'additional_fields' => $this->additional_fields,
         ];
     }
 }

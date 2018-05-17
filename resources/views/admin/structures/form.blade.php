@@ -2,7 +2,7 @@
 
 @section('content')
     <structure
-            city="{{ $city->name }}"
+            city-json="{{ base64_encode(json_encode($city)) }}"
             data="{{ base64_encode(json_encode(new \App\Http\Resources\Structure(empty($entity) ? new $model : $entity))) }}"
             categories-json="{{ base64_encode($structure->categoriesForDropDown()) }}"
             types-json="{{ base64_encode($structure->typesForDropDown()) }}"

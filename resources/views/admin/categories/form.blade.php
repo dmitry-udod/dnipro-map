@@ -35,6 +35,11 @@
                 'type' => 'file',
                 'note' => 'Файл формату SVG',
             ],
+            [
+                'name' => 'additional_fields',
+                'title' => 'Додатковi поля',
+                'type' => '_additional_fields'
+            ],
 
         ],
         'entity' => empty($entity) ? new $model : $entity,

@@ -9,6 +9,14 @@ use App\Type;
 class TypeRepository extends BaseRepository
 {
     /**
+     * TypeRepository constructor.
+     */
+    public function __construct()
+    {
+        $this->model = \App\Type::class;
+    }
+
+    /**
      * Get entities list
      *
      * @return \Illuminate\Database\Query\Builder

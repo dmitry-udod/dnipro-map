@@ -11,6 +11,14 @@ use Illuminate\Support\Collection;
 class CategoryRepository extends BaseRepository
 {
     /**
+     * CategoryRepository constructor.
+     */
+    public function __construct()
+    {
+        $this->model = \App\Category::class;
+    }
+
+    /**
      * Get all categories
      *
      * @return  \Illuminate\Database\Query\Builder
@@ -45,6 +53,10 @@ class CategoryRepository extends BaseRepository
         $entity->is_active = !empty($data['is_active']);
         $entity->order = $data['order'];
         $entity->user_can_create_claims = !empty($data['user_can_create_claims']);
+
+        if (!empty($data['additional_fields'])) {
+            $entity->additional_fields = $data['additional_fields'];
+        }
 
         $file = $this->uploadFile('logo', 'categories');
 
