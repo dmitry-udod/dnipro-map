@@ -28,6 +28,7 @@ class Structure extends JsonResource
             'business' => $this->business,
             'area' => $this->area,
             'owner' => $this->owner,
+            'director' => $this->director,
             'renter' => $this->renter,
             'notes' => $this->notes,
             'phone' => $this->phone,
@@ -40,6 +41,8 @@ class Structure extends JsonResource
             'is_free' => object_get($this,'is_free'),
             'has_problem' => $this->has_problem,
             'additional_fields' => $this->additional_fields,
+            'has_contract' => $this->has_contract,
+            'registry_number' => $this->registry_number,
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MarganetsClinicsTableSeeder extends Seeder
+class MarganetsClinics extends Seeder
 {
     /**
      * Run the database seeds.

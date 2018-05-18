@@ -125,6 +125,9 @@
                 content += data.area ? `<li>Площа об'єкта: ${data.area}</li>` : '';
                 content += data.business ? `<li>Основна сфера: ${data.business}</li>` : '';
                 content += data.owner ? `<li>Власник: ${data.owner}</li>` : '';
+                content += data.director ? `<li>Керівник: ${data.director}</li>` : '';
+                content += data.renter ? `<li>Орендар: ${data.renter}</li>` : '';
+                content += data.has_contract ? `<li>Наявність договору: Так</li>` : '';
                 content += data.phone ? `<li>Телефон: ${data.phone}</li>` : '';
                 content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours.replace(/\|/g, '<br>')}</li>` : '';
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';

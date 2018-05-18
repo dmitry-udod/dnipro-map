@@ -15,7 +15,11 @@
 ## About Laravel
 
 - composer install
-- php artisan db:seed --class=MarganetsClinicsTableSeeder
+- php artisan db:seed --class=MarganetsClinics
+- php artisan db:seed --class=MarganetsCivilBudget
+- php artisan db:seed --class=MarganetsAfterSchool
+- php artisan db:seed --class=MarganetsTempConstructions
+
 - npm install
 - npm run production
 
