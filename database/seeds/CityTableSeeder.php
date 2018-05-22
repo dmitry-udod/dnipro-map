@@ -11,11 +11,11 @@ class CityTableSeeder extends Seeder
      */
     public function run()
     {
-		DB::table('cities')->insert([
-            'name' => 'Днiпро',
-            'slug' => 'dnipro',
-            'created_at' => \Carbon\Carbon::now(),
-        ]);
+//		DB::table('cities')->insert([
+//            'name' => 'Днiпро',
+//            'slug' => 'dnipro',
+//            'created_at' => \Carbon\Carbon::now(),
+//        ]);
 
 		DB::table('cities')->insert([
             'name' => 'Марганець',
