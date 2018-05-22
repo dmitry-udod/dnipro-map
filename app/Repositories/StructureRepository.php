@@ -17,7 +17,7 @@ class StructureRepository extends BaseRepository
     public function all()
     {
         $user = auth()->user();
-        $q = Structure::orderBy('created_at', 'DESC');
+        $q = Structure::orderBy('id', 'DESC');
 
         if ($user->isAdmin()) {
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');

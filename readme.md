@@ -20,6 +20,8 @@
 - php artisan db:seed --class=MarganetsCivilBudget
 - php artisan db:seed --class=MarganetsAfterSchool
 - php artisan db:seed --class=MarganetsTempConstructions
+- php artisan db:seed --class=MarganetsKindergardens
+- php artisan db:seed --class=MarganetsTempConstructions
 
 - npm install
 - npm run production
