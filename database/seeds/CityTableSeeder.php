@@ -14,13 +14,13 @@ class CityTableSeeder extends Seeder
 		DB::table('cities')->insert([
             'name' => 'Днiпро',
             'slug' => 'dnipro',
-            'created_by' => \Carbon\Carbon::now(),
+            'created_at' => \Carbon\Carbon::now(),
         ]);
 
 		DB::table('cities')->insert([
             'name' => 'Марганець',
             'slug' => 'marganets',
-            'created_by' => \Carbon\Carbon::now(),
+            'created_at' => \Carbon\Carbon::now(),
         ]);
     }
 }

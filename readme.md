@@ -15,6 +15,7 @@
 ## About Laravel
 
 - composer install
+- php artisan db:seed --class=CityTableSeeder
 - php artisan db:seed --class=MarganetsClinics
 - php artisan db:seed --class=MarganetsCivilBudget
 - php artisan db:seed --class=MarganetsAfterSchool
