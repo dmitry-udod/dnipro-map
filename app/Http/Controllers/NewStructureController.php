@@ -3,24 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Traits\JsonHelpers;
-use App\Http\Requests\StoreUserClaim;
-use App\Repositories\ClaimRepository;
-use App\Repositories\StructureRepository;
+use App\Http\Requests\StoreNewStructureRequest;
+use App\Repositories\StructureRequestRepository;
 
 
 /**
- * @property ClaimRepository repository
+ * @property StructureRequestRepository repository
  */
-class ClaimController extends Controller
+class NewStructureController extends Controller
 {
     use JsonHelpers;
 
-    public function __construct(ClaimRepository $repository)
+    public function __construct(StructureRequestRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function create(StoreUserClaim $request, $city)
+    public function create(StoreNewStructureRequest $request, $city)
     {
         if ($this->repository->createFromUser(request()->except('_token'), $city)) {
             return $this->jsonMessage('Ваша скарга прийнята і буде розглянута найближчим часом.');

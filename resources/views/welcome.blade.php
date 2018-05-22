@@ -39,6 +39,8 @@
 
     @include('categories._modal')
     @include('claims._modal')
+    {{--@include('claims._create_structure_request_modal')--}}
+
     <div style="height:calc(100vh - 60px);">
         <google-map
                 city="{{ $city->name }}"

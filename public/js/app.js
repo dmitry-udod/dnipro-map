@@ -1850,6 +1850,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'google-map',
@@ -1866,14 +1886,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             resultLocation: null,
             infoWindow: null,
             categories: null,
-            imgPath: '/uploads/structures/'
+            imgPath: '/uploads/structures/',
+            newStructure: {
+                address: "",
+                latitude: "",
+                longitude: ""
+            }
         };
     },
     mounted: function mounted() {
         var element = document.getElementById(this.mapName);
         var options = {
             zoom: 14,
-            center: new google.maps.LatLng(48.466111, 35.025278)
+            center: new google.maps.LatLng(48.466111, 35.025278),
+            disableDoubleClickZoom: true
         };
 
         this.map = new google.maps.Map(element, options);
@@ -2044,6 +2070,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 this.map.fitBounds(bounds);
             }
+
+            var that = this;
+            var geocoder = this.geocoder;
+            google.maps.event.addListener(this.map, 'dblclick', function (event) {
+                $('#structure-request-modal').modal('show');
+                console.log('Get address');
+                geocoder.geocode({ 'location': event.latLng }, function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        that.newStructure.address = results[0].formatted_address;
+                        that.newStructure.longitude = event.latLng.lng();
+                        that.newStructure.latitude = event.latLng.lat();
+                        console.log('Found some results');
+                    } else {
+                        console.log(results);
+                        return;
+                    }
+                });
+            });
         },
         enableAutocomplete: function enableAutocomplete() {
             var _this3 = this;
@@ -2094,6 +2138,171 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             return type;
+        }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/NewStructureReqesut.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins__ = __webpack_require__("./resources/assets/js/mixins.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins__["a" /* default */]],
+
+    props: ['newStructure'],
+
+    data: function data() {
+        return {
+            structure: this.emptyStructure(),
+            geoLocationStatus: ''
+        };
+    },
+    mounted: function mounted() {},
+
+
+    methods: {
+        emptyStructure: function emptyStructure() {
+            return {
+                name: "",
+                address: "",
+                email: "",
+                description: "",
+                latitude: "",
+                longitude: "",
+                photos: [],
+                thumbs: []
+            };
+        },
+        filesChange: function filesChange(fileList) {
+            var that = this;
+            var reader = new FileReader();
+            // read the image file as a data URL.
+            reader.readAsDataURL(fileList[0]);
+            reader.onload = function (e) {
+                // get loaded data and render thumbnail.
+                that.structure.thumbs.push(e.target.result);
+            };
+            that.structure.photos.push(fileList[0]);
+        },
+        createStructureRequest: function createStructureRequest() {
+            var _this = this;
+
+            var formData = new FormData();
+            var i = 0;
+
+            formData.append('structure_id', document.getElementById('structure_id').value);
+            formData.append('name', this.structure.name);
+            formData.append('phone', this.structure.phone);
+            formData.append('email', this.structure.email);
+            formData.append('category', this.structure.category);
+            formData.append('description', this.structure.description);
+
+            Array.from(Array(this.structure.photos.length).keys()).map(function (x) {
+                i++;
+                formData.append('photos[]', _this.structure.photos[x], _this.structure.photos[x].name);
+            });
+
+            axios.post('/claims/create', formData).then(function (response) {
+                _this.structure = _this.newClaim();
+                $('#new-structure-modal').modal('hide');
+                _this.onSuccess(response.data.message);
+            }, this.onError);
+        },
+        removeFile: function removeFile(index) {
+            this.structure.photos.splice(index, 1);
+            this.structure.thumbs.splice(index, 1);
+        },
+        geoFindMe: function geoFindMe() {
+            if (!navigator.geolocation) {
+                this.geoLocationStatus = "Геолокацiя не пiдтримуєтся вашим браузером";
+                return;
+            }
+
+            this.geoLocationStatus = "Визначення…";
+
+            var that = this;
+            navigator.geolocation.getCurrentPosition(function (position) {
+                console.log(position);
+                that.geoLocationStatus = "";
+                output.innerHTML = '';
+                that.newStructure.latitude = position.coords.latitude;
+                that.newStructure.longitude = position.coords.longitude;
+            }, function () {
+                that.geoLocationStatus = "Неможливо отримати данi";
+            });
         }
     }
 });
@@ -6363,6 +6572,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/NewStructureReqesut.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.require {\n    color: red;\n    font-weight: bolder;\n}\n#find-me {\n    margin-top: 5px;\n    margin-bottom: 10px;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
@@ -38239,6 +38463,343 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3920ee5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/NewStructureReqesut.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.structure.name,
+                      expression: "structure.name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "name" },
+                  domProps: { value: _vm.structure.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.structure, "name", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group col-md-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.structure.email,
+                        expression: "structure.email"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", id: "phone" },
+                    domProps: { value: _vm.structure.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.structure, "email", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newStructure.latitude,
+                    expression: "newStructure.latitude"
+                  }
+                ],
+                attrs: { type: "hidden" },
+                domProps: { value: _vm.newStructure.latitude },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.newStructure, "latitude", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newStructure.longitude,
+                    expression: "newStructure.longitude"
+                  }
+                ],
+                attrs: { type: "hidden" },
+                domProps: { value: _vm.newStructure.longitude },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.newStructure, "longitude", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newStructure.address,
+                    expression: "newStructure.address"
+                  }
+                ],
+                staticClass: "form-control form-control-sm",
+                attrs: { rows: "3", id: "address" },
+                domProps: { value: _vm.newStructure.address },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.newStructure, "address", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success float-md-right",
+                  attrs: { id: "find-me" },
+                  on: { click: _vm.geoFindMe }
+                },
+                [_vm._v("Визначити моє мiсце знаходження")]
+              ),
+              _vm._v(" "),
+              _vm.geoLocationStatus
+                ? _c("p", { staticStyle: { color: "red" } }, [
+                    _vm._v(_vm._s(_vm.geoLocationStatus))
+                  ])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.structure.description,
+                    expression: "structure.description"
+                  }
+                ],
+                staticClass: "form-control form-control-sm",
+                attrs: { rows: "4", id: "description" },
+                domProps: { value: _vm.structure.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.structure, "description", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group" },
+              [
+                _vm._l(_vm.structure.thumbs, function(thumb, index) {
+                  return _c(
+                    "div",
+                    {
+                      staticClass: "form-group col-md-3",
+                      staticStyle: { float: "left" }
+                    },
+                    [
+                      _c("img", {
+                        staticStyle: { padding: "5px" },
+                        attrs: { width: "100", height: "75", src: thumb }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          on: {
+                            click: function($event) {
+                              _vm.removeFile(index)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "12",
+                                height: "12",
+                                viewBox: "0 0 8 8"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                staticStyle: { fill: "white" },
+                                attrs: {
+                                  d:
+                                    "M3 0c-.55 0-1 .45-1 1h-1c-.55 0-1 .45-1 1h7c0-.55-.45-1-1-1h-1c0-.55-.45-1-1-1h-1zm-2 3v4.81c0 .11.08.19.19.19h4.63c.11 0 .19-.08.19-.19v-4.81h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1v3.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5v-3.5h-1z"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "clearfix" }),
+                _vm._v(" "),
+                _vm.structure.thumbs.length < 4
+                  ? _c("div", [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticStyle: { display: "none" },
+                        attrs: {
+                          id: "photos",
+                          type: "file",
+                          name: "photos",
+                          accept: "image/jpg, image/jpeg, image/png, image/gif"
+                        },
+                        on: {
+                          change: function($event) {
+                            _vm.filesChange($event.target.files, "photos")
+                          }
+                        }
+                      })
+                    ])
+                  : _vm._e()
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row mb-0" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    attrs: { type: "submit" },
+                    on: { click: _vm.createStructureRequest }
+                  },
+                  [_vm._v("Надіслати данні")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "name" } }, [
+      _vm._v("ПІБ:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "phone" } }, [
+      _vm._v("Адреса електронної пошти:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "address" } }, [
+      _vm._v("Адреса:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "description" } }, [
+      _vm._v("Коментарі:"),
+      _c("span", { staticClass: "require" }, [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "photos" } }, [
+      _vm._v("Додати фото (не більше 4-х):\n                                "),
+      _c("br"),
+      _vm._v(" "),
+      _c("span", { staticClass: "upload-link" }, [_vm._v("завантажити")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3920ee5e", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-5400f3f7\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/AdditionalFields.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39737,9 +40298,74 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "google-map", attrs: { id: _vm.mapName } })
+  return _c("div", { staticClass: "google-map" }, [
+    _c("div", { staticClass: "google-map", attrs: { id: _vm.mapName } }),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade brown",
+        attrs: {
+          id: "structure-request-modal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "claim-modal",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered modal-lg",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                [
+                  _c("new-structure-request", {
+                    attrs: { "new-structure": _vm.newStructure }
+                  })
+                ],
+                1
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [
+        _vm._v("Заявка на внесення об'єкту на мапу")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -39747,6 +40373,33 @@ if (false) {
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-e7586288", module.exports)
   }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/NewStructureReqesut.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/NewStructureReqesut.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1d7ea32b", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NewStructureReqesut.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NewStructureReqesut.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ }),
@@ -51143,6 +51796,7 @@ Vue.component('structure', __webpack_require__("./resources/assets/js/components
 Vue.component('google-map', __webpack_require__("./resources/assets/js/components/GoogleMap.vue"));
 Vue.component('create-claim', __webpack_require__("./resources/assets/js/components/ClaimForm.vue"));
 Vue.component('additional-fields', __webpack_require__("./resources/assets/js/components/AdditionalFields.vue"));
+Vue.component('new-structure-request', __webpack_require__("./resources/assets/js/components/NewStructureReqesut.vue"));
 
 var app = new Vue({
   el: '#app'
@@ -51353,6 +52007,58 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-e7586288", Component.options)
   } else {
     hotAPI.reload("data-v-e7586288", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/NewStructureReqesut.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3920ee5e\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/components/NewStructureReqesut.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/NewStructureReqesut.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3920ee5e\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/NewStructureReqesut.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/NewStructureReqesut.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3920ee5e", Component.options)
+  } else {
+    hotAPI.reload("data-v-3920ee5e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

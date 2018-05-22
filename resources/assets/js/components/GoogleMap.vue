@@ -1,5 +1,25 @@
 <template>
-    <div class="google-map" :id="mapName"></div>
+    <div class="google-map">
+        <div class="google-map" :id="mapName"></div>
+        <!-- Structure Request Modal -->
+        <div class="modal fade brown" id="structure-request-modal" tabindex="-1" role="dialog" aria-labelledby="claim-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Заявка на внесення об'єкту на мапу</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <new-structure-request :new-structure="newStructure"></new-structure-request>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </template>
 
 <script>
@@ -27,6 +47,11 @@
                 infoWindow: null,
                 categories: null,
                 imgPath: '/uploads/structures/',
+                newStructure: {
+                    address: "",
+                    latitude: "",
+                    longitude: "",
+                }
             }
         },
 
@@ -35,6 +60,7 @@
             const options = {
                 zoom: 14,
                 center: new google.maps.LatLng(48.466111,35.025278),
+                disableDoubleClickZoom: true,
             };
 
             this.map = new google.maps.Map(element, options);
@@ -208,6 +234,24 @@
                     });
                     this.map.fitBounds(bounds);
                 }
+
+                const that = this;
+                const geocoder = this.geocoder;
+                google.maps.event.addListener(this.map, 'dblclick', function(event) {
+                    $('#structure-request-modal').modal('show');
+                    console.log('Get address');
+                    geocoder.geocode({'location': event.latLng}, function(results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            that.newStructure.address = results[0].formatted_address;
+                            that.newStructure.longitude =  event.latLng.lng();
+                            that.newStructure.latitude = event.latLng.lat();
+                            console.log('Found some results');
+                        } else {
+                            console.log(results);
+                            return;
+                        }
+                    });
+                });
             },
 
              enableAutocomplete() {

@@ -19,6 +19,7 @@ Vue.component('structure', require('./components/StructureForm.vue'));
 Vue.component('google-map', require('./components/GoogleMap.vue'));
 Vue.component('create-claim', require('./components/ClaimForm.vue'));
 Vue.component('additional-fields', require('./components/AdditionalFields.vue'));
+Vue.component('new-structure-request', require('./components/NewStructureReqesut.vue'));
 
 const app = new Vue({
     el: '#app'
