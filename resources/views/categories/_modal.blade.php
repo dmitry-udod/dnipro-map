@@ -24,7 +24,4 @@
             </div>
         </div>
     </div>
-    @php
-    session()->put('hide_category_modal', true)
-    @endphp
 </div>

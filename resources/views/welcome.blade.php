@@ -39,7 +39,6 @@
 
     @include('categories._modal')
     @include('claims._modal')
-    {{--@include('claims._create_structure_request_modal')--}}
 
     <div style="height:calc(100vh - 60px);">
         <google-map
@@ -58,9 +57,10 @@
 
     <script>
         @empty(session('hide_category_modal'))
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#categories').modal('show');
-        }, false);
+            document.addEventListener('DOMContentLoaded', function () {
+                $('#categories').modal('show');
+            }, false);
+            @php session()->put('hide_category_modal', true); @endphp
         @endempty
 
         function hideFilter() {
