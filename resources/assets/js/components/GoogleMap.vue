@@ -160,7 +160,9 @@
 
                 if (data.additional_fields) {
                     data.additional_fields.forEach((field) => {
-                        content += `<li>${this.fieldTitle(category, field.id)}: ${field.value}</li>`;
+                        if (field.value) {
+                            content += `<li>${this.fieldTitle(category, field.id)}: ${field.value}</li>`;
+                        }
                     });
                 }
 

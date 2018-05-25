@@ -63,7 +63,9 @@ class StructureRepository extends BaseRepository
         $entity->latitude = array_get($data, 'latitude');
         $entity->longitude = array_get($data, 'longitude');
         $entity->photos = array_get($data, 'photos', []);
+        $entity->director = array_get($data, 'director', '');
         $entity->is_active = !empty($data['is_active']);
+        $entity->has_problem = !empty($data['has_problem']);
         $entity->has_problem = !empty($data['has_problem']);
         $entity->is_free = !empty($data['is_free']);
         if (!empty($data['additional_fields'])) {

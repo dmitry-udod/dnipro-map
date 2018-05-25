@@ -44,6 +44,19 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                    <label for="latitude">Latitude</label>
+                                    <input id="latitude" class="form-control" v-model="structure.latitude">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="form-group">
+                                        <label for="longitude">Longitude</label>
+                                        <input id="longitude" class="form-control" v-model="structure.longitude">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
                                     <label for="category_id">Категорія<span class="require">*</span></label>
                                     <select id="category_id" class="form-control form-control-sm" v-model="structure.category_id">
                                         <option value="">Не обрано</option>
@@ -99,14 +112,20 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="owner">Власник</label>
                                     <input class="form-control form-control-sm" id="owner" v-model="structure.owner">
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <div class="form-group">
                                         <label for="renter">Орендар</label>
                                         <input type="text" class="form-control form-control-sm" id="renter" v-model="structure.renter">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <div class="form-group">
+                                        <label for="renter">Директор</label>
+                                        <input type="text" class="form-control form-control-sm" id="director" v-model="structure.director">
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +194,6 @@
                             </div>
                         </div>
 
-                        <input id="latitude" type="hidden" class="form-control" v-model="structure.latitude">
-                        <input id="longitude" type="hidden" class="form-control" v-model="structure.longitude">
                         <input id="zoom" type="hidden" class="form-control">
 
                         <div class="form-group row mb-0">
