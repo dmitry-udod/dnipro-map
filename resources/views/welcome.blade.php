@@ -52,7 +52,7 @@
 @endsection
 
 @section('js')
-    <script src="//developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="/js/markerclusterer.js"></script>
     <script src="//maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&language=uk&libraries=places"></script>
 
     <script>
