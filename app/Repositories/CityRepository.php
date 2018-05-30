@@ -8,6 +8,14 @@ use App\City;
 class CityRepository extends BaseRepository
 {
     /**
+     * CityRepository constructor.
+     */
+    public function __construct()
+    {
+        $this->model = City::class;
+    }
+
+    /**
      * Save entity
      *
      * @param array $data

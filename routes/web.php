@@ -37,3 +37,5 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 
     Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'Admin\StructureController@index')->name('home');
 });
+
+Route::get('/', 'HomeController@index')->name('select_city');

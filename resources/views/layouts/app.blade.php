@@ -10,7 +10,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Відкрита мапа - {{ $city->name  }}</title>
+    <title>Відкрита мапа - {{ isset($city->name) ? $city->name : 'обрати місто'  }}</title>
 
     <!-- Fonts -->
 
@@ -25,7 +25,9 @@
 </head>
 <body>
     <div id="app">
-        @include('navbar')
+        @if (isset($city))
+            @include('navbar')
+        @endif
         @yield('content')
     </div>
 

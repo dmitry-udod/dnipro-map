@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class BaseRepository
 {
     public $model;
-    
-    protected $order = 'DESC';
 
-    protected $orderBy = 'created_at';
+    public $order = 'DESC';
+
+    public $orderBy = 'created_at';
 
     /**
      * Get all entities
@@ -85,6 +85,18 @@ class BaseRepository
      */
     public function allActive()
     {
+        return $this->allActiveQuery()->get();
+    }
+
+    /**
+     * Get all active entities
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function allActiveOrderByName()
+    {
+        $this->orderBy = 'name';
+        $this->order = 'ASC';
         return $this->allActiveQuery()->get();
     }
 
