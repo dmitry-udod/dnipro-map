@@ -33,6 +33,8 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('claims', 'ClaimController');
             Route::post('/structures/upload', 'StructureController@upload');
             Route::post('/structures/upload-remove', 'StructureController@uploadRemove');
+
+            Route::get('/import', 'ImportController@index')->name('import.index');
 	    });
 
     Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'Admin\StructureController@index')->name('home');

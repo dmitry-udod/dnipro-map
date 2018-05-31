@@ -73,6 +73,9 @@
                                     <a class="dropdown-item" href="{{ route('admin.districts.index', $city->slug) }}">
                                         Райони
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('admin.import.index', $city->slug) }}">
+                                        Iмпорт даних
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
