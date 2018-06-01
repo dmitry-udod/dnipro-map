@@ -58,7 +58,8 @@
         mounted() {
             const element = document.getElementById(this.mapName);
             const options = {
-                zoom: 14,
+                zoom: 15,
+                maxZoom: 19,
                 center: new google.maps.LatLng(48.466111,35.025278),
                 disableDoubleClickZoom: true,
             };
