@@ -107,9 +107,10 @@
                     { name: 'Координати', value: 'coordinates' }
                 ],
                 nonRequiredColumns: [
-                    { name: 'Назва', value: 'name', isOptional:true },
-                    { name: 'Графiк роботи', value: 'working_hours', isOptional:true },
+                    { name: 'Власник', value: 'owner', isOptional:true },
                     { name: 'Вид дiяльностi', value: 'type', isOptional:true },
+                    { name: 'Графiк роботи', value: 'working_hours', isOptional:true },
+                    { name: 'Назва', value: 'name', isOptional:true },
                     { name: 'Нотатки', value: 'notes', isOptional:true },
                 ],
                 columns: [],

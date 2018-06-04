@@ -81,10 +81,17 @@ class ImportController extends BaseAdminController
                             'order' => '0',
                         ]);
                         $structures[$columnsIndex]['type_id'] = $type->id;
+                    } else  if (starts_with($row['column'], 'custom_')) {
+                        $id = str_replace('custom_', '', $row['column']);
+                        $structures[$columnsIndex]['additional_fields'][] = [
+                            'id' => $id,
+                            'name' => $row['data'][$columnsIndex],
+                            'value' => $column,
+                        ];
+
                     } else {
                         $structures[$columnsIndex][$row['column']] = $column;
                     }
-
                 }
             }
         }
