@@ -66,6 +66,7 @@ class StructureRepository extends BaseRepository
         $entity->director = array_get($data, 'director', '');
         $entity->is_active = !empty($data['is_active']);
         $entity->has_problem = !empty($data['has_problem']);
+        $entity->has_contract = array_get($data, 'has_contract', false);
         $entity->is_free = !empty($data['is_free']);
         if (!empty($data['additional_fields'])) {
             $entity->additional_fields = $data['additional_fields'];
