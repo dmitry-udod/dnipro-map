@@ -36,6 +36,11 @@ class ImportController extends BaseAdminController
         return view('admin.import.index', compact('cities', 'categories'));
     }
 
+    /**
+     * Process imported data and create new structures
+     *
+     * @return \Response
+     */
     public function saveData()
     {
         $cityId = request('city_id');
@@ -92,7 +97,7 @@ class ImportController extends BaseAdminController
                 $isSaved = $structuresRepository->save($structure);
                 if (! $isSaved) {
                     logger()->error("Cant save import structure", [$isSaved, $structure]);
-                    return $this->jsonError("Помилка при збереженнi. Адреса: {$structure['address']}");
+                    return $this->jsonError("Помилка при збереженнi. Адреса: {$structure['address']}", 500);
                 }
                 $newStructuresCounter++;
             }

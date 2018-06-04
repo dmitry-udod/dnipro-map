@@ -158,6 +158,7 @@
                 content += data.phone ? `<li>Телефон: ${data.phone}</li>` : '';
                 content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours.replace(/\|/g, '<br>')}</li>` : '';
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
+                content += data.notes ? `<li>Нотатки: ${data.notes}</li>` : '';
 
                 if (data.additional_fields) {
                     data.additional_fields.forEach((field) => {
