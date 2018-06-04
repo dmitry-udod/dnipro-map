@@ -19,8 +19,11 @@
 
         <br>
 
-        <xls-csv-parser required="false" :columns="columns" @on-validate="onValidate" :help="help"></xls-csv-parser>
+        <xls-csv-parser :columns="columns" @on-validate="onValidate" :help="help"></xls-csv-parser>
 
+        <div class="text-center">
+            <button v-if="results" @click="saveData" class="btn btn-success align-content-center">Створити об'экти</button>
+        </div>
 
         <br><br>
         <div class="results" v-if="results">
@@ -32,8 +35,13 @@
 
 <script>
     import { XlsCsvParser } from 'vue-xls-csv-parser';
+    import mixin from './../mixins';
+
     export default {
+        mixins: [mixin],
+
         name: 'ImportStructures',
+
         components: {
             XlsCsvParser,
         },
@@ -63,6 +71,12 @@
                     });
                     this.columns = this.requiredColumns.concat(this.nonRequiredColumns.concat(columnsFromCategory));
                 }
+            },
+
+            saveData() {
+                axios.post('/admin/import/save-data', this.request).then(response => {
+                    this.onSuccess(response.data.message);
+                }, this.onError);
             }
         },
 
@@ -93,12 +107,10 @@
                     { name: 'Координати', value: 'coordinates' }
                 ],
                 nonRequiredColumns: [
-                    { name: 'executor', value: 'executor', isOptional:true },
-                    { name: 'period', value: 'period', isOptional:true  },
-                    { name: 'Гарантія', value: 'warranty', isOptional:true  },
-                    { name: 'cost', value: 'cost', isOptional:true  },
-                    { name: 'Owner', value: 'owner', isOptional:true  },
-                    { name: 'Owner2', value: 'owner2', isOptional:true  },
+                    { name: 'Назва', value: 'name', isOptional:true },
+                    { name: 'Графiк роботи', value: 'working_hours', isOptional:true },
+                    { name: 'Вид дiяльностi', value: 'type', isOptional:true },
+                    { name: 'Нотатки', value: 'notes', isOptional:true },
                 ],
                 columns: [],
                 results: null,
