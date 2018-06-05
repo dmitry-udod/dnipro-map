@@ -132,7 +132,8 @@
                 const markerClusterer = new MarkerClusterer(map, this.googleMarkers, mcOptions);
 
                 this.autoCenter();
-                this.enableAutocomplete();
+                this.enableAutocomplete('search-input');
+                this.enableAutocomplete('search-input-mobile');
             },
 
             attachInfoWindow(data, marker) {
@@ -258,13 +259,14 @@
                 });
             },
 
-             enableAutocomplete() {
-                const queryInput = document.getElementById('search-input');
+             enableAutocomplete(id) {
+                const queryInput = document.getElementById(id);
                 const autocomplete = new google.maps.places.Autocomplete(queryInput);
                 autocomplete.bindTo('bounds', this.map);
                 autocomplete.addListener('place_changed', () => {
                     const place = autocomplete.getPlace();
                     $('#search-input').val(place.name);
+                    $('#search-input-mobile').val(place.name);
                     this.search();
                 });
             },

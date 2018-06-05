@@ -7,16 +7,21 @@
             </div>
         </a>
 
-        <div class="input-group col-4">
-            <input class="form-control mr-sm-2 w-50" type="search" placeholder="Пошук" aria-label="Пошук" autocomplete="off" id="search-input">
+        <div class="input-group col-4 ">
+            <input class="form-control mr-sm-2 w-50 d-none d-sm-block" type="search" placeholder="Пошук" aria-label="Пошук" autocomplete="off" id="search-input">
         </div>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml-auto">
+                <li class="d-block d-sm-none">
+                    <div class="input-group col-12 d-block">
+                        <input class="form-control w-100" type="search" placeholder="Пошук" aria-label="Пошук" autocomplete="off" id="search-input-mobile">
+                    </div>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="city-select" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Міста</a>
                     <div class="dropdown-menu" aria-labelledby="city-select">

@@ -15,7 +15,7 @@
     <!-- Fonts -->
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ mix('js_front/app.js') }}" defer></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
