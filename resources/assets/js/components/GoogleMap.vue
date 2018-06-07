@@ -12,7 +12,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <new-structure-request :new-structure="newStructure"></new-structure-request>
+                        <new-structure-request :new-structure="newStructure" :category-id="categoryId"></new-structure-request>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,7 @@
             'markersJson',
             'categoriesJson',
             'typesJson',
+            'categoryId',
         ],
         data() {
             return {

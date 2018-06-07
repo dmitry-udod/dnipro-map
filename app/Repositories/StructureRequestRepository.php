@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Claim;
+use App\StructureRequest;
 
 class StructureRequestRepository extends BaseRepository
 {
@@ -14,25 +14,30 @@ class StructureRequestRepository extends BaseRepository
     public function createFromUser(array $data, $citySlug)
     {
         $cityRepository = new CityRepository();
-        $structureRepository = new StructureRepository();
+        $categoryRepository = new CategoryRepository();
 
         $city = $cityRepository->findBySlug($citySlug);
-        $structure = $structureRepository->findByUuid($data['structure_id']);
 
-        $entity = new Claim();
+        if (empty($data['category_id'])) {
+            $category = (new CategoryRepository())->allActiveForCity($city)[0];
+        } else {
+            $category = $categoryRepository->find($data['category_id']);
+        }
+
+        $entity = new StructureRequest();
         $entity->name = $data['name'];
+        $entity->address = $data['address'];
+        $entity->latitude = $data['latitude'];
+        $entity->longitude = $data['longitude'];
         $entity->uuid = $this->generateUuid();
-        $entity->phone = $data['phone'];
         $entity->email = $data['email'];
-        $entity->claim_category_id = $data['category'];
         $entity->description = $data['description'];
         $entity->city_id = $city->id;
-        $entity->structure_id = $structure->id;
-        $entity->category_id = $structure->category_id;
+        $entity->category_id = $category->id;
         $entity->save();
 
         if ($entity->id && !empty($data['photos'])) {
-            $entity->photos = $this->uploadFiles($data['photos'], "claims/{$entity->id}");
+            $entity->photos = $this->uploadFiles($data['photos'], "structure_requests/{$entity->id}");
         }
 
         return $entity->save();

@@ -22,9 +22,9 @@ class NewStructureController extends Controller
     public function create(StoreNewStructureRequest $request, $city)
     {
         if ($this->repository->createFromUser(request()->except('_token'), $city)) {
-            return $this->jsonMessage('Ваша скарга прийнята і буде розглянута найближчим часом.');
+            return $this->jsonMessage('Ваш запит прийнято і буде розглянута найближчим часом.');
         }
 
-        return $this->jsonError("Помилка при створеннi скарги", 500);
+        return $this->jsonError("Помилка при створеннi запиту", 500);
     }
 }

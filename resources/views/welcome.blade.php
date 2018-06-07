@@ -42,6 +42,7 @@
 
     <div style="height:calc(100vh - 60px);">
         <google-map
+                category-id="{{ optional($category)->id }}"
                 city="{{ $city->name }}"
                 name="structures"
                 markers-json="{{ base64_encode($entities->toJson()) }}"

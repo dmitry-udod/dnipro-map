@@ -11,8 +11,8 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="form-group">
-                                    <label for="phone">Адреса електронної пошти:<span class="require">*</span></label>
-                                    <input type="text" class="form-control" id="phone" v-model="structure.email">
+                                    <label for="email">Адреса електронної пошти:<span class="require">*</span></label>
+                                    <input class="form-control" id="email" type="email" v-model="structure.email" placeholder="some@mail.com">
                                 </div>
                             </div>
                         </div>
@@ -44,11 +44,11 @@
                             <div class="clearfix"></div>
 
                             <div v-if="structure.thumbs.length < 4">
-                                <label for="photos">Додати фото (не більше 4-х):
+                                <label for="photos-new-structure">Додати фото (не більше 4-х):
                                     <br>
                                     <span class="upload-link">завантажити</span>
                                 </label>
-                                <input id="photos" type="file" name="photos" @change="filesChange($event.target.files, 'photos');" style="display: none;"  accept="image/jpg, image/jpeg, image/png, image/gif">
+                                <input id="photos-new-structure" type="file" name="photos" @change="filesChangeNewStructure($event.target.files, 'photos');" style="display: none;"  accept="image/jpg, image/jpeg, image/png, image/gif">
                             </div>
                         </div>
 
@@ -71,7 +71,8 @@
         mixins: [mixin],
 
         props: [
-            'newStructure'
+            'newStructure',
+            'categoryId',
         ],
 
         data() {
@@ -99,7 +100,8 @@
                 };
             },
 
-            filesChange(fileList) {
+            filesChangeNewStructure(fileList) {
+                console.log('Attach file');
                 const that = this;
                 const reader = new FileReader();
                 // read the image file as a data URL.
@@ -115,12 +117,15 @@
                 const formData = new FormData();
                 let i = 0;
 
-                formData.append('structure_id', document.getElementById('structure_id').value);
                 formData.append('name', this.structure.name);
                 formData.append('phone', this.structure.phone);
                 formData.append('email', this.structure.email);
                 formData.append('category', this.structure.category);
                 formData.append('description', this.structure.description);
+                formData.append('address', this.newStructure.address);
+                formData.append('latitude', this.newStructure.latitude);
+                formData.append('longitude', this.newStructure.longitude);
+                formData.append('category_id', this.categoryId);
 
                 Array
                     .from(Array(this.structure.photos.length).keys())
@@ -129,9 +134,9 @@
                         formData.append('photos[]', this.structure.photos[x], this.structure.photos[x].name);
                     });
 
-                axios.post('/claims/create', formData).then(response => {
-                    this.structure = this.newClaim();
-                    $('#new-structure-modal').modal('hide');
+                axios.post('/new-structures/create', formData).then(response => {
+                    this.structure = this.emptyStructure();
+                        $('#structure-request-modal').modal('hide');
                     this.onSuccess(response.data.message);
                 }, this.onError);
             },

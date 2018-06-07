@@ -87,7 +87,7 @@ class CategoryRepository extends BaseRepository
 
     public function findBySlug($slug)
     {
-        return Category::where('is_active', true)->where('slug', $slug)->get();
+        return Category::where('is_active', true)->where('slug', $slug)->first();
     }
 
     public function findByCityAndSlugOrCreate(City $city, array $data)
