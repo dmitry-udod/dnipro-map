@@ -15,7 +15,7 @@
                             <div class="form-group col-md-6">
                                 <div class="form-group">
                                     <label for="phone">Контактний телефон:<span class="require">*</span></label>
-                                    <input type="text" class="form-control" id="phone" v-model="claim.phone">
+                                    <input type="tel" class="form-control" id="phone" v-model="claim.phone">
                                 </div>
                             </div>
                         </div>

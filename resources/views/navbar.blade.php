@@ -8,7 +8,7 @@
         </a>
 
         <div class="input-group col-4 ">
-            <input class="form-control mr-sm-2 w-50 d-none d-sm-block" type="search" placeholder="Пошук" aria-label="Пошук" autocomplete="off" id="search-input">
+            <input class="form-control mr-sm-2 w-50 d-none d-sm-block" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input">
         </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="d-block d-sm-none">
                     <div class="input-group col-12 d-block">
-                        <input class="form-control w-100" type="search" placeholder="Пошук" aria-label="Пошук" autocomplete="off" id="search-input-mobile">
+                        <input class="form-control w-100" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input-mobile">
                     </div>
                 </li>
                 <li class="nav-item dropdown">

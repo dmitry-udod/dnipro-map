@@ -133,7 +133,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="phone">Телефон</label>
-                                    <input class="form-control form-control-sm" id="phone" v-model="structure.phone">
+                                    <input type="tel" class="form-control form-control-sm" id="phone" v-model="structure.phone">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="form-group">
