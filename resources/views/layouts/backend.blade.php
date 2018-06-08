@@ -46,6 +46,12 @@
                                     <span class="badge badge-info">{{ \App\Claim::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.structureRequests.index', $city->slug) }}">
+                                    Запити
+                                    <span class="badge badge-success">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Керування сайтом <span class="caret"></span>

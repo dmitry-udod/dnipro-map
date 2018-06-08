@@ -33,7 +33,7 @@ class StructureRequest extends Model
 
         foreach ($this->photos as $photo) {
             $photo = json_decode($photo, true);
-            $html .= '<img src="/uploads/claims/' . $this->id . '/' .$photo['name'] . '" width="100" height="75" style="border: 1px solid #ebebeb; margin:5px">';
+            $html .= '<img src="/uploads/structure_requests/' . $this->id . '/' .$photo['name'] . '" width="100" height="75" style="border: 1px solid #ebebeb; margin:5px">';
         }
 
         return $html;

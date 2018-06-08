@@ -32,6 +32,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('districts', 'DistrictController');
 		    Route::resource('structures', 'StructureController');
 		    Route::resource('claims', 'ClaimController');
+		    Route::resource('structureRequests', 'StructureRequestController');
 //		    Route::resource('new-structures', 'NewStructureController');
             Route::post('/structures/upload', 'StructureController@upload');
             Route::post('/structures/upload-remove', 'StructureController@uploadRemove');
