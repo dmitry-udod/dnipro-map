@@ -140,6 +140,26 @@ class StructureRepository extends BaseRepository
             $q->whereIn('type_id', $filters['type_ids']);
         }
 
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $q->where(function ($query) use ($search) {
+                $query
+                    ->orWhere('name', 'ILIKE', "%$search%")
+                    ->orWhere('uuid', 'ILIKE', "%$search%")
+                    ->orWhere('address', 'ILIKE', "%$search%")
+                    ->orWhere('owner', 'ILIKE', "%$search%")
+                    ->orWhere('director', 'ILIKE', "%$search%")
+                    ->orWhere('renter', 'ILIKE', "%$search%")
+                    ->orWhere('phone', 'ILIKE', "%$search%")
+                    ->orWhere('url', 'ILIKE', "%$search%")
+                    ->orWhere('notes', 'ILIKE', "%$search%")
+                ;
+            });
+
+//            $q->where('additional_fields', 'ILIKE', "%$search%");
+        }
+
         return $q->get();
     }
 

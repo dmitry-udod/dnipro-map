@@ -33,11 +33,20 @@ class HomeController extends Controller
             return view('select_city', compact('cities'));
         }
 
-        $filters = ['type_ids' => request('types')];
+        $viewName = 'welcome';
+        $filters = ['type_ids' => request('types'), 'search' => request('q')];
         $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category, $filters));
         $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
         $category = (new CategoryRepository())->findBySlug($category);
 
-        return view('welcome', compact('entities', 'types', 'category'));
+        if (! $category) {
+            $category = (new CategoryRepository())->find($entities[0]->category_id);
+        }
+
+        if (request()->routeIs('main_list')) {
+            $viewName = 'list';
+        }
+
+        return view($viewName, compact('entities', 'types', 'category'));
     }
 }

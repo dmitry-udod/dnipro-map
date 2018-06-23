@@ -40,4 +40,9 @@ class Structure extends Model
     {
         return Carbon::parse($this->created_at)->format('d.m.Y H:i');
     }
+
+    public function getTypeAsTextAttribute()
+    {
+        return optional(Type::find($this->type_id))->name;
+    }
 }
