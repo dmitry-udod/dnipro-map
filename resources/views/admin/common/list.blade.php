@@ -62,7 +62,7 @@
                         </tbody>
                     </table>
 
-                    {{ $entities->links() }}
+                    {{ $entities->appends(['q' => request('q')])->links() }}
                 </div>
             </div>
         </div>
