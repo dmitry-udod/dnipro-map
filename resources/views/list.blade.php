@@ -37,11 +37,11 @@
                     {!! $entity->working_hours ?  "<li>Графiк роботи: $entity->working_hours</li>" : '' !!}
                     {!! $entity->url ?  "<li>Посилання: $entity->url</li>" : '' !!}
                     {!! $entity->notes ?  "<li>Нотатки: $entity->notes</li>" : '' !!}
-                    @if (!empty($entity->additional_fields))
+                    @if (!empty($entity->additional_fields) && !empty($category->additional_fields))
                         @foreach($entity->additional_fields as $entityField)
                             @foreach($category->additional_fields as $categoryField)
                                 @if ($categoryField['id'] === $entityField['id'])
-                                    <li>{{ $categoryField['name'] }}: {{ $entityField['name'] }}</li>
+                                    <li>{{ $categoryField['name'] }}: {{ $entityField['value'] }}</li>
                                     @continue
                                 @endif
                             @endforeach
