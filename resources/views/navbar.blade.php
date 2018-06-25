@@ -39,7 +39,11 @@
                     <a class="nav-link dropdown-toggle" href="#" id="city-select" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Міста</a>
                     <div class="dropdown-menu" aria-labelledby="city-select">
                         @foreach(\App\City::orderBy('name')->get() as $cityList)
-                            <a class="dropdown-item" href="{{ route('main', $cityList->slug) }}">{{ $cityList->name }}</a>
+                            @if ($cityList->slug === 'dnipro')
+                                <a class="dropdown-item" href="https://mapa.dniprorada.gov.ua">{{ $cityList->name }}</a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('main', $cityList->slug) }}">{{ $cityList->name }}</a>
+                            @endif
                         @endforeach
                     </div>
                 </li>

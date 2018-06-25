@@ -12,7 +12,11 @@
                         @foreach($cities as $c)
                             <li class="col-md-6">
                                 <div class="row">
-                                    <a href="{{ route('main', $c->slug) }}">{{ $c->name }}</a>
+                                    @if ($c->slug === 'dnipro')
+                                        <a href="https://mapa.dniprorada.gov.ua">{{ $c->name }}</a>
+                                    @else
+                                        <a href="{{ route('main', $c->slug) }}">{{ $c->name }}</a>
+                                    @endif
                                 </div>
                             </li>
                         @endforeach
