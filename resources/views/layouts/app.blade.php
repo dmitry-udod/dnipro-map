@@ -22,9 +22,9 @@
 
     @yield('css')
 
-    {!! env('GOOGLE_TAG_MANAGER', '') !!}
 </head>
 <body>
+    {!! env('GOOGLE_TAG_MANAGER', '') !!}
     <div id="app">
         @if (isset($city))
             @include('navbar')
