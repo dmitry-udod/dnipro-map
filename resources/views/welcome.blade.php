@@ -1,95 +1,72 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
+    <div class="filter container d-flex">
+        <div class="row justify-content-center align-self-center">
+            <button class="btn btn-success mobile-filter" type="button" onclick="hideFilter();">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+            </button>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+            @if (! $types->isEmpty())
+            <div class="filter-wrapper">
+                <form action="" class="filter-form">
+                    <div class="scroll-box">
+                        <div class="form-group region">
+                            <h5>Вид діяльності <em></em></h5>
+                            <div class="slide-block">
+                                @foreach($types as $type)
+                                <div class="form-check">
+                                    <div class="color-box" style="background:{{ $type->color }};"></div>
+                                    <input name="types[]" type="checkbox" class="form-check-input"
+                                           id="type{{ $type->id }}"
+                                           value="{{ $type->id }}"
+                                           {{ in_array($type->id, array_get(request(), 'types', [])) ? 'checked' : '' }}
+                                    >
+                                    <label class="form-check-label" for="type{{ $type->id }}">{{ $type->name }}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit">Показати</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+            @endif
         </div>
-    </body>
-</html>
+    </div>
+
+    @include('categories._modal')
+    @include('claims._modal')
+
+    <div style="height:calc(100vh - 60px);">
+        <google-map
+                category-id="{{ optional($category)->id }}"
+                city="{{ $city->name }}"
+                name="structures"
+                markers-json="{{ base64_encode($entities->toJson()) }}"
+                categories-json="{{ base64_encode(\App\Http\Resources\Category::collection($categories)->toJson()) }}"
+                types-json="{{ base64_encode($types->toJson()) }}"
+        ></google-map>
+    </div>
+@endsection
+
+@section('js')
+    <script src="/js/markerclusterer.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&language=uk&libraries=places"></script>
+
+    <script>
+        @empty(session('hide_category_modal'))
+            document.addEventListener('DOMContentLoaded', function () {
+                $('#categories').modal('show');
+            }, false);
+            @php session()->put('hide_category_modal', true); @endphp
+        @endempty
+
+        function hideFilter() {
+            $('.mobile-filter').toggle();
+            $('.filter-wrapper').toggle();
+        }
+    </script>
+@endsection

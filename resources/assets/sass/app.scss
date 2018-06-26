@@ -1,6 +1,6 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
 @import "variables";
@@ -11,4 +11,117 @@
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.blue {
+  .modal-header {
+    background: #008cff;
+    color: #fff;
+    border-radius: 0;
+  }
+
+  .modal-content {
+    min-height: 200px;
+  };
+
+  .categories-modal {
+    li {
+      float: left;
+      margin-bottom: 10px;
+    }
+
+    img {
+      float: left;
+      width: 30px;
+      height: 30px;
+    }
+
+    a {
+      margin-top: 3px;
+    }
+  }
+}
+
+.brown {
+  .modal-header {
+    background: #703c30;
+    color: #fff;
+    border-radius: 0;
+  }
+}
+
+.filter {
+  right: 0;
+  position: absolute;
+  width: 255px;
+  font-size: 12px;
+  height: calc(100vh - 60px);
+
+  form {
+    min-width: 255px;
+    background-color: #fff;
+    position: relative;
+    z-index: 6;
+    .scroll-box {
+      padding: 20px;
+    }
+
+    .form-check {
+      label {
+        margin-top:2px;
+        cursor:pointer;
+      }
+    }
+  }
+
+  .color-box {
+    width: 12px;
+    height: 13px;
+    border: 1px solid #000;
+    /* margin-right: 20px; */
+    /* vertical-align: middle; */
+    border-radius: 8px;
+    margin-left: -35px;
+    position: absolute;
+    top: 4px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .filter-wrapper {
+    display: none;
+  }
+  .filter {
+    width: auto;
+  }
+  .mobile-filter {
+    //background-color: #fff;
+    z-index: 6;
+    margin-right:5px;
+    visibility: visible;
+  }
+  //
+  //.mobile-btn {
+  //  display: block;
+  //  background-color: #008cff;
+  //  color: #fff
+  //}
+}
+
+.upload-link {
+  cursor: pointer;
+  color: green;
+  text-decoration: underline;
+}
+
+.city-hash {
+  font-size: 24px;
+  color: #fff;
+  float: left;
+  line-height: 1;
+
+  div {
+    font-size: 10px;
+    text-align: right;
+  }
 }

@@ -15,7 +15,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('structure', require('./components/StructureForm.vue'));
+Vue.component('google-map', require('./components/GoogleMap.vue'));
+Vue.component('create-claim', require('./components/ClaimForm.vue'));
+Vue.component('additional-fields', require('./components/AdditionalFields.vue'));
+Vue.component('new-structure-request', require('./components/NewStructureReqesut.vue'));
+Vue.component('import-csv', require('./components/ImportCsv.vue'));
 
 const app = new Vue({
     el: '#app'
