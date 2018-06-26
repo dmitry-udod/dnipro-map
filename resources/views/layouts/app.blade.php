@@ -22,6 +22,7 @@
 
     @yield('css')
 
+    {!! env('GOOGLE_TAG_MANAGER', '') !!}
 </head>
 <body>
     <div id="app">
