@@ -13,6 +13,7 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - composer self-update
   - composer install --no-interaction
+  - php artisan migrate
   - cp .env.travis .env.testing
 
 script:
