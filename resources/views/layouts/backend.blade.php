@@ -43,13 +43,13 @@
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.claims.index', $city->slug) }}">Скарги
-                                    <span class="badge badge-info">{{ \App\Claim::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
+                                    <span class="badge badge-danger">{{ \App\Claim::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.structureRequests.index', $city->slug) }}">
                                     Запити
-                                    <span class="badge badge-success">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
+                                    <span class="badge badge-info">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>
                             </li>
                             <li class="nav-item dropdown">

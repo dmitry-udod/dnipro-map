@@ -59,6 +59,7 @@
             ],
         ],
         'actions' => [
+            'process'
         ]
     ])
 @endsection

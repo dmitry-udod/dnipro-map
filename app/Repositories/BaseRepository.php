@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BaseRepository
@@ -12,6 +13,8 @@ class BaseRepository
     public $order = 'DESC';
 
     public $orderBy = 'created_at';
+
+    protected $searchFields = [];
 
     /**
      * Get all entities
@@ -126,7 +129,31 @@ class BaseRepository
         );
     }
 
+
     /**
+     * Search entities for specific params
+     *
+     * @param Builder $q
+     * @return Builder
+     */
+    protected function search($q)
+    {
+        $search = request('q');
+        if (count($this->searchFields) && $search) {
+            $fields = $this->searchFields;
+            $q->where(function ($query) use ($search, $fields) {
+                foreach ($fields as $field) {
+                    $query->orWhere($field, 'ILIKE', "%$search%");
+                }
+            });
+        }
+
+        return $q;
+    }
+
+    /**
+     * Upload Files
+     *
      * @param UploadedFile $file
      * @param $context
      * @return string

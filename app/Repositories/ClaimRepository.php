@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Claim;
+use App\Mail\UserCreatedClaim;
 
 class ClaimRepository extends BaseRepository
 {
@@ -34,6 +35,8 @@ class ClaimRepository extends BaseRepository
         if ($entity->id && !empty($data['photos'])) {
             $entity->photos = $this->uploadFiles($data['photos'], "claims/{$entity->id}");
         }
+
+        \Mail::to($data['email'])->send(new UserCreatedClaim($entity));
 
         return $entity->save();
     }

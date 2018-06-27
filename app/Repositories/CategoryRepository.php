@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 
 class CategoryRepository extends BaseRepository
 {
+    protected $searchFields = ['name'];
+
     /**
      * CategoryRepository constructor.
      */
@@ -26,12 +28,14 @@ class CategoryRepository extends BaseRepository
 	public function all()
 	{
 		$user = auth()->user();
-		$q = Category::orderBy('order');
+		$q = Category::orderBy('id', 'DESC');
 
 		if ($user->isAdmin()) {
 			$cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
 			$q->whereIn('city_id', $cities);
 		}
+
+        $q = $this->search($q);
 
 		return $q;
 	}

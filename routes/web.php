@@ -17,7 +17,12 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
     Route::get('/', 'HomeController@index')->name('main');
     Route::get('/categories/{slug}', 'HomeController@index')->name('categories')->where(['slug' => '[a-zA-Z0-9_-]+']);
     Route::get('/list/categories/{slug}', 'HomeController@index')->name('main_list')->where(['slug' => '[a-zA-Z0-9_-]+']);
+
+    // User Claims
     Route::post('/claims/create', 'ClaimController@create')->name('create_claim');
+    Route::get('/claims/check-status/{uuid}', 'ClaimController@checkStatus')->name('claim_check_status');
+
+    // User Requests
     Route::post('/new-structures/create', 'NewStructureController@create')->name('create_structure_request');
 
     // Admin area
@@ -40,6 +45,10 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 
             Route::get('/import', 'ImportController@index')->name('import.index');
             Route::post('/import/save-data', 'ImportController@saveData')->name('import.save_data');
+
+            Route::get('/emails/test', function() {
+                return  new App\Mail\UserCreatedClaim(\App\Claim::first());
+            });
 	    });
 
     Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'Admin\StructureController@index')->name('home');

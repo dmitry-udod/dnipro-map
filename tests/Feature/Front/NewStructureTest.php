@@ -28,7 +28,7 @@ class NewStructureTest extends TestCase
     }
 
     /** @test */
-    public function create_claim_from_user()
+    public function create_structure_from_user()
     {
         $this->entity['category_id'] = $this->createCategory()->id;
         $this->post($this->route('/new-structures/create'), $this->entity);

@@ -3,9 +3,10 @@
 namespace Tests\Feature\Front;
 
 use App\Claim;
+use App\Mail\UserCreatedClaim;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ClaimTest extends TestCase
@@ -29,10 +30,14 @@ class ClaimTest extends TestCase
     /** @test */
     public function create_claim_from_user()
     {
+        Mail::fake();
+
         $structure = $this->createStructure();
         $this->entity['structure_id'] = $structure->uuid;
         $this->post($this->route('/claims/create'), $this->entity);
         $this->assertCount(1, Claim::all());
         // ToDo: Check uploaded files /uploads/claims/1
+
+        Mail::assertSent(UserCreatedClaim::class, 1);
     }
 }

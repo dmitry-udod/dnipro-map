@@ -24,10 +24,7 @@ class StructureRepository extends BaseRepository
             $q->whereIn('city_id', $cities);
         }
 
-        $search = request('q');
-        if ($search) {
-            $q = $this->search($q, $search);
-        }
+        $q = $this->search($q);
 
         return $q;
     }
@@ -157,20 +154,24 @@ class StructureRepository extends BaseRepository
         return Structure::where('uuid', $uuid)->firstOrFail();
     }
 
-    private function search($q, $search)
+    protected function search($q)
     {
-        return $q->where(function ($query) use ($search) {
-            $query
-                ->orWhere('name', 'ILIKE', "%$search%")
-                ->orWhere('uuid', 'ILIKE', "%$search%")
-                ->orWhere('address', 'ILIKE', "%$search%")
-                ->orWhere('owner', 'ILIKE', "%$search%")
-                ->orWhere('director', 'ILIKE', "%$search%")
-                ->orWhere('renter', 'ILIKE', "%$search%")
-                ->orWhere('phone', 'ILIKE', "%$search%")
-                ->orWhere('url', 'ILIKE', "%$search%")
-                ->orWhere('notes', 'ILIKE', "%$search%")
-            ;
-        });
+        $search = request('q');
+        if ($search) {
+            return $q->where(function ($query) use ($search) {
+                $query
+                    ->orWhere('name', 'ILIKE', "%$search%")
+                    ->orWhere('uuid', 'ILIKE', "%$search%")
+                    ->orWhere('address', 'ILIKE', "%$search%")
+                    ->orWhere('owner', 'ILIKE', "%$search%")
+                    ->orWhere('director', 'ILIKE', "%$search%")
+                    ->orWhere('renter', 'ILIKE', "%$search%")
+                    ->orWhere('phone', 'ILIKE', "%$search%")
+                    ->orWhere('url', 'ILIKE', "%$search%")
+                    ->orWhere('notes', 'ILIKE', "%$search%");
+            });
+        }
+
+        return $q;
     }
 }

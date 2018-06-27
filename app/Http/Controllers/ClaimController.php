@@ -28,4 +28,13 @@ class ClaimController extends Controller
 
         return $this->jsonError("Помилка при створеннi скарги", 500);
     }
+
+    public function checkStatus()
+    {
+        if ($this->repository->createFromUser(request()->except('_token'), $city)) {
+            return $this->jsonMessage('Ваша скарга прийнята і буде розглянута найближчим часом.');
+        }
+
+        return $this->jsonError("Помилка при створеннi скарги", 500);
+    }
 }
