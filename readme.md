@@ -1,8 +1,6 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+<a href="https://travis-ci.org/dmitry-udod/dnipro-map.svg?branch=master"><img src="https://travis-ci.org/dmitry-udod/dnipro-map.svg?branch=master" alt="Build Status"></a>
 </p>
 
 ## Requirements
@@ -13,6 +11,7 @@
 ## Install
 
 - composer install
+- php artisan migrate
 - npm install
 - npm run production
 - Setup your web server (https://laravel.com/docs/5.6/deployment#server-configuration)
