@@ -2,8 +2,6 @@
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
@@ -12,9 +10,15 @@
 - PHP >= 7.1
 - PostgreSQL >= 9.5
 
-## About Laravel
+## Install
 
 - composer install
+- npm install
+- npm run production
+- Setup your web server (https://laravel.com/docs/5.6/deployment#server-configuration)
+
+#### Run seeds (not required) 
+
 - php artisan db:seed --class=CityTableSeeder
 - php artisan db:seed --class=MarganetsClinics
 - php artisan db:seed --class=MarganetsCivilBudget
@@ -23,6 +27,4 @@
 - php artisan db:seed --class=MarganetsKindergardens
 - php artisan db:seed --class=MarganetsTempConstructions
 
-- npm install
-- npm run production
 
