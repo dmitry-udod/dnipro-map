@@ -39,7 +39,7 @@ class HomeController extends Controller
         $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
         $category = (new CategoryRepository())->findBySlug($category);
 
-        if (! $category) {
+        if (! $category && ! $entities->isEmpty()) {
             $category = (new CategoryRepository())->find($entities[0]->category_id);
         }
 

@@ -61,9 +61,8 @@ class AdminUserTest extends TestCase
     /** @test */
     public function user_update()
     {
-        $this->markTestSkipped('Need to fix');
         $entity = $this->asAdmin();
-        $this->entity['name'] = 'Poplavskii';
+        $entity['name'] = 'Poplavskii';
         $this->superadmin()->put($this->route('/admin/users/' . $entity->id), $this->entity)->assertRedirect();
 
         $this->superadmin()->get($this->route('/admin/users'))->assertSee($this->entity['name']);
