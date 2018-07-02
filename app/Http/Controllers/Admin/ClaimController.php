@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Claim;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreClaim;
 use App\Repositories\ClaimRepository;
 
 class ClaimController extends BaseAdminController
@@ -13,5 +13,19 @@ class ClaimController extends BaseAdminController
         $this->model = Claim::class;
         $this->repository = $repository;
         parent::__construct();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\City  $city
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(StoreClaim $request, $city,  $id)
+    {
+        $this->repository->save($request->except('_token'), $id);
+
+        return $this->redirectToListWithFlash();
     }
 }

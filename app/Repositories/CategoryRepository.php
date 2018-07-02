@@ -56,6 +56,7 @@ class CategoryRepository extends BaseRepository
         $entity->city_id  = (int) $data['city_id'];
         $entity->is_active = !empty($data['is_active']);
         $entity->order = $data['order'];
+        $entity->responsible_user_id = array_get($data, 'responsible_user_id');
         $entity->user_can_create_claims = !empty($data['user_can_create_claims']);
 
         if (!empty($data['additional_fields'])) {

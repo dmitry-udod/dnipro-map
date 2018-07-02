@@ -2,11 +2,14 @@
 
 namespace Tests;
 
+use App\Claim;
+use App\Repositories\ClaimRepository;
 use App\Repositories\StructureRepository;
 use App\Structure;
 use App\User;
 use App\City;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Mail;
 use Tests\Feature\AdminStructureTest;
 
 abstract class TestCase extends BaseTestCase
@@ -18,6 +21,9 @@ abstract class TestCase extends BaseTestCase
     	return "http://$city.localhost{$url}";
     }
 
+    /**
+     * @return User
+     */
     public function asAdmin()
     {
         $data = [
@@ -112,6 +118,7 @@ abstract class TestCase extends BaseTestCase
         $entity->is_active = true;
         $entity->city_id = $this->createCity()->id;
         $entity->logo = '{"path": "/photo.jpg"}';
+        $entity->responsible_user_id = $this->asAdmin()->id;
         $entity->save();
 
         return $entity;
@@ -159,5 +166,31 @@ abstract class TestCase extends BaseTestCase
 
 
         return Structure::first();
+    }
+
+    /**
+     * Create user claim
+     *
+     * @return Claim
+     */
+    protected function createClaim()
+    {
+        Mail::fake();
+
+        $structure = $this->createStructure();
+
+        $data = [
+            'name' => 'Dima Udod',
+            'phone' => '+380938300000',
+            'email' => 'reedwalter24@gmail.com',
+            'category' => 1,
+            'description'  => 'Very bad place',
+            'structure_id'  => $structure->uuid,
+        ];
+
+        $claimRepository = new ClaimRepository();
+        $claimRepository->createFromUser($data, $this->createCity()->slug);
+
+        return Claim::first();
     }
 }

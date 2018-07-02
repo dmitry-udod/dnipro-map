@@ -3,6 +3,7 @@
 namespace Tests\Feature\Front;
 
 use App\Claim;
+use App\Mail\ClaimCreatedNotifyAdmin;
 use App\Mail\UserCreatedClaim;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -39,5 +40,6 @@ class ClaimTest extends TestCase
         // ToDo: Check uploaded files /uploads/claims/1
 
         Mail::assertSent(UserCreatedClaim::class, 1);
+        Mail::assertSent(ClaimCreatedNotifyAdmin::class, 1);
     }
 }

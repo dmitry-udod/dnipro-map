@@ -16,6 +16,12 @@
                 'values' => $user->citiesForDropDown(),
             ],
             [
+                'name' => 'responsible_user_id',
+                'title' => 'Вiдповiдальна особа',
+                'type' => 'select',
+                'values' => $user->responsibleUsersForDropDown(),
+            ],
+            [
                 'name' => 'is_active',
                 'title' => 'Активна',
                 'type' => 'checkbox',
@@ -28,6 +34,7 @@
                         [
                 'name' => 'order',
                 'title' => 'Порядок',
+                'default' => 0,
             ],
             [
                 'name' => 'logo',

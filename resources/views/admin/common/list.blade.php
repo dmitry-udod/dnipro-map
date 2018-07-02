@@ -10,17 +10,18 @@
                                 <path d="M3 0v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2z" style="fill:white" />
                             </svg> Додати
                         </a>
-
-                        @if(request('q'))
-                            <a class="mr-3 btn btn-sm btn-primary float-right" href="{{ route("admin.$viewName.index", $city->slug) }}">X</a>
-                        @endif
-
-                        <div class="col-3 float-right">
-                            <form>
-                                <input type="search" class="form-control form-control-sm" placeholder="Пошук..." name="q" value="{{ request('q') }}">
-                            </form>
-                        </div>
                     @endif
+
+                    @if(request('q'))
+                        <a class="mr-3 btn btn-sm btn-primary float-right" href="{{ route("admin.$viewName.index", $city->slug) }}">X</a>
+                    @endif
+
+                    <div class="col-3 float-right">
+                        <form>
+                            <input type="search" class="form-control form-control-sm" placeholder="Пошук..." name="q" value="{{ request('q') }}">
+                        </form>
+                    </div>
+
                     @yield('buttons')
                 </div>
                 <div class="card-body">

@@ -30,6 +30,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRoles($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read string $city
+ * @property-read string $role
  */
 class User extends Authenticatable
 {
@@ -115,6 +117,21 @@ class User extends Authenticatable
         return $q->pluck('name', 'id');
     }
 
+    /**
+     * Get cities list for select
+     *
+     * @return array|\Illuminate\Support\Collection
+     */
+    public function responsibleUsersForDropDown()
+    {
+        if (! $this->isAdmin() && ! $this->isSuperAdmin()) {
+            return [];
+        }
+
+        $q = User::orderBy('name');
+
+        return $q->pluck('name', 'id')->prepend('Немає відповідальної особи');
+    }
 
     /**
      * Get cities list for select

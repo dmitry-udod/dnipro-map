@@ -48,9 +48,8 @@
                 'raw' => true,
             ],
             [
-                'name' => 'processed_at',
-                'title' => 'Дата',
-                'raw' => true,
+                'name' => 'processed_by',
+                'title' => 'Хто обробив',
             ],
             [
                 'name' => 'photo_previews',
