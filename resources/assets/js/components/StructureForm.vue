@@ -131,11 +131,15 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="phone">Телефон</label>
                                     <input type="tel" class="form-control form-control-sm" id="phone" v-model="structure.phone">
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
+                                    <label for="phone">E-mail</label>
+                                    <input type="email" class="form-control form-control-sm" id="email" v-model="structure.email">
+                                </div>
+                                <div class="form-group col-md-4">
                                     <div class="form-group">
                                         <label for="url">Посилання (URL)</label>
                                         <input type="text" class="form-control form-control-sm" id="url" v-model="structure.url" placeholder="https://helsi.me">

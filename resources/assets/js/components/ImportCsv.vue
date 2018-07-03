@@ -115,6 +115,8 @@
                     { name: 'Нотатки', value: 'notes', isOptional:true },
                     { name: 'Площа', value: 'area', isOptional:true },
                     { name: 'Орендар', value: 'renter', isOptional:true },
+                    { name: 'Телефон', value: 'phone', isOptional:true },
+                    { name: 'E-mail', value: 'email', isOptional:true },
                 ],
                 columns: [],
                 results: null,

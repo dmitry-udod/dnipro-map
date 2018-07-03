@@ -62,6 +62,7 @@ class StructureRepository extends BaseRepository
         $entity->url = array_get($data, 'url');
         $entity->working_hours = array_get($data, 'working_hours');
         $entity->phone = array_get($data, 'phone');
+        $entity->email = array_get($data, 'email');
         $entity->latitude = array_get($data, 'latitude');
         $entity->longitude = array_get($data, 'longitude');
         $entity->photos = array_get($data, 'photos', []);

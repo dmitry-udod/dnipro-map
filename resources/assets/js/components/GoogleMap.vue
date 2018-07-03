@@ -158,6 +158,7 @@
                 content += data.renter ? `<li>Орендар: ${data.renter}</li>` : '';
                 content += data.has_contract ? `<li>Наявність договору: Так</li>` : '';
                 content += data.phone ? `<li>Телефон: ${data.phone}</li>` : '';
+                content += data.email ? `<li>E-mail: ${data.email}</li>` : '';
                 content += data.working_hours ? `<li>Графiк роботи: ${data.working_hours.replace(/\|/g, '<br>')}</li>` : '';
                 content += data.url ? `<li>Посилання: ${data.url}</li>` : '';
                 content += data.notes ? `<li>Нотатки: ${data.notes}</li>` : '';
