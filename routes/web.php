@@ -46,11 +46,11 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
             Route::get('/import', 'ImportController@index')->name('import.index');
             Route::post('/import/save-data', 'ImportController@saveData')->name('import.save_data');
 
-            Route::get('/emails/test', function() {
+//            Route::get('/emails/test', function() {
 //                return  new App\Mail\UserCreatedClaim(\App\Claim::first());
 //                return  new App\Mail\AdminMakeResponseOnUserClaim(\App\Claim::find(1));
                 //return  new App\Mail\ClaimCreatedNotifyAdmin(\App\Claim::find(1));
-            });
+//            });
 	    });
 
     Route::middleware(['can_access_to_admin_area'])->get('/admin/home', 'Admin\StructureController@index')->name('home');
