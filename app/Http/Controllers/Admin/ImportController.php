@@ -55,43 +55,40 @@ class ImportController extends BaseAdminController
         $structures = [];
 
         foreach ($data as $index => $row) {
-
             foreach ($row['data'] as $columnsIndex => $column) {
-                if ($columnsIndex > 0) {
-                    $column = preg_replace('/\s+/', ' ', $column);
-                    // Coordinates
-                    if ($row['column'] === 'coordinates') {
-                        $latLang = array_map('trim', explode(',', $column));
-                        if (count($latLang) > 1) {
-                            $structures[$columnsIndex]['latitude'] = $latLang[0];
-                            $structures[$columnsIndex]['longitude'] = $latLang[1];
-                        } else {
-                            return $this->jsonError("Помилка в координатах для структури #$index; $column", 500);
-                        }
-                    }
-                    // Type ID
-                    else if($row['column'] === 'type') {
-                        $type = $typeRepository->findByCityCategoryAndSlugOrCreate($city, $category, [
-                            'name' => $column,
-                            'slug' => str_slug($column),
-                            'city_id' => $city->id,
-                            'category_id' => $category->id,
-                            'is_active' => true,
-                            'color' => '#ffffff',
-                            'order' => '0',
-                        ]);
-                        $structures[$columnsIndex]['type_id'] = $type->id;
-                    } else  if (starts_with($row['column'], 'custom_')) {
-                        $id = str_replace('custom_', '', $row['column']);
-                        $structures[$columnsIndex]['additional_fields'][] = [
-                            'id' => $id,
-                            'name' => $row['data'][$columnsIndex],
-                            'value' => $column,
-                        ];
-
+                $column = preg_replace('/\s+/', ' ', $column);
+                // Coordinates
+                if ($row['column'] === 'coordinates') {
+                    $latLang = array_map('trim', explode(',', $column));
+                    if (count($latLang) > 1) {
+                        $structures[$columnsIndex]['latitude'] = $latLang[0];
+                        $structures[$columnsIndex]['longitude'] = $latLang[1];
                     } else {
-                        $structures[$columnsIndex][$row['column']] = $column;
+                        return $this->jsonError("Помилка в координатах для структури #$index; $column", 500);
                     }
+                }
+                // Type ID
+                else if($row['column'] === 'type') {
+                    $type = $typeRepository->findByCityCategoryAndSlugOrCreate($city, $category, [
+                        'name' => $column,
+                        'slug' => str_slug($column),
+                        'city_id' => $city->id,
+                        'category_id' => $category->id,
+                        'is_active' => true,
+                        'color' => '#ffffff',
+                        'order' => '0',
+                    ]);
+                    $structures[$columnsIndex]['type_id'] = $type->id;
+                } else  if (starts_with($row['column'], 'custom_')) {
+                    $id = str_replace('custom_', '', $row['column']);
+                    $structures[$columnsIndex]['additional_fields'][] = [
+                        'id' => $id,
+                        'name' => $row['data'][$columnsIndex],
+                        'value' => $column,
+                    ];
+
+                } else {
+                    $structures[$columnsIndex][$row['column']] = $column;
                 }
             }
         }

@@ -49,7 +49,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
             Route::get('/emails/test', function() {
 //                return  new App\Mail\UserCreatedClaim(\App\Claim::first());
 //                return  new App\Mail\AdminMakeResponseOnUserClaim(\App\Claim::find(1));
-//                return  new App\Mail\ClaimCreatedNotifyAdmin(\App\Claim::find(1));
+                return  new App\Mail\ClaimCreatedNotifyAdmin(\App\Claim::find(1));
             });
 	    });
 
