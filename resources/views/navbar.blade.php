@@ -31,7 +31,9 @@
                     @if (request()->routeIs('main_list'))
                         <a class="nav-link" href="{{ route('categories', [$city->slug, optional($category)->slug]) }}">Мапа</a>
                     @else
-                        @if (! empty($category))
+                        @if (request()->routeIs('claim_check_status') )
+                            <a class="nav-link" href="/">Мапа</a>
+                        @else
                             <a class="nav-link" href="{{ route('main_list', [$city->slug, optional($category)->slug]) }}">Список</a>
                         @endif
                     @endif
@@ -49,14 +51,16 @@
                         @endforeach
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="$('#categories').modal('toggle');return false;">Категорії</a>
-                </li>
+                @if (request()->routeIs('main') || request()->routeIs('categories') )
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="$('#categories').modal('toggle');return false;">Категорії</a>
+                    </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="citizen" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Мешканцю міста</a>
                     <div class="dropdown-menu" aria-labelledby="citizen">
                         <a class="dropdown-item" href="#" onclick="$('#claim-modal').modal('toggle');return false;">Подати скаргу</a>
-                        {{--<a class="dropdown-item" href="#">Підписатися на розсилку</a>--}}
+                        <a class="dropdown-item" href="{{ route('claim_check_status', $city->slug) }}">Перевiрити статус скарги</a>
                     </div>
                 </li>
                 {{--<li class="nav-item">--}}

@@ -18,6 +18,8 @@ class ClaimController extends Controller
     public function __construct(ClaimRepository $repository)
     {
         $this->repository = $repository;
+
+        view()->share('category', '');
     }
 
     /**
