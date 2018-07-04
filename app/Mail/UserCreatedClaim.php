@@ -34,6 +34,6 @@ class UserCreatedClaim extends Mailable
     {
         $claim = $this->claim;
 
-        return $this->markdown('emails.claims.user_created', compact('claim'));
+        return $this->subject('Ваша скарга прийнята')->markdown('emails.claims.user_created', compact('claim'));
     }
 }

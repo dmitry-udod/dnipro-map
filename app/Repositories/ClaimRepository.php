@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Mail;
 class ClaimRepository extends BaseRepository
 {
     /**
+     * CityRepository constructor.
+     */
+    public function __construct()
+    {
+        $this->model = Claim::class;
+    }
+
+    /**
      * Store claim from user
      *
      * @param array $data

@@ -7,7 +7,7 @@
             </div>
         </a>
 
-        @if (! request()->routeIs('main_list'))
+        @if (request()->routeIs('main'))
         <div class="input-group col-4 ">
             <input class="form-control mr-sm-2 w-50 d-none d-sm-block" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input">
         </div>
@@ -19,7 +19,7 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml-auto">
-                @if (! request()->routeIs('main_list'))
+                @if (request()->routeIs('main'))
                 <li class="d-block d-sm-none">
                     <div class="input-group col-12 d-block">
                         <input class="form-control w-100" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input-mobile">
@@ -31,7 +31,9 @@
                     @if (request()->routeIs('main_list'))
                         <a class="nav-link" href="{{ route('categories', [$city->slug, optional($category)->slug]) }}">Мапа</a>
                     @else
-                        <a class="nav-link" href="{{ route('main_list', [$city->slug, optional($category)->slug]) }}">Список</a>
+                        @if (! empty($category))
+                            <a class="nav-link" href="{{ route('main_list', [$city->slug, optional($category)->slug]) }}">Список</a>
+                        @endif
                     @endif
                 </li>
 

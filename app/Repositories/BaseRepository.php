@@ -38,6 +38,17 @@ class BaseRepository
     }
 
     /**
+     * Find entity by uuid
+     *
+     * @param $uuid
+     * @return mixed
+     */
+    public function findByUuid($uuid)
+    {
+        return $this->model::where('uuid', $uuid)->first();
+    }
+
+    /**
      * Find or create new entity
      *
      * @param $id

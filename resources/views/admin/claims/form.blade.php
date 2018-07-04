@@ -39,6 +39,22 @@
             <label for="name" class="col-md-2 col-form-label text-md-right">Опис проблеми</label>
             <div class="col-md-10 form-control border-0">{{ $entity->description}}</div>
         </div>
+
+        <div class="form-group row">
+            <label for="name" class="col-md-2 col-form-label text-md-right">Опис проблеми</label>
+            <div class="col-md-10 form-control border-0">{{ $entity->description}}</div>
+        </div>
+
+        @if (!empty($entity->photos))
+        <div class="form-group row">
+            <label for="name" class="col-md-2 col-form-label text-md-right">Фото</label>
+            <div class="col-md-10 form-control border-0">
+                @foreach($entity->photos as $p)
+                    <a href="{{ json_decode($p)->path }}" target="_blank"><img width="60" height="60" src="{{ json_decode($p)->path }}"></a>
+                @endforeach
+            </div>
+        </div>
+        @endif
     @endif
 @endsection
 

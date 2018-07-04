@@ -130,7 +130,7 @@ class User extends Authenticatable
 
         $q = User::orderBy('name');
 
-        return $q->pluck('name', 'id')->prepend('Немає відповідальної особи');
+        return $q->pluck('name', 'id')->prepend('Немає відповідальної особи', 0);
     }
 
     /**
@@ -198,4 +198,8 @@ class User extends Authenticatable
         }
     }
 
+    public function getResponsibleAttribute()
+    {
+        return Category::where('responsible_user_id', $this->id)->pluck('name')->implode(', ');
+    }
 }

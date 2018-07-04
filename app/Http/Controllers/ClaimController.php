@@ -20,6 +20,13 @@ class ClaimController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * Create claim from user
+     *
+     * @param StoreUserClaim $request
+     * @param $city
+     * @return \Response
+     */
     public function create(StoreUserClaim $request, $city)
     {
         if ($this->repository->createFromUser(request()->except('_token'), $city)) {
@@ -29,12 +36,14 @@ class ClaimController extends Controller
         return $this->jsonError("Помилка при створеннi скарги", 500);
     }
 
-    public function checkStatus()
+    public function checkStatus($city, $uuid = null)
     {
-        if ($this->repository->createFromUser(request()->except('_token'), $city)) {
-            return $this->jsonMessage('Ваша скарга прийнята і буде розглянута найближчим часом.');
+        if (request('q')) {
+            return redirect()->route('claim_check_status', [$city, request('q')]);
         }
 
-        return $this->jsonError("Помилка при створеннi скарги", 500);
+        $entity = $this->repository->findByUuid($uuid);
+
+        return view('claims.check_status', compact('entity'));
     }
 }

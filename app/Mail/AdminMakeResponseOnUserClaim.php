@@ -30,6 +30,6 @@ class AdminMakeResponseOnUserClaim extends Mailable
     {
         $claim = $this->claim;
 
-        return $this->markdown('emails.claims.admin_make_response', compact('claim'));
+        return $this->subject('Ваша скарга розглянута')->markdown('emails.claims.admin_make_response', compact('claim'));
     }
 }

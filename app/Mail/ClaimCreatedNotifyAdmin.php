@@ -32,6 +32,6 @@ class ClaimCreatedNotifyAdmin extends Mailable
     {
         $claim = $this->claim;
 
-        return $this->markdown('emails.claims.user_created_notify_admin', compact('claim'));
+        return $this->subject('СКАРГА')->markdown('emails.claims.user_created_notify_admin', compact('claim'));
     }
 }

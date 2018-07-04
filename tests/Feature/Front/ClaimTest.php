@@ -42,4 +42,14 @@ class ClaimTest extends TestCase
         Mail::assertSent(UserCreatedClaim::class, 1);
         Mail::assertSent(ClaimCreatedNotifyAdmin::class, 1);
     }
+
+    /** @test */
+    public function claim_status()
+    {
+        $this->get($this->route('/claims/check-status'))->assertStatus(200)->assertDontSeeText('Статус:');
+
+        $uuid = $this->createClaim()->uuid;
+
+        $this->get($this->route("/claims/check-status/$uuid"))->assertStatus(200)->assertSeeText('Статус:');
+    }
 }

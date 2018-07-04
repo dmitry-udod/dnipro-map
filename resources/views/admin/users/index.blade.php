@@ -20,6 +20,10 @@
                 'name' => 'city',
                 'title' => 'Мiсто',
             ],
+            [
+                'name' => 'responsible',
+                'title' => 'Вiдповiдальний за',
+            ],
         ],
         'actions' => [
             'edit',
