@@ -90,6 +90,15 @@
             } else {
                 this.addDraggableMarker();
             }
+
+            if (this.markers.length === 0) {
+                const that = this;
+                this.geocoder.geocode({'address': 'Україна, ' + this.city}, function(results, status) {
+                    if (status == that.maps.GeocoderStatus.OK) {
+                        that.map.setCenter(results[0].geometry.location);
+                    }
+                });
+            }
         },
 
         watch: {

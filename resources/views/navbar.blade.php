@@ -7,7 +7,7 @@
             </div>
         </a>
 
-        @if (request()->routeIs('main'))
+        @if (request()->routeIs('main') || request()->routeIs('categories') )
         <div class="input-group col-4 ">
             <input class="form-control mr-sm-2 w-50 d-none d-sm-block" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input">
         </div>
@@ -19,7 +19,7 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ml-auto">
-                @if (request()->routeIs('main'))
+                @if (request()->routeIs('main') || request()->routeIs('categories') )
                 <li class="d-block d-sm-none">
                     <div class="input-group col-12 d-block">
                         <input class="form-control w-100" type="search" placeholder="Пошук за адресою" aria-label="Пошук за адресою" autocomplete="off" id="search-input-mobile">

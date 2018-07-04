@@ -34,6 +34,12 @@
                     </p>
             </div>
         </div>
+        @else
+            @if (request('uuid') && !$entity)
+            <div class="text-center mt-3">
+                <h3>Скарга не знайдена</h3>
+            </div>
+            @endif
         @endif
     </div>
 @endsection
