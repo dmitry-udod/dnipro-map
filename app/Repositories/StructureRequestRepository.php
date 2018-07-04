@@ -2,10 +2,29 @@
 
 namespace App\Repositories;
 
+use App\City;
 use App\StructureRequest;
 
 class StructureRequestRepository extends BaseRepository
 {
+    /**
+     * Get entities list
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function all()
+    {
+        $user = auth()->user();
+        $q = StructureRequest::orderBy('created_at', 'DESC');
+
+        if ($user->isAdmin()) {
+            $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
+            $q->whereIn('city_id', $cities);
+        }
+
+        return $q;
+    }
+
     /**
      * @param array $data
      * @param string $citySlug
