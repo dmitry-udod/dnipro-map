@@ -1,6 +1,10 @@
 @extends('layouts.backend')
 
 @section('custom_html_form_top')
+    <div class="form-group row">
+        <label for="name" class="col-md-2 col-form-label text-md-right">Номер (id)</label>
+        <div class="col-md-10 form-control border-0">{{ $entity->uuid }}</div>
+    </div>
     @if ($entity->is_processed)
         <div class="form-group row">
             <label for="name" class="col-md-2 col-form-label text-md-right">Ким опрацьована</label>

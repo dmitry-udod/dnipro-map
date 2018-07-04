@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <h1 class="mt-3">Перевiрка статусу скарги</h1>
         <div class="row mt-3">
             <form class="col-12">
                 <div class="input-group">
@@ -24,7 +25,7 @@
                     <p class="card-text">
                     <ul>
                         <li>Номер: {{ $entity->uuid }}</li>
-                        <li>Статус: {!! $entity->is_processed ? "<span class='badge badge-success'>Розглянута</span>" : "<span class='badge badge-danger'>Не розглянута</span>" !!}</li>
+                        <li>Статус: {!! $entity->is_processed ? "<span class='badge badge-success'>Розглянута</span>" : "<span class='badge badge-danger'>Розглядаєтся</span>" !!}</li>
                         @if ($entity->is_processed)
                             <li>Дата опрацювання: {{ $entity->processed_at }}</li>
                             <li>Рішення: {{ $entity->response }}</li>
