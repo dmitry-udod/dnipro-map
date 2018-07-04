@@ -23,12 +23,20 @@ class ClaimRepository extends BaseRepository
     public function createFromUser(array $data, $citySlug)
     {
         $cityRepository = new CityRepository();
-        $structureRepository = new StructureRepository();
+        $entity = new Claim();
 
         $city = $cityRepository->findBySlug($citySlug);
-        $structure = $structureRepository->findByUuid($data['structure_id']);
 
-        $entity = new Claim();
+        if (! empty($data['structure_id'])) {
+            $structureRepository = new StructureRepository();
+            $structure = $structureRepository->findByUuid($data['structure_id']);
+            $entity->structure_id = $structure->id;
+            $entity->category_id = $structure->category_id;
+        } else {
+            $entity->structure_id = 0;
+            $entity->category_id = $data['current_category_id'];
+        }
+
         $entity->name = $data['name'];
         $entity->uuid = $this->generateUuid();
         $entity->phone = $data['phone'];
@@ -36,8 +44,6 @@ class ClaimRepository extends BaseRepository
         $entity->claim_category_id = $data['category'];
         $entity->description = $data['description'];
         $entity->city_id = $city->id;
-        $entity->structure_id = $structure->id;
-        $entity->category_id = $structure->category_id;
         $entity->save();
 
         if ($entity->id && !empty($data['photos'])) {

@@ -26,18 +26,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($city, $category = null)
+    public function index($citySlug, $category = null)
     {
-        if (!$city) {
-            $cities = (new CityRepository())->allActiveOrderByName();
+        $cityRepository = new CityRepository();
+
+        if (!$citySlug) {
+            $cities = $cityRepository->allActiveOrderByName();
             return view('select_city', compact('cities'));
         }
+
+        $city = $cityRepository->findBySlug($citySlug);
 
         $viewName = 'welcome';
         $filters = ['type_ids' => request('types'), 'search' => request('q')];
         $entities = Structure::collection($this->repository->allByCityAndCategory($city, $category, $filters));
         $types = $entities->isEmpty() ? new Collection()  : (new TypeRepository)->allActiveForCategory($entities[0]->category_id);
-        $category = (new CategoryRepository())->findBySlug($category);
+        $category = (new CategoryRepository())->findBySlug($city, $category);
 
         if (! $category && ! $entities->isEmpty()) {
             $category = (new CategoryRepository())->find($entities[0]->category_id);

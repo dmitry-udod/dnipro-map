@@ -53,7 +53,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="citizen" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Мешканцю міста</a>
                     <div class="dropdown-menu" aria-labelledby="citizen">
-                        <a class="dropdown-item" href="#">Подати скаргу</a>
+                        <a class="dropdown-item" href="#" onclick="$('#claim-modal').modal('toggle');return false;">Подати скаргу</a>
                         {{--<a class="dropdown-item" href="#">Підписатися на розсилку</a>--}}
                     </div>
                 </li>

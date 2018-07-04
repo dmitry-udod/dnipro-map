@@ -80,7 +80,8 @@
         mixins: [mixin],
 
         props: [
-            'categoriesJson'
+            'categoriesJson',
+            'currentCategoryId',
         ],
 
         data() {
@@ -129,6 +130,7 @@
                 formData.append('email', this.claim.email);
                 formData.append('category', this.claim.category);
                 formData.append('description', this.claim.description);
+                formData.append('current_category_id', this.currentCategoryId);
 
                 Array
                     .from(Array(this.claim.photos.length).keys())

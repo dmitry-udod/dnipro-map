@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <create-claim categories-json="{{ base64_encode(json_encode(\App\ClaimCategory::all())) }}"></create-claim>
+                <create-claim current-category-id="{{ optional($category)->id }}" categories-json="{{ base64_encode(json_encode(\App\ClaimCategory::all())) }}"></create-claim>
             </div>
         </div>
     </div>

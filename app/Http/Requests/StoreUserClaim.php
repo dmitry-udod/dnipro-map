@@ -20,7 +20,6 @@ class StoreUserClaim extends FormRequest
     public function rules()
     {
         return [
-            'structure_id' => 'required',
             'name' => 'required',
             'phone' => 'required',
             'email' => 'required|email',

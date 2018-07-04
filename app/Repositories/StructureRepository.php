@@ -122,9 +122,8 @@ class StructureRepository extends BaseRepository
      * @param array $filters
      * @return \Illuminate\Support\Collection
      */
-    public function allByCityAndCategory($city, $categorySlug, $filters)
+    public function allByCityAndCategory(City $city, $categorySlug, $filters)
     {
-        $city = (new CityRepository())->findBySlug($city);
         $categoryQuery = Category::where('is_active', true)->where('city_id', $city->id)->orderBy('order');
 
         if (!$categorySlug) {
