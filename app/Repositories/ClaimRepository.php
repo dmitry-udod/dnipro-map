@@ -68,7 +68,7 @@ class ClaimRepository extends BaseRepository
         $entity->name = $data['name'];
         $entity->uuid = $this->generateUuid();
         $entity->phone = $data['phone'];
-        $entity->email = $data['email'];
+        $entity->email = trim($data['email']);
         $entity->claim_category_id = $data['category'];
         $entity->description = $data['description'];
         $entity->city_id = $city->id;
