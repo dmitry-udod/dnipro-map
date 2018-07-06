@@ -63,7 +63,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success" @click="createClaim">Надіслати данні</button>
+                                <button type="submit" class="btn btn-success" @click="createClaim" :disabled="loading">Надіслати данні</button>
                             </div>
                         </div>
                     </div>
@@ -121,6 +121,8 @@
             },
 
             createClaim() {
+                this.loading = true;
+
                 const formData = new FormData();
                 let i = 0;
 

@@ -18,8 +18,8 @@ export default {
 
     methods: {
         onError(err) {
+            this.loading = false;
             if (err.response.data && err.response.data.error) {
-                this.loading = false;
                 if(err.response.data.error === 'Unauthenticated.') {
                     document.location.href = '/';
                 }
@@ -38,6 +38,7 @@ export default {
         },
 
         onSuccess(msg, route) {
+            this.loading = false;
             swal(msg, '', 'success').then(() => {
                 if (route) {
                     document.location.href = route;
