@@ -1,4 +1,4 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/dmitry-udod/dnipro-map/master/docs_images/logo.png"></p>
 <p align="center">
 <a href="https://travis-ci.org/dmitry-udod/dnipro-map"><img src="https://travis-ci.org/dmitry-udod/dnipro-map.svg?branch=master" alt="Build Status"></a>
 </p>
