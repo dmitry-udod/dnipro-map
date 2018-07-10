@@ -30,15 +30,7 @@ class ClaimRepository extends BaseRepository
      */
     public function all()
     {
-        $user = auth()->user();
-        $q = Claim::orderBy('created_at', 'DESC');
-
-        if ($user->isAdmin()) {
-            $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
-            $q->whereIn('city_id', $cities);
-        }
-
-        return $q;
+        return $this->allFilteredByUserCity();
     }
 
     /**

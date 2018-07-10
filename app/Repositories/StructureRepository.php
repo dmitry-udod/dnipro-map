@@ -154,11 +154,19 @@ class StructureRepository extends BaseRepository
         return Structure::where('uuid', $uuid)->firstOrFail();
     }
 
+    /**
+     * Add search params
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @return $this|\Illuminate\Database\Eloquent\Builder
+     */
     protected function search($q)
     {
         $search = request('q');
         if ($search) {
-            return $q->where(function ($query) use ($search) {
+            $city = City::whereName(request('q'))->first();
+            $categories = Category::where('name', 'ILIKE', request('q') . '%')->pluck('id');
+            return $q->where(function ($query) use ($search, $city, $categories) {
                 $query
                     ->orWhere('name', 'ILIKE', "%$search%")
                     ->orWhere('uuid', 'ILIKE', "%$search%")
@@ -169,6 +177,14 @@ class StructureRepository extends BaseRepository
                     ->orWhere('phone', 'ILIKE', "%$search%")
                     ->orWhere('url', 'ILIKE', "%$search%")
                     ->orWhere('notes', 'ILIKE', "%$search%");
+
+                if ($city) {
+                    $query->orWhere('city_id', $city->id);
+                }
+
+                if ($categories) {
+                    $query->orWhereIn('category_id', $categories);
+                }
             });
         }
 

@@ -7,6 +7,8 @@ use App\City;
 
 class CityRepository extends BaseRepository
 {
+    protected $searchFields = ['name'];
+
     /**
      * CityRepository constructor.
      */

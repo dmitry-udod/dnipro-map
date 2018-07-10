@@ -25,7 +25,7 @@
                     @yield('buttons')
                 </div>
                 <div class="card-body">
-                    <table class="table table-sm">
+                    <table class="table table-sm" style="zoom: .9">
                         <thead>
                         <tr>
                             @foreach($fields as $field)

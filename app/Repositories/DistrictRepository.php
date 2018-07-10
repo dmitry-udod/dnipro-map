@@ -8,6 +8,8 @@ use App\District;
 
 class DistrictRepository extends BaseRepository
 {
+    protected $searchFields = ['name'];
+
     /**
      * Get entities list
      *
@@ -22,6 +24,8 @@ class DistrictRepository extends BaseRepository
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
             $q->whereIn('city_id', $cities);
         }
+
+        $q = $this->search($q);
 
         return $q;
     }

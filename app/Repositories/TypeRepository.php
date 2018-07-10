@@ -8,6 +8,8 @@ use App\Type;
 
 class TypeRepository extends BaseRepository
 {
+    protected $searchFields = ['name'];
+
     /**
      * TypeRepository constructor.
      */
@@ -30,6 +32,8 @@ class TypeRepository extends BaseRepository
             $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
             $q->whereIn('city_id', $cities);
         }
+
+        $q = $this->search($q);
 
         return $q;
     }

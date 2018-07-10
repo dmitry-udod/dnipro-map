@@ -39,7 +39,8 @@ class AdminClaimTest extends TestCase
         Mail::fake();
 
         $entity = $this->createClaim();
-        $this->adminLviv()->get($this->route('/admin/claims'))->assertSee($entity->email);
+        $this->adminLviv()->get($this->route('/admin/claims'))->assertSeeText($entity->email);
+        $this->adminDnipro()->get($this->route('/admin/claims'))->assertDontSeeText($entity->email);
         $this->adminLviv()->put($this->route("/admin/claims/{$entity->id}"), $this->entity)->assertRedirect();
         $entity = Claim::find($entity->id);
 

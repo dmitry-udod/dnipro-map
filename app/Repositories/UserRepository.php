@@ -6,6 +6,8 @@ use App\User;
 
 class UserRepository extends BaseRepository
 {
+    protected $searchFields = ['name', 'email'];
+
     public function all()
     {
         $user = auth()->user();
@@ -16,6 +18,8 @@ class UserRepository extends BaseRepository
                 $q->whereRaw("cities::text LIKE '%\"{$user->cities[0]}\"%'");
             }
         }
+
+        $q = $this->search($q);
 
         return $q;
     }

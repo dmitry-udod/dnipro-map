@@ -18,12 +18,8 @@
                 'title' => 'Адреса',
             ],
             [
-                'name' => 'area',
-                'title' => 'Площа об\'єкта',
-            ],
-            [
-                'name' => 'owner',
-                'title' => 'Власник',
+                'name' => 'name',
+                'title' => 'Назва',
             ],
             [
                 'name' => 'category',
@@ -32,10 +28,6 @@
             [
                 'name' => 'type',
                 'title' => 'Вид діяльності',
-            ],
-            [
-                'name' => 'district',
-                'title' => 'Район',
             ],
             [
                 'name' => 'active',

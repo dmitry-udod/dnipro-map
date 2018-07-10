@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\City;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -23,7 +24,7 @@ class BaseRepository
      */
     public function all()
     {
-        return $this->model::orderBy($this->orderBy, $this->order);
+        return $this->search($this->model::orderBy($this->orderBy, $this->order));
     }
 
     /**
@@ -157,6 +158,22 @@ class BaseRepository
                     $query->orWhere($field, 'ILIKE', "%$search%");
                 }
             });
+        }
+
+        return $q;
+    }
+
+    /**
+     * @return Builder
+     */
+    protected function allFilteredByUserCity()
+    {
+        $user = auth()->user();
+        $q = $this->model::orderBy('created_at', 'DESC');
+
+        if ($user->isAdmin()) {
+            $cities = empty($user->cities) ? [] : City::whereIn('id', $user->cities)->pluck('id');
+            $q->whereIn('city_id', $cities);
         }
 
         return $q;
