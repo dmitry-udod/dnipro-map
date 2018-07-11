@@ -37,7 +37,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Загальна запитiв на додавання нових структур</td>
+                                <td>Загальна кiлькiсть запитiв на додавання нових структур</td>
                                 <td>{{ App\StructureRequest::where('city_id', $cityId)->count() }}</td>
                             </tr>
                         </tbody>
