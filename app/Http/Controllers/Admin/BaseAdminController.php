@@ -16,7 +16,9 @@ class BaseAdminController extends Controller
         $this->viewName = str_plural(last(explode('\\', strtolower($this->model))));
         view()->share('viewName', $this->viewName);
         view()->share('model', $this->model);
-        $this->repository->model = $this->model;
+        if ($this->repository) {
+            $this->repository->model = $this->model;
+        }
     }
 
     /**

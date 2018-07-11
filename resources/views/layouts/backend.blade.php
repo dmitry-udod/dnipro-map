@@ -52,6 +52,9 @@
                                     <span class="badge badge-info">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('admin.statistics', $city->slug) }}">Статистика</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Керування сайтом <span class="caret"></span>

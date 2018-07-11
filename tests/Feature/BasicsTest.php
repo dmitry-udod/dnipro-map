@@ -24,4 +24,10 @@ class BasicsTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    /** @test */
+    public function pages_view()
+    {
+        $this->admin()->get($this->route('/admin/statistics'))->assertStatus(200);
+    }
 }
