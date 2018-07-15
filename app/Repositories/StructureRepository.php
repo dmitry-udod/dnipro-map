@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Category;
 use App\City;
 use App\Structure;
+use App\StructureRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 class StructureRepository extends BaseRepository
@@ -189,5 +190,26 @@ class StructureRepository extends BaseRepository
         }
 
         return $q;
+    }
+
+    /**
+     * Create structure from user request
+     *
+     * @param $requestId
+     * @return bool
+     */
+    public function saveFromStructureRequest($requestId)
+    {
+        /** @var StructureRequest $request */
+        $request = StructureRequest::findOrFail($requestId);
+
+        if (! $request->is_structure_created) {
+            $data = $request->only(['address', 'latitude', 'longitude', 'city_id', 'category_id']);
+            $data['is_active'] = true;
+            if ($this->save($data)) {
+                $request->is_structure_created = true;
+                return $request->save();
+            }
+        }
     }
 }

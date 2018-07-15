@@ -47,7 +47,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.structureRequests.index', $city->slug) }}">
+                                <a class="nav-link" href="{{ route('admin.structurerequests.index', $city->slug) }}">
                                     Запити
                                     <span class="badge badge-info">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>

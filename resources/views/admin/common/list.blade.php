@@ -57,6 +57,7 @@
                                     @foreach($actions as $action)
                                         @include("admin.common.actions.$action")
                                     @endforeach
+                                    @yield('actions')
                                 </td>
                             </tr>
                         @endforeach

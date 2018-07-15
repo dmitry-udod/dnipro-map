@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Front;
 
-use App\Claim;
+use App\Mail\UserCreatedStructureRequest;
 use App\StructureRequest;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NewStructureTest extends TestCase
@@ -30,8 +29,12 @@ class NewStructureTest extends TestCase
     /** @test */
     public function create_structure_from_user()
     {
+        Mail::fake();
+
         $this->entity['category_id'] = $this->createCategory()->id;
         $this->post($this->route('/new-structures/create'), $this->entity);
         $this->assertCount(1, StructureRequest::all());
+
+        Mail::assertSent(UserCreatedStructureRequest::class, 1);
     }
 }

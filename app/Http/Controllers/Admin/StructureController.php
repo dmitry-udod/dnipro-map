@@ -91,6 +91,11 @@ class StructureController extends BaseAdminController
         return $this->jsonData($fileData);
     }
 
+    /**
+     * Remove already uploaded file
+     *
+     * @return \Response
+     */
     public function uploadRemove()
     {
             if (request()->has('name')) {

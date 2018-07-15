@@ -5,7 +5,9 @@ namespace Tests;
 use App\Claim;
 use App\Repositories\ClaimRepository;
 use App\Repositories\StructureRepository;
+use App\Repositories\StructureRequestRepository;
 use App\Structure;
+use App\StructureRequest;
 use App\User;
 use App\City;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -188,9 +190,34 @@ abstract class TestCase extends BaseTestCase
             'structure_id'  => $structure->uuid,
         ];
 
-        $claimRepository = new ClaimRepository();
-        $claimRepository->createFromUser($data, $this->createCity()->slug);
+        $repository = new ClaimRepository();
+        $repository->createFromUser($data, $this->createCity()->slug);
 
         return Claim::first();
+    }
+
+    /**
+     * Create user claim
+     *
+     * @return StructureRequest
+     */
+    protected function createStructureRequest()
+    {
+        Mail::fake();
+
+        $data = [
+            'name' => 'Dima Udod',
+            'email' => 'reedwalter24@gmail.com',
+            'description'  => 'Very nice place',
+            'address'  => 'Baiker Street 36',
+            'latitude' => '1',
+            'longitude' => '2',
+            'category_id' => $this->createCategory()->id,
+        ];
+
+        $repository = new StructureRequestRepository();
+        $repository->createFromUser($data, $this->createCity()->slug);
+
+        return StructureRequest::first();
     }
 }

@@ -85,6 +85,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Structure whereWorkingHours($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Structure whereZoom($value)
  * @mixin \Eloquent
+ * @property string|null $email
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Structure whereEmail($value)
  */
 class Structure extends Model
 {

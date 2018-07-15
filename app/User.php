@@ -32,6 +32,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @mixin \Eloquent
  * @property-read string $city
  * @property-read string $role
+ * @property-read mixed $responsible
  */
 class User extends Authenticatable
 {

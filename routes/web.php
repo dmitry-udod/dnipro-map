@@ -38,10 +38,11 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('districts', 'DistrictController');
 		    Route::resource('structures', 'StructureController');
 		    Route::resource('claims', 'ClaimController');
-		    Route::resource('structureRequests', 'StructureRequestController');
-//		    Route::resource('new-structures', 'NewStructureController');
+		    Route::resource('structurerequests', 'StructureRequestController');
             Route::post('/structures/upload', 'StructureController@upload');
             Route::post('/structures/upload-remove', 'StructureController@uploadRemove');
+            Route::get('/structures/create-from-request/{id}', 'StructureRequestController@createStructureFromUserRequest')
+                ->name('structures.create_from_user_request');
 
             // Import
             Route::get('/import', 'ImportController@index')->name('import.index');

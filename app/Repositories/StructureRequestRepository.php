@@ -2,8 +2,11 @@
 
 namespace App\Repositories;
 
-use App\City;
+use App\Mail\AdminMakeResponseOnStructureRequest;
+use App\Mail\UserCreatedStructureRequest;
 use App\StructureRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class StructureRequestRepository extends BaseRepository
 {
@@ -51,6 +54,35 @@ class StructureRequestRepository extends BaseRepository
             $entity->photos = $this->uploadFiles($data['photos'], "structure_requests/{$entity->id}");
         }
 
-        return $entity->save();
+        $saved = $entity->save();
+
+        if ($saved) {
+            Mail::to($data['email'])->send(new UserCreatedStructureRequest($entity));
+        }
+
+        return $saved;
+    }
+
+    /**
+     * Process structure request
+     *
+     * @param array $data
+     * @param null $id
+     * @return mixed
+     */
+    public function save(array $data, $id = null)
+    {
+        $entity = $this->findOrNew($id);
+
+        if (! $entity->is_processed) {
+            $entity->response = trim($data['response']);
+            $entity->processed_by = auth()->user()->name;
+            $entity->processed_at = Carbon::now();
+            $entity->is_processed = true;
+            $entity->save();
+
+            Mail::to([$entity->email])->send(new AdminMakeResponseOnStructureRequest($entity));
+        }
+        return $entity;
     }
 }

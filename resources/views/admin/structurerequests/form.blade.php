@@ -30,11 +30,6 @@
         </div>
 
         <div class="form-group row">
-            <label for="name" class="col-md-2 col-form-label text-md-right">Телефон</label>
-            <div class="col-md-10 form-control border-0">{{ $entity->phone}}</div>
-        </div>
-
-        <div class="form-group row">
             <label for="name" class="col-md-2 col-form-label text-md-right">Email</label>
             <div class="col-md-10 form-control border-0">{{ $entity->email}}</div>
         </div>

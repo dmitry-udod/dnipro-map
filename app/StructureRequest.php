@@ -46,6 +46,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\StructureRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\StructureRequest whereUuid($value)
  * @mixin \Eloquent
+ * @property string|null $response
+ * @property bool|null $is_structure_created
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\StructureRequest whereIsStructureCreated($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\StructureRequest whereResponse($value)
  */
 class StructureRequest extends Model
 {

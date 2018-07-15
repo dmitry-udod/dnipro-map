@@ -51,6 +51,8 @@
             ],
         ],
         'actions' => [
+            'process',
+            'create_from_request',
         ]
     ])
 @endsection
