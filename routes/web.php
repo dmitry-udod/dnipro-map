@@ -15,6 +15,7 @@ Auth::routes();
 Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->group(function () {
 
     Route::get('/', 'HomeController@index')->name('main');
+    Route::get('/contacts', 'HomeController@contacts')->name('contacts');
     Route::get('/categories/{slug}', 'HomeController@index')->name('categories')->where(['slug' => '[a-zA-Z0-9_-]+']);
     Route::get('/list/categories/{slug}', 'HomeController@index')->name('main_list')->where(['slug' => '[a-zA-Z0-9_-]+']);
 

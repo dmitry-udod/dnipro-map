@@ -29,5 +29,6 @@ class BasicsTest extends TestCase
     public function pages_view()
     {
         $this->admin()->get($this->route('/admin/statistics'))->assertStatus(200);
+        $this->admin()->get($this->route('/contacts'))->assertStatus(200);
     }
 }

@@ -34,7 +34,9 @@
                         @if (request()->routeIs('claim_check_status') )
                             <a class="nav-link" href="/">Мапа</a>
                         @else
+                            @if (!empty($category))
                             <a class="nav-link" href="{{ route('main_list', [$city->slug, optional($category)->slug]) }}">Список</a>
+                            @endif
                         @endif
                     @endif
                 </li>
@@ -63,9 +65,9 @@
                         <a class="dropdown-item" href="{{ route('claim_check_status', $city->slug) }}">Перевiрити статус скарги</a>
                     </div>
                 </li>
-                {{--<li class="nav-item">--}}
-                    {{--<a class="nav-link" href="#">Інструкція</a>--}}
-                {{--</li>--}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('contacts') ? 'active' : ''}}"  href="{{ route('contacts', $city->slug) }}">На з'вязку</a>
+                </li>
             </ul>
         </div>
     </div>

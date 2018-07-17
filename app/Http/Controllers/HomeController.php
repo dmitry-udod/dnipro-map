@@ -53,4 +53,12 @@ class HomeController extends Controller
 
         return view($viewName, compact('entities', 'types', 'category'));
     }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function contacts()
+    {
+        return view('contacts');
+    }
 }
