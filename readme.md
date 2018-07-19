@@ -1,10 +1,8 @@
 <p align="center"><img src="https://raw.githubusercontent.com/dmitry-udod/dnipro-map/master/docs_images/logo.png"></p>
 <p align="center">
 <a href="https://travis-ci.org/dmitry-udod/dnipro-map"><img src="https://travis-ci.org/dmitry-udod/dnipro-map.svg?branch=master" alt="Build Status"></a>
+<a href="https://buildkite.com/dniprorada/dnipromap"><img src="https://badge.buildkite.com/6d8a48342b34655dba42e1ef1b4141cbf4c3268d97334a0c13.svg" alt="Buildkite Build Status"></a>
 </p>
-
-[![Build status](https://badge.buildkite.com/6d8a48342b34655dba42e1ef1b4141cbf4c3268d97334a0c13.svg)](https://buildkite.com/dniprorada/dnipromap)
-
 ## Requirements
 
 - PHP >= 7.1
