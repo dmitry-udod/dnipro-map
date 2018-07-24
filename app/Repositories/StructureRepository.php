@@ -134,7 +134,7 @@ class StructureRepository extends BaseRepository
                 return new Collection();
             }
         } else {
-            $category = $categoryQuery->where('slug', $categorySlug)->first();
+            $category = $categoryQuery->where('slug', $categorySlug)->firstOrFail();
         }
 
         $q = Structure::where('is_active', true)->where('city_id', $city->id)->where('category_id', $category->id);

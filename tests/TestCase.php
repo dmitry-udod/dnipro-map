@@ -126,6 +126,9 @@ abstract class TestCase extends BaseTestCase
         return $entity;
     }
 
+    /**
+     * @return \App\Category
+     */
     protected function createCategoryForDnipro()
     {
         $entity = \App\Category::where('slug', 'maf')->first();

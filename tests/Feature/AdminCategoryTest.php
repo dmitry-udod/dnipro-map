@@ -53,7 +53,7 @@ class AdminCategoryTest extends TestCase
     public function admin_see_only_his_categories()
     {
         $city = $this->createCity();
-        $this->createCategoryForDnipro();
+        $category = $this->createCategoryForDnipro();
         $repo = new CategoryRepository();
 
         $this->adminDnipro();
@@ -65,5 +65,8 @@ class AdminCategoryTest extends TestCase
 
         $this->superadmin();
         $this->assertCount(2, $repo->allActive()->toArray(), 'Superadmin sees everything');
+
+        $this->get($this->route('/categories/' . $category->slug))->assertOk();
+        $this->get($this->route('/categories/non-exist-category'))->assertStatus(404);
     }
 }
