@@ -6,7 +6,6 @@ language: php
 php:
   - '7.1'
 
-language: node_js
 node_js:
   - "6"
 
