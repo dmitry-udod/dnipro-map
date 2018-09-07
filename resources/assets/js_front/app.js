@@ -18,6 +18,7 @@ window.Vue = require('vue');
 Vue.component('google-map', require('./../js/components/GoogleMap.vue'));
 Vue.component('create-claim', require('./../js/components/ClaimForm.vue'));
 Vue.component('new-structure-request', require('./../js/components/NewStructureReqesut.vue'));
+Vue.component('previous-record-request', require('./../js/components/PreviousRecordReqesut.vue'));
 
 const app = new Vue({
     el: '#app'

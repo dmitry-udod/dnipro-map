@@ -43,6 +43,7 @@ class Structure extends JsonResource
             'additional_fields' => $this->additional_fields,
             'has_contract' => $this->has_contract,
             'registry_number' => $this->registry_number,
+            'is_previous_record_available' => $this->is_previous_record_available,
         ];
     }
 }

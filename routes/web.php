@@ -25,6 +25,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 
     // User Requests
     Route::post('/new-structures/create', 'NewStructureController@create')->name('create_structure_request');
+    Route::post('/previous-record/create', 'PreviousRecordController@create')->name('create_previous_record');
 
     // Admin area
 	Route::middleware(['auth', 'can_access_to_admin_area'])
@@ -39,6 +40,7 @@ Route::domain('{city}.' . env('DOMAIN_NAME'))->middleware(['only_valid_city'])->
 		    Route::resource('districts', 'DistrictController');
 		    Route::resource('structures', 'StructureController');
 		    Route::resource('claims', 'ClaimController');
+		    Route::resource('previousrecords', 'PreviousRecordController');
 		    Route::resource('structurerequests', 'StructureRequestController');
             Route::post('/structures/upload', 'StructureController@upload');
             Route::post('/structures/upload-remove', 'StructureController@uploadRemove');

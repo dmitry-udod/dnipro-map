@@ -161,6 +161,11 @@
                                 <label for="uuid">Реєстровий номер</label>
                                 <input type="text" class="form-control form-control-sm" id="uuid" v-model="structure.uuid" readonly>
                             </div>
+
+                            <div class="form-check form-group">
+                                <input type="checkbox" class="form-check-input" id="is_previous_record_available" v-model="structure.is_previous_record_available">
+                                <label class="form-check-label" for="is_previous_record_available">Попередній запис (при клiку на обе'кт зявится кнопка Записатись)</label>
+                            </div>
                         </form>
 
                         <div class="form-row">

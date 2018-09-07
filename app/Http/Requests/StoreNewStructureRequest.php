@@ -33,7 +33,7 @@ class StoreNewStructureRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Вкажiть им\'я',
+            'name.required' => 'Вкажiть iм\'я',
             'address.required' => 'Вкажiть адресу',
             'email.required' => 'Вкажiть електронну пошту',
             'email.email' => 'Невiрний формат електронної пошти',
