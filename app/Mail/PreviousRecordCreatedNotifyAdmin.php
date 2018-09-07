@@ -34,6 +34,6 @@ class PreviousRecordCreatedNotifyAdmin extends Mailable
     {
         $record = $this->record;
 
-        return $this->subject('Попередній запис')->markdown('emails.claims.user_created_notify_admin', compact('record'));
+        return $this->subject('Попередній запис')->markdown('emails.claims.user_created_previous_record_notify_admin', compact('record'));
     }
 }
