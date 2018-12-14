@@ -26,7 +26,7 @@ class StoreNewStructureRequest extends FormRequest
             'description' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'photos.*' => 'sometimes|mimes:jpg,jpeg,png,gif|max:20000',
+            'photos.*' => 'sometimes|mimes:jpg,jpeg,png,gif|max:200000',
         ];
     }
 
