@@ -41,7 +41,11 @@ class StructureRequestController extends BaseAdminController
     {
         $structureRepository = new StructureRepository();
 
-        $structureRepository->saveFromStructureRequest($requestId);
+        try {
+            $structureRepository->saveFromStructureRequest($requestId);
+        } catch (\Exception $e){
+            logger()->error('Cant create new structure', [$e]);
+        }
 
         return $this->redirectToListWithFlash();
     }
