@@ -26,7 +26,7 @@ class StoreNewStructureRequest extends FormRequest
             'description' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'photos.*' => 'sometimes|mimes:jpg,jpeg,png,gif',
+            'photos.*' => 'sometimes|mimes:jpg,jpeg,png,gif|size:20000',
         ];
     }
 
@@ -38,6 +38,9 @@ class StoreNewStructureRequest extends FormRequest
             'email.required' => 'Вкажiть електронну пошту',
             'email.email' => 'Невiрний формат електронної пошти',
             'description.required' => 'Опишiть проблему',
+            'photos.*.size' => [
+                'unique' => 'Максимальний розмiр файла 20 Мб',
+            ]
         ];
     }
 
