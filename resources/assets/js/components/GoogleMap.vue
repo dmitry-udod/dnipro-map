@@ -17,6 +17,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- Structure Request Modal -->
+        <div class="modal fade blue" id="previous-record-modal" tabindex="-1" role="dialog" aria-labelledby="previous-request-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Попередній запис</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <previous-record-request></previous-record-request>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -178,6 +195,10 @@
                             content += `<li>${this.fieldTitle(category, field.id)}: ${field.value}</li>`;
                         }
                     });
+                }
+
+                if (data.is_previous_record_available) {
+                    content += `<button onclick="$('#structure_id').val('${data.uuid}');$('#previous-record-modal').modal('show');return false;" style="margin-top: 10px" class="btn btn-success">Записатись</button>`;
                 }
 
                 if (category.user_can_create_claims) {

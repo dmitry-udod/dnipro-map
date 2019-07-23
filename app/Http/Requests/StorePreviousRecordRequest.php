@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
-class StoreUserClaim extends FormRequest
+class StorePreviousRecordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +21,10 @@ class StoreUserClaim extends FormRequest
     {
         return [
             'name' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email',
-            'category' => 'required',
-            'description' => 'required',
-            'photos.*' => 'sometimes|mimes:jpg,jpeg,png,gif|max:20000',
+            'age' => 'required',
+            'parent_name' => 'required',
+            'parent_phone' => 'required',
+            'date' => 'required',
         ];
     }
 
@@ -33,11 +32,10 @@ class StoreUserClaim extends FormRequest
     {
         return [
             'name.required' => 'Вкажiть iм\'я',
-            'phone.required' => 'Вкажiть Контактный телефон',
-            'email.required' => 'Вкажiть електронну пошту',
-            'email.email' => 'Невiрний формат електронної пошти',
-            'category.required' => 'Вкажiть категорiю',
-            'description.required' => 'Опишiть проблему',
+            'age.required' => 'Вкажiть вiк дитини',
+            'parent_name.required' => 'Вкажiть iм\'я дорослого',
+            'parent_phone.email' => 'Вкажiть телефон',
+            'date.required' => 'Оберi дату',
         ];
     }
 

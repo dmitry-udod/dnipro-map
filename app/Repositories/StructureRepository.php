@@ -39,6 +39,7 @@ class StructureRepository extends BaseRepository
      */
     public function save(array $data, $id = null)
     {
+        logger()->debug('', $data);
         /** @var City $city */
         $city = session('currentCity');
         $entity = Structure::findOrNew($id);
@@ -69,13 +70,14 @@ class StructureRepository extends BaseRepository
         $entity->photos = array_get($data, 'photos', []);
         $entity->director = array_get($data, 'director', '');
         $entity->is_active = !empty($data['is_active']);
+        $entity->is_previous_record_available = !empty($data['is_previous_record_available']);
         $entity->has_problem = !empty($data['has_problem']);
         $entity->has_contract = array_get($data, 'has_contract', false);
         $entity->is_free = !empty($data['is_free']);
         if (!empty($data['additional_fields'])) {
             $entity->additional_fields = $data['additional_fields'];
         }
-
+        logger()->debug('', [$entity->toArray()]);
         return $entity->save();
     }
 

@@ -52,6 +52,12 @@
                                     <span class="badge badge-info">{{ \App\StructureRequest::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.previousrecords.index', $city->slug) }}">
+                                    Попереднiй запис
+                                    <span class="badge badge-info">{{ \App\PreviousRecord::where('city_id', $city->id)->where('is_processed', false)->count() }}</span>
+                                </a>
+                            </li>
                             <li class="nav-item {{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.statistics', $city->slug) }}">Статистика</a>
                             </li>
